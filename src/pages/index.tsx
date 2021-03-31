@@ -1,6 +1,11 @@
-import Button from 'components/Button';
+import SubmitButton from 'components/submitButton';
 
 export default function Home() {
 
-  return <h1>Radar do Investidor</h1>;
+  return (
+    <>
+    <SubmitButton>Comparar Fundos</SubmitButton>
+    </>
+    );
+
 }
