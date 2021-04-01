@@ -3,10 +3,11 @@ import { Container } from './styles';
 
 interface ButtonProps {
     children: React.ReactChild;
+    onClick: () => any;
   }
-  
-  function SubmitButton({ children }: ButtonProps) {
-    return <Container>{children}</Container>;
+
+  function SubmitButton({ onClick, children }: ButtonProps) {
+    return <Container onClick={onClick}>{children}</Container>;
   }
-  
+
   export default SubmitButton;
