@@ -7,6 +7,10 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html, body, #__next {
+    height: 100%;
+  }
+
   body {
     background: ${({ theme }) => theme.colors.background};
     font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;
