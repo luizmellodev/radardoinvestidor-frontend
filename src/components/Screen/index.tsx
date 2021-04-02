@@ -7,11 +7,7 @@ interface ScreenProps {
 }
 
 function Screen({ children }: ScreenProps) {
-  return (
-    <Container>
-      {children}
-    </Container>
-  );
-};
+  return <Container>{children}</Container>;
+}
 
 export default Screen;
