@@ -1,4 +1,6 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
+
+import { MdAddCircle, MdAddCircleOutline } from 'react-icons/md';
 
 import { Container, Content, FundTitle, Info, Row, Selected } from './styles';
 
@@ -7,13 +9,24 @@ interface FundCardProps {
 }
 
 function FundCard({ children }: FundCardProps) {
+  const [selected, setSelected] = useState(false);
+  function handleSelect() {
+    setSelected(!selected);
+  }
   return (
     <Container>
       <Content>
         <Row marginBottom="12px">
           <FundTitle>FundCard Title</FundTitle>
-          <Selected>
-            <span>Selecionado</span>
+          <Selected onClick={handleSelect}>
+            {selected ? (
+              <>
+                <span>Selecionado</span>
+                <MdAddCircle size={20} className="iconSelected" />
+              </>
+            ) : (
+              <MdAddCircleOutline size={20} className="iconNotSelected" />
+            )}
           </Selected>
         </Row>
         <Row marginBottom="4px">

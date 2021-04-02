@@ -32,12 +32,26 @@ export const FundTitle = styled.strong`
   line-height: 28px;
 `;
 
-export const Selected = styled.div`
+export const Selected = styled.button`
+  background-color: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+
   span {
     font-family: Source Sans Pro;
     font-size: 16px;
     line-height: 24px;
     color: ${(props) => props.theme.colors.textDescription};
+  }
+
+  svg.iconSelected {
+    color: ${(props) => props.theme.colors.iconSelected};
+    margin-left: 12px;
+  }
+
+  svg.iconNotSelected {
+    color: ${(props) => props.theme.colors.text};
   }
 `;
 
