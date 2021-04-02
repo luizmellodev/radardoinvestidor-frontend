@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
-import SubmitButton from 'components/submitButton';
+import SubmitButton from 'components/SubmitButton';
 import Screen from 'components/Screen';
+import FundCard from 'components/FundCard';
 
 export const Container = styled.div`
   height: 100%;
@@ -23,18 +24,21 @@ export default function Home() {
 
   const handleCompareButtonClick = () => {
     router.push('/comparacao');
-  }
+  };
 
   return (
     <Screen>
       <Container>
         <Header>Header</Header>
-        <List>List</List>
+        <List>
+          <FundCard />
+        </List>
         <Footer>
-          <SubmitButton onClick={handleCompareButtonClick}>Comparar Fundos</SubmitButton>
+          <SubmitButton onClick={handleCompareButtonClick}>
+            Comparar Fundos
+          </SubmitButton>
         </Footer>
       </Container>
     </Screen>
-    );
-
+  );
 }
