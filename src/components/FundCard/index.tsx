@@ -4,11 +4,18 @@ import { MdAddCircle, MdAddCircleOutline } from 'react-icons/md';
 
 import { Container, Content, FundTitle, Info, Row, Selected } from './styles';
 
+interface Fund {
+  razaoSocial: string;
+  cnpj: string;
+  classe: string;
+  patrimonioLiquido: string;
+  cotistas: string;
+}
 interface FundCardProps {
-  children: ReactNode;
+  fund: Fund;
 }
 
-function FundCard({ children }: FundCardProps) {
+function FundCard({ fund }: FundCardProps) {
   const [selected, setSelected] = useState(false);
   function handleSelect() {
     setSelected(!selected);
@@ -17,7 +24,7 @@ function FundCard({ children }: FundCardProps) {
     <Container>
       <Content>
         <Row marginBottom="12px">
-          <FundTitle>FundCard Title</FundTitle>
+          <FundTitle>{fund.razaoSocial}</FundTitle>
           <Selected onClick={handleSelect}>
             {selected ? (
               <>
@@ -32,24 +39,23 @@ function FundCard({ children }: FundCardProps) {
         <Row marginBottom="4px">
           <Info>
             <p>CNPJ</p>
-            <span>29.577.652/0001-75</span>
+            <span>{fund.cnpj}</span>
           </Info>
           <Info alignRight>
             <p>Classe</p>
-            <span>Renda Variável</span>
+            <span>{fund.classe}</span>
           </Info>
         </Row>
         <Row>
           <Info>
             <p>Patrimônio Líquido</p>
-            <span>+ R$ 100 mi</span>
+            <span>{fund.patrimonioLiquido}</span>
           </Info>
           <Info alignRight>
             <p>Cotistas</p>
-            <span>+ 50 mil</span>
+            <span>{fund.cotistas}</span>
           </Info>
         </Row>
-        {children}
       </Content>
     </Container>
   );
