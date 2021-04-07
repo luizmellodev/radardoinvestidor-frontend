@@ -4,15 +4,10 @@ import { MdAddCircle, MdAddCircleOutline } from 'react-icons/md';
 
 import { Container, Content, FundTitle, Info, Row, Selected } from './styles';
 
-interface Fund {
-  razaoSocial: string;
-  cnpj: string;
-  classe: string;
-  patrimonioLiquido: string;
-  cotistas: string;
-}
+import IFund from 'interfaces/IFund';
+
 interface FundCardProps {
-  fund: Fund;
+  fund: IFund;
 }
 
 function FundCard({ fund }: FundCardProps) {
