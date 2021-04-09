@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 
 import SubmitButton from 'components/SubmitButton';
 import Screen from 'components/Screen';
+import SearchBar from 'components/SearchBar';
+import HeaderHome from 'components/HeaderHome';
 import FundCard from 'components/FundCard';
 import Loading from 'components/Loading';
 
@@ -13,7 +15,9 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const Header = styled.header``;
+export const Header = styled.header`
+  padding-bottom: 40px;
+`;
 
 export const List = styled.div`
   flex: 1;
@@ -74,6 +78,24 @@ export default function Home() {
       cotistas: '+ 50 mil',
     },
   ];
+
+  let filteredFundList: {
+    razaoSocial: string;
+    cnpj: string;
+    classe: string;
+    patrimonioLiquido: string;
+    cotistas: string;
+  }[] = fundList;
+
+  const handleOnChangeText = async (searchText: string) => {
+    filteredFundList = fundList.filter((fundo) => {
+      if (fundo.razaoSocial.toLowerCase().includes(searchText)) {
+        return true;
+      }
+    });
+    console.log(filteredFundList);
+  };
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -85,13 +107,15 @@ export default function Home() {
   return (
     <Screen>
       <Container>
-        <Header>Header</Header>
+        <Header>
+          <HeaderHome onChangeHandler={handleOnChangeText} />
+        </Header>
         {isLoading ? (
           <Loading />
         ) : (
           <>
             <List>
-              {fundList.map((fund) => (
+              {filteredFundList.map((fund) => (
                 <FundCard fund={fund} key={fund.razaoSocial} />
               ))}
             </List>
