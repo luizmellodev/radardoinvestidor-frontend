@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
@@ -8,6 +8,8 @@ import SearchBar from 'components/SearchBar';
 import HeaderHome from 'components/HeaderHome';
 import FundCard from 'components/FundCard';
 import Loading from 'components/Loading';
+
+import {SelectedFundsContext} from 'contexts/SelectedFunds';
 
 export const Container = styled.div`
   height: 100%;
@@ -30,6 +32,7 @@ export const Footer = styled.footer`
 
 export default function Home() {
   const router = useRouter();
+  const {} = useContext(SelectedFundsContext);
 
   const handleCompareButtonClick = () => {
     router.push('/comparacao');
@@ -57,21 +60,21 @@ export default function Home() {
       cotistas: '+ 50 mil',
     },
     {
-      razaoSocial: 'Warren tec 3',
+      razaoSocial: 'Warren tec 4',
       cnpj: '29.577.652/0001-75',
       classe: 'Renda Variável',
       patrimonioLiquido: '+ R$ 100 mi',
       cotistas: '+ 50 mil',
     },
     {
-      razaoSocial: 'Warren tec 3',
+      razaoSocial: 'Warren tec 5',
       cnpj: '29.577.652/0001-75',
       classe: 'Renda Variável',
       patrimonioLiquido: '+ R$ 100 mi',
       cotistas: '+ 50 mil',
     },
     {
-      razaoSocial: 'Warren tec 3',
+      razaoSocial: 'Warren tec 6',
       cnpj: '29.577.652/0001-75',
       classe: 'Renda Variável',
       patrimonioLiquido: '+ R$ 100 mi',
