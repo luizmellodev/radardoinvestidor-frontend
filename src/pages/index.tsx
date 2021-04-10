@@ -32,7 +32,7 @@ export const Footer = styled.footer`
 
 export default function Home() {
   const router = useRouter();
-  const {} = useContext(SelectedFundsContext);
+  const { selectedFunds } = useContext(SelectedFundsContext);
 
   const handleCompareButtonClick = () => {
     router.push('/comparacao');
@@ -118,9 +118,15 @@ export default function Home() {
         ) : (
           <>
             <List>
-              {filteredFundList.map((fund) => (
-                <FundCard fund={fund} key={fund.razaoSocial} />
-              ))}
+              {selectedFunds.length ? (
+                selectedFunds.map((fund) => (
+                  <FundCard fund={fund} key={fund.razaoSocial} />
+                ))
+              ) : (
+                filteredFundList.map((fund) => (
+                  <FundCard fund={fund} key={fund.razaoSocial} />
+                ))
+              )}
             </List>
             <Footer>
               <SubmitButton onClick={handleCompareButtonClick}>
