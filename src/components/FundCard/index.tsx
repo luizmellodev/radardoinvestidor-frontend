@@ -1,27 +1,30 @@
-import { ReactNode, useState } from 'react';
+import { useState, useContext } from 'react';
 
 import { MdAddCircle, MdAddCircleOutline } from 'react-icons/md';
 
 import { Container, Content, FundTitle, Info, Row, Selected } from './styles';
 
 import IFund from 'interfaces/IFund';
+import { FundsContext } from 'contexts/Funds';
 
 interface FundCardProps {
   fund: IFund;
 }
 
 function FundCard({ fund }: FundCardProps) {
-  const [selected, setSelected] = useState(false);
-  function handleSelect() {
-    setSelected(!selected);
+  const { updateSelectedFund } = useContext(FundsContext);
+
+  function handleSelect(fund: IFund) {
+    updateSelectedFund(fund.razaoSocial);
   }
+
   return (
     <Container>
       <Content>
         <Row marginBottom="12px">
           <FundTitle>{fund.razaoSocial}</FundTitle>
-          <Selected onClick={handleSelect}>
-            {selected ? (
+          <Selected onClick={() => handleSelect(fund)}>
+            {fund.selected ? (
               <>
                 <span>Selecionado</span>
                 <MdAddCircle size={20} className="iconSelected" />
