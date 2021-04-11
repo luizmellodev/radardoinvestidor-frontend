@@ -9,7 +9,7 @@ import HeaderHome from 'components/HeaderHome';
 import FundCard from 'components/FundCard';
 import Loading from 'components/Loading';
 
-import {SelectedFundsContext} from 'contexts/SelectedFunds';
+import {FundsContext} from 'contexts/Funds';
 
 export const Container = styled.div`
   height: 100%;
@@ -32,71 +32,17 @@ export const Footer = styled.footer`
 
 export default function Home() {
   const router = useRouter();
-  const { selectedFunds } = useContext(SelectedFundsContext);
+  const { funds, filterFundByName, selectedFunds } = useContext(FundsContext);
+
+  const [searchText, setSearchText] = useState('');
 
   const handleCompareButtonClick = () => {
     router.push('/comparacao');
   };
-  const fundList = [
-    {
-      razaoSocial: 'Warren tec',
-      cnpj: '29.577.652/0001-75',
-      classe: 'Renda Variável',
-      patrimonioLiquido: '+ R$ 100 mi',
-      cotistas: '+ 50 mil',
-    },
-    {
-      razaoSocial: 'Warren tec 2',
-      cnpj: '29.577.652/0001-75',
-      classe: 'Renda Variável',
-      patrimonioLiquido: '+ R$ 100 mi',
-      cotistas: '+ 50 mil',
-    },
-    {
-      razaoSocial: 'Warren tec 3',
-      cnpj: '29.577.652/0001-75',
-      classe: 'Renda Variável',
-      patrimonioLiquido: '+ R$ 100 mi',
-      cotistas: '+ 50 mil',
-    },
-    {
-      razaoSocial: 'Warren tec 4',
-      cnpj: '29.577.652/0001-75',
-      classe: 'Renda Variável',
-      patrimonioLiquido: '+ R$ 100 mi',
-      cotistas: '+ 50 mil',
-    },
-    {
-      razaoSocial: 'Warren tec 5',
-      cnpj: '29.577.652/0001-75',
-      classe: 'Renda Variável',
-      patrimonioLiquido: '+ R$ 100 mi',
-      cotistas: '+ 50 mil',
-    },
-    {
-      razaoSocial: 'Warren tec 6',
-      cnpj: '29.577.652/0001-75',
-      classe: 'Renda Variável',
-      patrimonioLiquido: '+ R$ 100 mi',
-      cotistas: '+ 50 mil',
-    },
-  ];
-
-  let filteredFundList: {
-    razaoSocial: string;
-    cnpj: string;
-    classe: string;
-    patrimonioLiquido: string;
-    cotistas: string;
-  }[] = fundList;
 
   const handleOnChangeText = async (searchText: string) => {
-    filteredFundList = fundList.filter((fundo) => {
-      if (fundo.razaoSocial.toLowerCase().includes(searchText)) {
-        return true;
-      }
-    });
-    console.log(filteredFundList);
+    setSearchText(searchText);
+    filterFundByName(searchText);
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -118,12 +64,12 @@ export default function Home() {
         ) : (
           <>
             <List>
-              {selectedFunds.length ? (
+              {selectedFunds.length && !searchText ? (
                 selectedFunds.map((fund) => (
                   <FundCard fund={fund} key={fund.razaoSocial} />
                 ))
               ) : (
-                filteredFundList.map((fund) => (
+                funds.map((fund) => (
                   <FundCard fund={fund} key={fund.razaoSocial} />
                 ))
               )}

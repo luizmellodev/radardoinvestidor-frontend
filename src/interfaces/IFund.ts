@@ -4,4 +4,6 @@ export default interface IFund {
   classe: string;
   patrimonioLiquido: string;
   cotistas: string;
+  selected: boolean;
+  hidden: boolean;
 }

@@ -5,25 +5,17 @@ import { MdAddCircle, MdAddCircleOutline } from 'react-icons/md';
 import { Container, Content, FundTitle, Info, Row, Selected } from './styles';
 
 import IFund from 'interfaces/IFund';
-import { SelectedFundsContext } from 'contexts/SelectedFunds';
+import { FundsContext } from 'contexts/Funds';
 
 interface FundCardProps {
   fund: IFund;
 }
 
 function FundCard({ fund }: FundCardProps) {
-  const { addSelectedFund, removeSelectedFund } = useContext(SelectedFundsContext);
-
-  const [selected, setSelected] = useState(false);
+  const { updateSelectedFund } = useContext(FundsContext);
 
   function handleSelect(fund: IFund) {
-    if (!selected) {
-      addSelectedFund(fund)
-    } else {
-      removeSelectedFund(fund.razaoSocial)
-    }
-
-    setSelected(!selected);
+    updateSelectedFund(fund.razaoSocial);
   }
 
   return (
@@ -32,7 +24,7 @@ function FundCard({ fund }: FundCardProps) {
         <Row marginBottom="12px">
           <FundTitle>{fund.razaoSocial}</FundTitle>
           <Selected onClick={() => handleSelect(fund)}>
-            {selected ? (
+            {fund.selected ? (
               <>
                 <span>Selecionado</span>
                 <MdAddCircle size={20} className="iconSelected" />

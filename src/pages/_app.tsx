@@ -5,7 +5,7 @@ import GlobalStyles from 'styles/global';
 import theme from 'styles/theme';
 import SplashScreen from '../components/Splash';
 
-import { SelectedFundsProvider } from 'contexts/SelectedFunds';
+import { FundsProvider } from 'contexts/Funds';
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -21,12 +21,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <SelectedFundsProvider>
+      <FundsProvider>
         {isLoading ? (
             <SplashScreen/>
           ) :
         <Component {...pageProps} />}
-      </SelectedFundsProvider>
+      </FundsProvider>
     </ThemeProvider>
   );
 }
