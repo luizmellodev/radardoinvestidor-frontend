@@ -4,12 +4,11 @@ import { useRouter } from 'next/router';
 
 import SubmitButton from 'components/SubmitButton';
 import Screen from 'components/Screen';
-import SearchBar from 'components/SearchBar';
 import HeaderHome from 'components/HeaderHome';
 import FundCard from 'components/FundCard';
 import Loading from 'components/Loading';
 
-import {FundsContext} from 'contexts/Funds';
+import { FundsContext } from 'contexts/Funds';
 
 export const Container = styled.div`
   height: 100%;
@@ -64,15 +63,13 @@ export default function Home() {
         ) : (
           <>
             <List>
-              {selectedFunds.length && !searchText ? (
-                selectedFunds.map((fund) => (
-                  <FundCard fund={fund} key={fund.razaoSocial} />
-                ))
-              ) : (
-                funds.map((fund) => (
-                  <FundCard fund={fund} key={fund.razaoSocial} />
-                ))
-              )}
+              {selectedFunds.length && !searchText
+                ? selectedFunds.map((fund) => (
+                    <FundCard fund={fund} key={fund.razaoSocial} />
+                  ))
+                : funds.map((fund) => (
+                    <FundCard fund={fund} key={fund.razaoSocial} />
+                  ))}
             </List>
             <Footer>
               <SubmitButton onClick={handleCompareButtonClick}>

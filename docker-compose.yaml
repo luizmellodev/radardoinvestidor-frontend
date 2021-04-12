@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: warren-frontend
+    volumes:
+      - .:/app
+    ports:
+    - 3000:3000
+    command: >
+      "npm run start"
