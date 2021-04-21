@@ -64,7 +64,7 @@ export const Info = styled.div<InfoProps>`
     font-weight: normal;
     font-size: 16px;
     line-height: 24px;
-    color: ${(props) => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.textDescription};
   }
 
   span {
@@ -73,6 +73,6 @@ export const Info = styled.div<InfoProps>`
     font-weight: normal;
     font-size: 20px;
     line-height: 28px;
-    color: ${(props) => props.theme.colors.textDescription};
+    color: ${(props) => props.theme.colors.text};
   }
 `;
