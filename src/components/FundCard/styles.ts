@@ -60,15 +60,19 @@ export const Info = styled.div<InfoProps>`
 
   p {
     font-family: Source Sans Pro;
-    font-size: 20px;
-    line-height: 28px;
-    color: ${(props) => props.theme.colors.text};
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: ${(props) => props.theme.colors.textDescription};
   }
 
   span {
     font-family: Source Sans Pro;
-    font-size: 16px;
-    line-height: 24px;
-    color: ${(props) => props.theme.colors.textDescription};
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+    color: ${(props) => props.theme.colors.text};
   }
 `;
