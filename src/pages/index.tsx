@@ -8,8 +8,10 @@ import SearchBar from 'components/SearchBar';
 import HeaderHome from 'components/HeaderHome';
 import FundCard from 'components/FundCard';
 import Loading from 'components/Loading';
+import Tabs from 'components/Tabs';
+import Tab from 'components/Tabs/Tab';
 
-import {FundsContext} from 'contexts/Funds';
+import { FundsContext } from 'contexts/Funds';
 
 export const Container = styled.div`
   height: 100%;
@@ -59,20 +61,24 @@ export default function Home() {
         <Header>
           <HeaderHome onChangeHandler={handleOnChangeText} />
         </Header>
+
+        <Tabs>
+          <Tab title="Encontrados">Lista de encontrados</Tab>
+          <Tab title="Selecionados">Lista de selecionados</Tab>
+        </Tabs>
+
         {isLoading ? (
           <Loading />
         ) : (
           <>
             <List>
-              {selectedFunds.length && !searchText ? (
-                selectedFunds.map((fund) => (
-                  <FundCard fund={fund} key={fund.razaoSocial} />
-                ))
-              ) : (
-                funds.map((fund) => (
-                  <FundCard fund={fund} key={fund.razaoSocial} />
-                ))
-              )}
+              {selectedFunds.length && !searchText
+                ? selectedFunds.map((fund) => (
+                    <FundCard fund={fund} key={fund.razaoSocial} />
+                  ))
+                : funds.map((fund) => (
+                    <FundCard fund={fund} key={fund.razaoSocial} />
+                  ))}
             </List>
             <Footer>
               <SubmitButton onClick={handleCompareButtonClick}>
