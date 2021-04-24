@@ -1,4 +1,5 @@
 import React, { ReactNode, useCallback } from 'react';
+import { Container } from './styles';
 
 interface TabTitleProps {
   index: number;
@@ -12,9 +13,9 @@ function TabTitle({ index, title, setSelectedTab }: TabTitleProps) {
   }, [setSelectedTab, index]);
 
   return (
-    <li>
+    <Container>
       <button onClick={handleClickTab}>{title}</button>
-    </li>
+    </Container>
   );
 }
 
