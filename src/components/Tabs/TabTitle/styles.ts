@@ -1,7 +1,17 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
-export const Container = styled.li`
+interface ContainerProps {
+  isActive: boolean;
+}
+
+const isActiveStyle = css`
   border-bottom: 2px solid ${(props) => props.theme.colors.text};
+`;
+
+export const Container = styled.li<ContainerProps>`
+  border-bottom: 1px solid ${(props) => props.theme.colors.border};
+
+  ${(props) => props.isActive && isActiveStyle};
   flex: 1;
 
   button {

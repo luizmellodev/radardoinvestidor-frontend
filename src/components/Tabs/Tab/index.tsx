@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import {Container} from './styles';
 
 type TabProps = {
   children: ReactNode;
@@ -6,7 +7,7 @@ type TabProps = {
 };
 
 function Tab({ children }: TabProps) {
-  return <div>{children}</div>;
+  return <Container>{children}</Container>;
 }
 
 export default Tab;
