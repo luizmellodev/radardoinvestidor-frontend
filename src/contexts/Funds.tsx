@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from 'react';
 import IFund from 'interfaces/IFund';
 
 interface FundsContextValues {
-  funds: IFund[];
+  foundedFunds: IFund[];
   selectedFunds: IFund[];
   updateSelectedFund: (name: string) => void;
   filterFundByName: (searchText: string) => void;
@@ -92,6 +92,8 @@ export const FundsProvider: React.FC = ({ children }) => {
   }
 
   const selectedFunds = funds.filter((fund) => fund.selected);
+  const foundedFunds = funds.filter((fund) => !fund.selected);
+
 
   useEffect(() => {
     console.log('FUNDOS', funds)
@@ -99,7 +101,7 @@ export const FundsProvider: React.FC = ({ children }) => {
 
   return (
     <FundsContext.Provider value={{
-      funds,
+      foundedFunds,
       updateSelectedFund,
       filterFundByName,
       selectedFunds
