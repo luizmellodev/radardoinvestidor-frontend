@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 
 import TabTitle from './TabTitle';
-import { Container, TabList } from './styles';
+import { Container, TabsHeader } from './styles';
 
 type TabsProps = {
   children: ReactElement[];
@@ -12,7 +12,7 @@ function Tabs({ children }: TabsProps) {
 
   return (
     <Container>
-      <TabList>
+      <TabsHeader>
         {children.map((tab, index) => (
           <TabTitle
             key={index}
@@ -22,7 +22,7 @@ function Tabs({ children }: TabsProps) {
             setSelectedTab={setSelectedTab}
           />
         ))}
-      </TabList>
+      </TabsHeader>
       {children[selectedTab]}
     </Container>
   );

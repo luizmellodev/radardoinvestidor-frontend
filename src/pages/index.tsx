@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 
 import SubmitButton from 'components/SubmitButton';
 import Screen from 'components/Screen';
-import SearchBar from 'components/SearchBar';
 import HeaderHome from 'components/HeaderHome';
 import FundCard from 'components/FundCard';
 import Loading from 'components/Loading';
@@ -33,16 +32,15 @@ export const Footer = styled.footer`
 
 export default function Home() {
   const router = useRouter();
-  const { foundedFunds, filterFundByName, selectedFunds } = useContext(FundsContext);
-
-  const [searchText, setSearchText] = useState('');
+  const { foundedFunds, filterFundByName, selectedFunds } = useContext(
+    FundsContext
+  );
 
   const handleCompareButtonClick = () => {
     router.push('/comparacao');
   };
 
   const handleOnChangeText = async (searchText: string) => {
-    setSearchText(searchText);
     filterFundByName(searchText);
   };
 
@@ -68,18 +66,20 @@ export default function Home() {
             ) : (
               <List>
                 {foundedFunds.map((fund) => (
-                      <FundCard fund={fund} key={fund.razaoSocial} />
-                    ))}
+                  <FundCard fund={fund} key={fund.razaoSocial} />
+                ))}
               </List>
             )}
           </Tab>
           <Tab title="Selecionados">
             <List>
-              {selectedFunds.length
-                ? selectedFunds.map((fund) => (
-                    <FundCard fund={fund} key={fund.razaoSocial} />
-                  ))
-                : <p>Nenhum Fundo Selecionado</p>}
+              {selectedFunds.length ? (
+                selectedFunds.map((fund) => (
+                  <FundCard fund={fund} key={fund.razaoSocial} />
+                ))
+              ) : (
+                <p>Nenhum Fundo Selecionado</p>
+              )}
             </List>
           </Tab>
         </Tabs>

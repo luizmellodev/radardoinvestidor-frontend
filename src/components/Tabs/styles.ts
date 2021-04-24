@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  min-height: 42px;
+  display: flex;
+  flex-direction: column;
   flex: 1;
-  background-color: red;
 `;
 
-export const TabList = styled.ul`
+export const TabsHeader = styled.ul`
   display: flex;
   list-style: none;
 `;
