@@ -7,6 +7,8 @@ import Screen from 'components/Screen';
 import HeaderHome from 'components/HeaderHome';
 import FundCard from 'components/FundCard';
 import Loading from 'components/Loading';
+import Tabs from 'components/Tabs';
+import Tab from 'components/Tabs/Tab';
 
 import { FundsContext } from 'contexts/Funds';
 
@@ -21,8 +23,7 @@ export const Header = styled.header`
 `;
 
 export const List = styled.div`
-  flex: 1;
-  overflow-y: auto;
+  margin-top: 32px;
 `;
 
 export const Footer = styled.footer`
@@ -31,16 +32,15 @@ export const Footer = styled.footer`
 
 export default function Home() {
   const router = useRouter();
-  const { funds, filterFundByName, selectedFunds } = useContext(FundsContext);
-
-  const [searchText, setSearchText] = useState('');
+  const { foundedFunds, filterFundByName, selectedFunds } = useContext(
+    FundsContext
+  );
 
   const handleCompareButtonClick = () => {
     router.push('/comparacao');
   };
 
   const handleOnChangeText = async (searchText: string) => {
-    setSearchText(searchText);
     filterFundByName(searchText);
   };
 
@@ -58,26 +58,37 @@ export default function Home() {
         <Header>
           <HeaderHome onChangeHandler={handleOnChangeText} />
         </Header>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <>
+
+        <Tabs>
+          <Tab title="Encontrados">
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <List>
+                {foundedFunds.map((fund) => (
+                  <FundCard fund={fund} key={fund.razaoSocial} />
+                ))}
+              </List>
+            )}
+          </Tab>
+          <Tab title="Selecionados">
             <List>
-              {selectedFunds.length && !searchText
-                ? selectedFunds.map((fund) => (
-                    <FundCard fund={fund} key={fund.razaoSocial} />
-                  ))
-                : funds.map((fund) => (
-                    <FundCard fund={fund} key={fund.razaoSocial} />
-                  ))}
+              {selectedFunds.length ? (
+                selectedFunds.map((fund) => (
+                  <FundCard fund={fund} key={fund.razaoSocial} />
+                ))
+              ) : (
+                <p>Nenhum Fundo Selecionado</p>
+              )}
             </List>
-            <Footer>
-              <SubmitButton onClick={handleCompareButtonClick}>
-                Comparar Fundos
-              </SubmitButton>
-            </Footer>
-          </>
-        )}
+          </Tab>
+        </Tabs>
+
+        <Footer>
+          <SubmitButton onClick={handleCompareButtonClick}>
+            Comparar Fundos
+          </SubmitButton>
+        </Footer>
       </Container>
     </Screen>
   );
