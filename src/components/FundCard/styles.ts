@@ -32,7 +32,7 @@ export const FundTitle = styled.strong`
   line-height: 28px;
 `;
 
-export const Selected = styled.button`
+export const IconButton = styled.button`
   background-color: transparent;
   border: 0;
   display: flex;

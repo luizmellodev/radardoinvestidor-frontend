@@ -1,21 +1,31 @@
 import { useContext } from 'react';
 
-import { MdAddCircle, MdAddCircleOutline } from 'react-icons/md';
+import {
+  MdVisibility,
+  MdVisibilityOff,
+  MdAddCircle,
+  MdAddCircleOutline,
+} from 'react-icons/md';
 
-import { Container, Content, FundTitle, Info, Row, Selected } from './styles';
+import { Container, Content, FundTitle, Info, Row, IconButton } from './styles';
 
 import IFund from 'interfaces/IFund';
 import { FundsContext } from 'contexts/Funds';
 
 interface FundCardProps {
   fund: IFund;
+  isComparison?: boolean;
 }
 
-function FundCard({ fund }: FundCardProps) {
-  const { updateSelectedFund } = useContext(FundsContext);
+function FundCard({ fund, isComparison }: FundCardProps) {
+  const { updateSelectedFund, updateHiddenFund } = useContext(FundsContext);
 
   function handleSelect(fund: IFund) {
     updateSelectedFund(fund.razaoSocial);
+  }
+
+  function handleHidden(fund: IFund) {
+    updateHiddenFund(fund.razaoSocial);
   }
 
   return (
@@ -23,7 +33,7 @@ function FundCard({ fund }: FundCardProps) {
       <Content>
         <Row marginBottom="12px">
           <FundTitle>{fund.razaoSocial}</FundTitle>
-          <Selected onClick={() => handleSelect(fund)}>
+          <IconButton onClick={() => handleSelect(fund)}>
             {fund.selected ? (
               <>
                 <span>Selecionado</span>
@@ -32,7 +42,16 @@ function FundCard({ fund }: FundCardProps) {
             ) : (
               <MdAddCircleOutline size={20} className="iconNotSelected" />
             )}
-          </Selected>
+          </IconButton>
+          {isComparison && (
+            <IconButton onClick={() => handleHidden(fund)}>
+              {fund.hidden ? (
+                <MdVisibilityOff size={24} className="iconNotSelected" />
+              ) : (
+                <MdVisibility size={24} className="iconNotSelected" />
+              )}
+            </IconButton>
+          )}
         </Row>
         <Row marginBottom="4px">
           <Info>
@@ -55,6 +74,7 @@ function FundCard({ fund }: FundCardProps) {
           </Info>
         </Row>
       </Content>
+      {isComparison && <button>Detalhes</button>}
     </Container>
   );
 }
