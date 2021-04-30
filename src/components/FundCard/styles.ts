@@ -1,7 +1,16 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+const isHiddenStyle = css`
+  color: ${(props) => props.theme.colors.disabled};
+  text-decoration: line-through;
+`;
 
 interface InfoProps {
   alignRight?: boolean;
+}
+
+interface FundTitleProps {
+  isHidden: boolean;
 }
 
 interface RowProps {
@@ -26,10 +35,15 @@ export const Row = styled.div<RowProps>`
   align-items: center;
 `;
 
-export const FundTitle = styled.strong`
+export const FundTitle = styled.strong<FundTitleProps>`
   font-family: Montserrat;
   font-size: 20px;
   line-height: 28px;
+  ${(props) => props.isHidden && isHiddenStyle};
+`;
+
+export const Actions = styled.div`
+  display: flex;
 `;
 
 export const IconButton = styled.button`
@@ -37,22 +51,15 @@ export const IconButton = styled.button`
   border: 0;
   display: flex;
   align-items: center;
+  margin-left: 12px;
 
-  span {
-    font-family: Source Sans Pro;
-    font-size: 16px;
-    line-height: 24px;
-    color: ${(props) => props.theme.colors.textDescription};
-  }
-
-  svg.iconSelected {
-    color: ${(props) => props.theme.colors.iconSelected};
-    margin-left: 12px;
-  }
-
-  svg.iconNotSelected {
+  svg {
     color: ${(props) => props.theme.colors.text};
   }
+`;
+
+export const FundFooter = styled.div`
+  margin-top: 12px;
 `;
 
 export const Info = styled.div<InfoProps>`

@@ -5,12 +5,23 @@ import {
   MdVisibilityOff,
   MdAddCircle,
   MdAddCircleOutline,
+  MdDelete,
 } from 'react-icons/md';
 
-import { Container, Content, FundTitle, Info, Row, IconButton } from './styles';
+import {
+  Container,
+  Content,
+  FundTitle,
+  Info,
+  Row,
+  IconButton,
+  Actions,
+  FundFooter,
+} from './styles';
 
 import IFund from 'interfaces/IFund';
 import { FundsContext } from 'contexts/Funds';
+import Button from 'components/Button';
 
 interface FundCardProps {
   fund: IFund;
@@ -32,26 +43,25 @@ function FundCard({ fund, isComparison }: FundCardProps) {
     <Container>
       <Content>
         <Row marginBottom="12px">
-          <FundTitle>{fund.razaoSocial}</FundTitle>
-          <IconButton onClick={() => handleSelect(fund)}>
-            {fund.selected ? (
-              <>
-                <span>Selecionado</span>
-                <MdAddCircle size={20} className="iconSelected" />
-              </>
-            ) : (
-              <MdAddCircleOutline size={20} className="iconNotSelected" />
+          <FundTitle isHidden={fund.hidden}>{fund.razaoSocial}</FundTitle>
+          <Actions>
+            {isComparison && (
+              <IconButton onClick={() => handleHidden(fund)}>
+                {fund.hidden ? (
+                  <MdVisibilityOff size={24} />
+                ) : (
+                  <MdVisibility size={24} />
+                )}
+              </IconButton>
             )}
-          </IconButton>
-          {isComparison && (
-            <IconButton onClick={() => handleHidden(fund)}>
-              {fund.hidden ? (
-                <MdVisibilityOff size={24} className="iconNotSelected" />
+            <IconButton onClick={() => handleSelect(fund)}>
+              {fund.selected ? (
+                <MdDelete size={24}></MdDelete>
               ) : (
-                <MdVisibility size={24} className="iconNotSelected" />
+                <MdAddCircleOutline size={24} />
               )}
             </IconButton>
-          )}
+          </Actions>
         </Row>
         <Row marginBottom="4px">
           <Info>
@@ -73,8 +83,12 @@ function FundCard({ fund, isComparison }: FundCardProps) {
             <span>{fund.cotistas}</span>
           </Info>
         </Row>
+        {isComparison && (
+          <FundFooter>
+            <Button>Detalhes</Button>
+          </FundFooter>
+        )}
       </Content>
-      {isComparison && <button>Detalhes</button>}
     </Container>
   );
 }
