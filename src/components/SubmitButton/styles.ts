@@ -18,4 +18,8 @@ export const Container = styled.button`
   justify-content: center;
   text-transform: uppercase;
   color: #fff;
+
+  :disabled {
+    background: #c9cad4;
+  }
 `;
