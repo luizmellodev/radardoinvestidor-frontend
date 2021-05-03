@@ -55,7 +55,7 @@ export default function Home() {
             ) : (
               <List>
                 {foundedFunds.map((fund) => (
-                  <FundCard fund={fund} key={fund.razaoSocial} />
+                  <FundCard isComparison fund={fund} key={fund.razaoSocial} />
                 ))}
               </List>
             )}

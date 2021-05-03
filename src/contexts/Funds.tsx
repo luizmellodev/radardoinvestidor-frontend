@@ -6,6 +6,7 @@ interface FundsContextValues {
   foundedFunds: IFund[];
   selectedFunds: IFund[];
   updateSelectedFund: (name: string) => void;
+  updateHiddenFund: (name: string) => void;
   filterFundByName: (searchText: string) => void;
 }
 
@@ -66,7 +67,6 @@ const fundList = [
   },
 ];
 
-
 export const FundsContext = createContext({} as FundsContextValues);
 
 export const FundsProvider: React.FC = ({ children }) => {
@@ -74,39 +74,54 @@ export const FundsProvider: React.FC = ({ children }) => {
 
   const filterFundByName = (searchText: string) => {
     const searchTextToLowerCase = searchText.toLocaleLowerCase();
-    const filteredFundList = fundList.filter((fund) => fund.razaoSocial.toLowerCase().includes(searchTextToLowerCase));
+    const filteredFundList = fundList.filter((fund) =>
+      fund.razaoSocial.toLowerCase().includes(searchTextToLowerCase)
+    );
 
     setFunds(filteredFundList);
-  }
+  };
 
   const updateSelectedFund = (name: string) => {
     const fundIndex = funds.findIndex((fund) => fund.razaoSocial === name);
     const fundToUpdate = funds[fundIndex];
 
-    fundToUpdate.selected = !fundToUpdate.selected
+    fundToUpdate.selected = !fundToUpdate.selected;
 
     const newFunds = [...funds];
     newFunds[fundIndex] = fundToUpdate;
 
     setFunds(newFunds);
-  }
+  };
+  const updateHiddenFund = (name: string) => {
+    const fundIndex = funds.findIndex((fund) => fund.razaoSocial === name);
+    const fundToUpdate = funds[fundIndex];
+
+    fundToUpdate.hidden = !fundToUpdate.hidden;
+
+    const newFunds = [...funds];
+    newFunds[fundIndex] = fundToUpdate;
+
+    setFunds(newFunds);
+  };
 
   const selectedFunds = funds.filter((fund) => fund.selected);
   const foundedFunds = funds.filter((fund) => !fund.selected);
 
-
   useEffect(() => {
-    console.log('FUNDOS', funds)
-  }, [funds])
+    console.log('FUNDOS', funds);
+  }, [funds]);
 
   return (
-    <FundsContext.Provider value={{
-      foundedFunds,
-      updateSelectedFund,
-      filterFundByName,
-      selectedFunds
-    }}>
+    <FundsContext.Provider
+      value={{
+        foundedFunds,
+        updateSelectedFund,
+        filterFundByName,
+        selectedFunds,
+        updateHiddenFund,
+      }}
+    >
       {children}
     </FundsContext.Provider>
-  )
-}
+  );
+};
