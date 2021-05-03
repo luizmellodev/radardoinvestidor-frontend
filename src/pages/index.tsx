@@ -85,7 +85,10 @@ export default function Home() {
         </Tabs>
 
         <Footer>
-          <SubmitButton onClick={handleCompareButtonClick}>
+          <SubmitButton
+            isDisable={!selectedFunds.length}
+            onClick={handleCompareButtonClick}
+          >
             Comparar Fundos
           </SubmitButton>
         </Footer>
