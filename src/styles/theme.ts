@@ -6,7 +6,8 @@ const theme = {
     primary: '#e02b57',
     iconSelected: '#00B563',
     border: '#EBECF3',
-    outline: '#FF9001'
+    outline: '#FF9001',
+    disabled: '#C9CAD4',
   },
 };
 
