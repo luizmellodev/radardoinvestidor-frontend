@@ -5,7 +5,7 @@ import IFund from 'interfaces/IFund';
 interface FundsContextValues {
   foundedFunds: IFund[];
   selectedFunds: IFund[];
-  updateSelectedFund: (name: string) => void;
+  updateSelectedFund: (name: string, selected: boolean) => void;
   updateHiddenFund: (name: string) => void;
   filterFundByName: (searchText: string) => void;
 }
@@ -70,7 +70,8 @@ const fundList = [
 export const FundsContext = createContext({} as FundsContextValues);
 
 export const FundsProvider: React.FC = ({ children }) => {
-  const [funds, setFunds] = useState(fundList);
+  const [foundedFunds, setFoundedFunds] = useState(fundList);
+  const [selectedFunds, setSelectedFunds] = useState([] as IFund[]);
 
   const filterFundByName = (searchText: string) => {
     const searchTextToLowerCase = searchText.toLocaleLowerCase();
@@ -78,38 +79,36 @@ export const FundsProvider: React.FC = ({ children }) => {
       fund.razaoSocial.toLowerCase().includes(searchTextToLowerCase)
     );
 
-    setFunds(filteredFundList);
+    setFoundedFunds(filteredFundList);
   };
 
-  const updateSelectedFund = (name: string) => {
-    const fundIndex = funds.findIndex((fund) => fund.razaoSocial === name);
-    const fundToUpdate = funds[fundIndex];
+  const updateSelectedFund = (name: string, selected: boolean) => {
+    const fundList = selected ? selectedFunds : foundedFunds;
+    const fundIndex = fundList.findIndex((fund) => fund.razaoSocial === name);
+
+    const fundToUpdate = fundList[fundIndex];
 
     fundToUpdate.selected = !fundToUpdate.selected;
 
-    const newFunds = [...funds];
-    newFunds[fundIndex] = fundToUpdate;
+    const newSelectedFunds = foundedFunds.filter((fund) => fund.selected);
+    const newFoundedFunds = foundedFunds.filter((fund) => !fund.selected);
 
-    setFunds(newFunds);
+    setSelectedFunds(newSelectedFunds);
+    setFoundedFunds(newFoundedFunds);
   };
   const updateHiddenFund = (name: string) => {
-    const fundIndex = funds.findIndex((fund) => fund.razaoSocial === name);
-    const fundToUpdate = funds[fundIndex];
+    const fundIndex = selectedFunds.findIndex(
+      (fund) => fund.razaoSocial === name
+    );
+    const fundToUpdate = selectedFunds[fundIndex];
 
     fundToUpdate.hidden = !fundToUpdate.hidden;
 
-    const newFunds = [...funds];
+    const newFunds = [...selectedFunds];
     newFunds[fundIndex] = fundToUpdate;
 
-    setFunds(newFunds);
+    setSelectedFunds(newFunds);
   };
-
-  const selectedFunds = funds.filter((fund) => fund.selected);
-  const foundedFunds = funds.filter((fund) => !fund.selected);
-
-  useEffect(() => {
-    console.log('FUNDOS', funds);
-  }, [funds]);
 
   return (
     <FundsContext.Provider
