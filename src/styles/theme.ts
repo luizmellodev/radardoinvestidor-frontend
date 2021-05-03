@@ -8,6 +8,7 @@ const theme = {
     border: '#EBECF3',
     outline: '#FF9001',
     disabled: '#C9CAD4',
+    textDisabled: '#9599A6',
   },
 };
 

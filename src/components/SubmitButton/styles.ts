@@ -20,6 +20,7 @@ export const Container = styled.button`
   color: #fff;
 
   :disabled {
-    background: #c9cad4;
+    background: ${(props) => props.theme.colors.disabled};
+    color: ${(props) => props.theme.colors.textDisabled};
   }
 `;
