@@ -34,8 +34,9 @@ export default function Home() {
   const handleOnChangeText = async (searchText: string) => {
     filterFundByName(searchText);
   };
-  const tabSelectedFunds: string =
-    (('Selecionados (' + (selectedFunds.length as any)) as string) + ')';
+  const tabSelectedFunds = `Selecionados ${
+    selectedFunds.length ? `(${selectedFunds.length}) ` : ''
+  }`;
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => {
@@ -60,21 +61,19 @@ export default function Home() {
               </List>
             )}
           </Tab>
-          {selectedFunds.length ? (
-            <Tab title={tabSelectedFunds}>
+          <Tab title={tabSelectedFunds}>
+            {selectedFunds.length ? (
               <List>
                 {selectedFunds.map((fund) => (
                   <FundCard fund={fund} key={fund.razaoSocial} />
                 ))}
               </List>
-            </Tab>
-          ) : (
-            <Tab title="Selecionados">
+            ) : (
               <List>
                 <p>Nenhum Fundo Selecionado</p>
               </List>
-            </Tab>
-          )}
+            )}
+          </Tab>
         </Tabs>
         <Footer>
           <SubmitButton
