@@ -1,13 +1,12 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState } from 'react';
 
 import IFund from 'interfaces/IFund';
 
 interface FundsContextValues {
-  foundedFunds: IFund[];
   selectedFunds: IFund[];
+  filteredFunds: (searchText: string) => IFund[];
   updateSelectedFund: (name: string) => void;
   updateHiddenFund: (name: string) => void;
-  filterFundByName: (searchText: string) => void;
 }
 
 const fundList = [
@@ -72,13 +71,18 @@ export const FundsContext = createContext({} as FundsContextValues);
 export const FundsProvider: React.FC = ({ children }) => {
   const [funds, setFunds] = useState(fundList);
 
-  const filterFundByName = (searchText: string) => {
+  const selectedFunds = funds.filter((fund) => fund.selected);
+
+  const filteredFunds = (searchText: string) => {
     const searchTextToLowerCase = searchText.toLocaleLowerCase();
-    const filteredFundList = fundList.filter((fund) =>
-      fund.razaoSocial.toLowerCase().includes(searchTextToLowerCase)
+
+    const filteredFundList = funds.filter(
+      (fund) =>
+        fund.razaoSocial.toLowerCase().includes(searchTextToLowerCase) &&
+        !fund.selected
     );
 
-    setFunds(filteredFundList);
+    return filteredFundList;
   };
 
   const updateSelectedFund = (name: string) => {
@@ -92,6 +96,7 @@ export const FundsProvider: React.FC = ({ children }) => {
 
     setFunds(newFunds);
   };
+
   const updateHiddenFund = (name: string) => {
     const fundIndex = funds.findIndex((fund) => fund.razaoSocial === name);
     const fundToUpdate = funds[fundIndex];
@@ -104,20 +109,12 @@ export const FundsProvider: React.FC = ({ children }) => {
     setFunds(newFunds);
   };
 
-  const selectedFunds = funds.filter((fund) => fund.selected);
-  const foundedFunds = funds.filter((fund) => !fund.selected);
-
-  useEffect(() => {
-    console.log('FUNDOS', funds);
-  }, [funds]);
-
   return (
     <FundsContext.Provider
       value={{
-        foundedFunds,
-        updateSelectedFund,
-        filterFundByName,
         selectedFunds,
+        filteredFunds,
+        updateSelectedFund,
         updateHiddenFund,
       }}
     >
