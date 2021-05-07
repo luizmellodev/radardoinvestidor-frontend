@@ -9,40 +9,55 @@ import Loading from 'components/Loading';
 import Tabs from 'components/Tabs';
 import Tab from 'components/Tabs/Tab';
 import { FundsContext } from 'contexts/Funds';
+
 export const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
 `;
+
 export const Header = styled.header`
   padding-bottom: 40px;
 `;
+
 export const List = styled.div`
   margin-top: 32px;
 `;
+
 export const Footer = styled.footer`
   padding-top: 24px;
 `;
+
 export default function Home() {
   const router = useRouter();
-  const { foundedFunds, filterFundByName, selectedFunds } = useContext(
-    FundsContext
-  );
+  const {
+    selectedFunds,
+    updateSelectedFund,
+    filteredFunds,
+    updateHiddenFund,
+  } = useContext(FundsContext);
+
   const handleCompareButtonClick = () => {
     router.push('/comparacao');
   };
+
   const handleOnChangeText = async (searchText: string) => {
-    filterFundByName(searchText);
+    setSearchText(searchText);
   };
+
   const tabSelectedFunds = `Selecionados ${
     selectedFunds.length ? `(${selectedFunds.length}) ` : ''
   }`;
+
   const [isLoading, setIsLoading] = useState(true);
+  const [searchText, setSearchText] = useState('');
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 3000);
   }, []);
+
   return (
     <Screen>
       <Container>
@@ -55,7 +70,7 @@ export default function Home() {
               <Loading />
             ) : (
               <List>
-                {foundedFunds.map((fund) => (
+                {filteredFunds(searchText).map((fund) => (
                   <FundCard isComparison fund={fund} key={fund.razaoSocial} />
                 ))}
               </List>
