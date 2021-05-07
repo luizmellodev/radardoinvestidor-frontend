@@ -32,7 +32,7 @@ function FundCard({ fund, isComparison }: FundCardProps) {
   const { updateSelectedFund, updateHiddenFund } = useContext(FundsContext);
 
   function handleSelect(fund: IFund) {
-    updateSelectedFund(fund.razaoSocial, fund.selected);
+    updateSelectedFund(fund.razaoSocial);
   }
 
   function handleHidden(fund: IFund) {
