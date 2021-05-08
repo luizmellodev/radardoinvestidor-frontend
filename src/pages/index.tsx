@@ -31,13 +31,9 @@ export const Footer = styled.footer`
 
 export default function Home() {
   const router = useRouter();
-  const {
-    selectedFunds,
-    updateSelectedFund,
-    filteredFunds,
-    updateHiddenFund,
-    updateFundsList,
-  } = useContext(FundsContext);
+  const { selectedFunds, filteredFunds, updateFundsList } = useContext(
+    FundsContext
+  );
 
   const handleCompareButtonClick = () => {
     router.push('/comparacao');
@@ -60,7 +56,13 @@ export default function Home() {
     // }, 3000);
 
     const fetchFunds = async () => {
-      const { data } = await api.get('/pesquisa');
+      setIsLoading(true);
+
+      const { data } = await api.get('/pesquisa', {
+        params: {
+          s: searchText,
+        },
+      });
 
       updateFundsList(data);
       setIsLoading(false);
@@ -69,7 +71,7 @@ export default function Home() {
     };
 
     fetchFunds();
-  }, []);
+  }, [searchText]);
 
   return (
     <Screen>
@@ -83,8 +85,8 @@ export default function Home() {
               <Loading />
             ) : (
               <List>
-                {filteredFunds(searchText).map((fund) => (
-                  <FundCard isComparison fund={fund} key={fund.razaoSocial} />
+                {filteredFunds.map((fund) => (
+                  <FundCard isComparison fund={fund} key={fund.denom_social} />
                 ))}
               </List>
             )}
@@ -93,7 +95,7 @@ export default function Home() {
             {selectedFunds.length ? (
               <List>
                 {selectedFunds.map((fund) => (
-                  <FundCard fund={fund} key={fund.razaoSocial} />
+                  <FundCard fund={fund} key={fund.denom_social} />
                 ))}
               </List>
             ) : (

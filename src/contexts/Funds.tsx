@@ -4,7 +4,7 @@ import IFund from 'interfaces/IFund';
 
 interface FundsContextValues {
   selectedFunds: IFund[];
-  filteredFunds: (searchText: string) => IFund[];
+  filteredFunds: IFund[];
   updateFundsList: (fundsList: IFund[]) => void;
   updateSelectedFund: (name: string) => void;
   updateHiddenFund: (name: string) => void;
@@ -79,24 +79,11 @@ export const FundsProvider: React.FC = ({ children }) => {
       hidden: false,
     }));
 
-    console.log('COM ESTADO', fundsListWithState);
-
     setFunds(fundsListWithState);
   };
 
   const selectedFunds = funds.filter((fund) => fund.selected);
-
-  const filteredFunds = (searchText: string) => {
-    const searchTextToLowerCase = searchText.toLocaleLowerCase();
-
-    const filteredFundList = funds.filter(
-      (fund) =>
-        fund.denom_social.toLowerCase().includes(searchTextToLowerCase) &&
-        !fund.selected
-    );
-
-    return filteredFundList;
-  };
+  const filteredFunds = funds.filter((fund) => !fund.selected);
 
   const updateSelectedFund = (name: string) => {
     const fundIndex = funds.findIndex((fund) => fund.denom_social === name);
