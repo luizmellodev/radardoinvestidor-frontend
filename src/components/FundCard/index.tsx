@@ -24,26 +24,26 @@ import { FundsContext } from 'contexts/Funds';
 import Button from 'components/Button';
 
 interface FundCardProps {
-  fund: IFund;
+  fund: any;
   isComparison?: boolean;
 }
 
 function FundCard({ fund, isComparison }: FundCardProps) {
   const { updateSelectedFund, updateHiddenFund } = useContext(FundsContext);
 
-  function handleSelect(fund: IFund) {
-    updateSelectedFund(fund.razaoSocial);
+  function handleSelect(fund: any) {
+    updateSelectedFund(fund.denom_social);
   }
 
-  function handleHidden(fund: IFund) {
-    updateHiddenFund(fund.razaoSocial);
+  function handleHidden(fund: any) {
+    updateHiddenFund(fund.denom_social);
   }
 
   return (
     <Container>
       <Content>
         <Row marginBottom="12px">
-          <FundTitle isHidden={fund.hidden}>{fund.razaoSocial}</FundTitle>
+          <FundTitle isHidden={fund.hidden}>{fund.denom_social}</FundTitle>
           <Actions>
             {isComparison && (
               <IconButton onClick={() => handleHidden(fund)}>
@@ -66,7 +66,7 @@ function FundCard({ fund, isComparison }: FundCardProps) {
         <Row marginBottom="4px">
           <Info>
             <p>CNPJ</p>
-            <span>{fund.cnpj}</span>
+            <span>{fund.cnpj_auditor}</span>
           </Info>
           <Info alignRight>
             <p>Classe</p>
@@ -76,11 +76,11 @@ function FundCard({ fund, isComparison }: FundCardProps) {
         <Row>
           <Info>
             <p>Patrimônio Líquido</p>
-            <span>{fund.patrimonioLiquido}</span>
+            <span>{fund.vl_patrim_liq}</span>
           </Info>
           <Info alignRight>
             <p>Cotistas</p>
-            <span>{fund.cotistas}</span>
+            <span>{fund.tp_fundo}</span>
           </Info>
         </Row>
         {isComparison && (
