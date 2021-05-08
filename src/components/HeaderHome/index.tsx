@@ -8,10 +8,10 @@ interface HeaderHomeProps {
 function HeaderHome({ onChangeHandler }: HeaderHomeProps) {
   return (
     <Container>
-      <img src="/logo-home.png" style={{paddingBottom:"20px"}}/>
+      <img src="/logo-home.png" style={{ paddingBottom: '20px' }} />
       <SearchBar onChange={onChangeHandler} />
     </Container>
   );
-};
+}
 
 export default HeaderHome;

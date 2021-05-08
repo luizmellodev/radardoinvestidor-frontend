@@ -19,9 +19,14 @@ export const Header = styled.header`
 `;
 export const List = styled.div`
   margin-top: 32px;
+  padding-left: 24px;
+  padding-right: 24px;
 `;
 export const Footer = styled.footer`
   padding-top: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 32px;
 `;
 export default function Home() {
   const router = useRouter();
