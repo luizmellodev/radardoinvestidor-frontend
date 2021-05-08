@@ -1,18 +1,26 @@
-import { ReactNode } from 'react';
+import { useRouter } from 'next/router';
+import { ReactElement } from 'react';
+import { MdArrowBack } from 'react-icons/md';
 
 import { Container } from './styles';
 
 interface TopBarProps {
-  children: ReactNode;
+  title: string;
+  rightIcon?: ReactElement;
 }
 
-function TopBar({ children }: TopBarProps) {
+function TopBar({ title, rightIcon }: TopBarProps) {
+  const router = useRouter();
+
   return (
-    <Container>
-      <h1>TopBar</h1>
-      {children}
+    <Container rightIcon={!!rightIcon}>
+      <button onClick={() => router.back()}>
+        <MdArrowBack size={24} />
+      </button>
+      <p>{title}</p>
+      {rightIcon}
     </Container>
   );
-};
+}
 
 export default TopBar;
