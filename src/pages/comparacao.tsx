@@ -1,3 +1,10 @@
+import TopBar from './components/TopBar';
+import Screen from './components/Screen';
+
 export default function Comparacao() {
-  return <h1>Comparacao</h1>;
+  return (
+    <Screen>
+      <TopBar></TopBar>
+    </Screen>
+  );
 }
