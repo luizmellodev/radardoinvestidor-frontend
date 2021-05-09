@@ -26,9 +26,10 @@ import Button from 'components/Button';
 interface FundCardProps {
   fund: any;
   isComparison?: boolean;
+  onClickDetails?: () => void;
 }
 
-function FundCard({ fund, isComparison }: FundCardProps) {
+function FundCard({ fund, isComparison, onClickDetails }: FundCardProps) {
   const { updateSelectedFund, updateHiddenFund } = useContext(FundsContext);
 
   function handleSelect(fund: any) {
@@ -85,7 +86,9 @@ function FundCard({ fund, isComparison }: FundCardProps) {
         </Row>
         {isComparison && (
           <FundFooter>
-            <Button disabled={fund.hidden}>Detalhes</Button>
+            <Button disabled={fund.hidden} onClick={onClickDetails}>
+              Detalhes
+            </Button>
           </FundFooter>
         )}
       </Content>
