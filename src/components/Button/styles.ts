@@ -11,4 +11,9 @@ export const Container = styled.button`
   line-height: 18px;
   text-transform: uppercase;
   color: #ffffff;
+
+  :disabled {
+    background: ${(props) => props.theme.colors.disabled};
+    color: ${(props) => props.theme.colors.textDisabled};
+  }
 `;

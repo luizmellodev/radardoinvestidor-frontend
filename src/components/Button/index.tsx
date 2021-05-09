@@ -4,10 +4,11 @@ import { Container } from './styles';
 
 interface ButtonProps {
   children: ReactNode;
+  disabled?: boolean;
 }
 
-function Button({ children }: ButtonProps) {
-  return <Container>{children}</Container>;
+function Button({ children, disabled }: ButtonProps) {
+  return <Container disabled={disabled}>{children}</Container>;
 }
 
 export default Button;
