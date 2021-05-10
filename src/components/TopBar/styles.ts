@@ -12,7 +12,7 @@ export const Container = styled.div<ContainerProps>`
   justify-content: center;
   align-items: center;
   padding: 0px 24px;
-  height: 55px;
+  height: 56px;
 
   p {
     color: white;
