@@ -2,12 +2,10 @@ import styled from 'styled-components';
 
 export const Container = styled.button`
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
   background: ${(props) => props.theme.colors.primary};
   border-radius: 12px;
   border: 0;
-  padding: 20px 80px;
+  padding: 16px 8px;
   font-family: Source Sans Pro;
   font-style: normal;
   font-weight: bold;
@@ -18,7 +16,6 @@ export const Container = styled.button`
   justify-content: center;
   text-transform: uppercase;
   color: #fff;
-
   :disabled {
     background: ${(props) => props.theme.colors.disabled};
     color: ${(props) => props.theme.colors.textDisabled};
