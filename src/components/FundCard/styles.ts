@@ -32,10 +32,11 @@ export const Row = styled.div<RowProps>`
   margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : 0)};
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 export const FundTitle = styled.strong<FundTitleProps>`
+  margin-right: 24px;
   font-family: Montserrat;
   font-size: 20px;
   line-height: 28px;

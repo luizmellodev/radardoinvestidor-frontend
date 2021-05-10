@@ -9,6 +9,7 @@ import Loading from 'components/Loading';
 import Tabs from 'components/Tabs';
 import Tab from 'components/Tabs/Tab';
 import { FundsContext } from 'contexts/Funds';
+import api from 'api';
 
 export const Container = styled.div`
   height: 100%;
@@ -40,6 +41,7 @@ export default function Home() {
     updateSelectedFund,
     filteredFunds,
     updateHiddenFund,
+    updateFundsList,
   } = useContext(FundsContext);
 
   const handleCompareButtonClick = () => {
@@ -58,9 +60,20 @@ export default function Home() {
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    setTimeout(() => {
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    // }, 3000);
+
+    const fetchFunds = async () => {
+      const { data } = await api.get('/pesquisa');
+
+      updateFundsList(data);
       setIsLoading(false);
-    }, 3000);
+
+      console.log(data);
+    };
+
+    fetchFunds();
   }, []);
 
   return (
