@@ -85,7 +85,7 @@ function FundCard({ fund, isComparison }: FundCardProps) {
         </Row>
         {isComparison && (
           <FundFooter>
-            <Button>Detalhes</Button>
+            <Button disabled={fund.hidden}>Detalhes</Button>
           </FundFooter>
         )}
       </Content>

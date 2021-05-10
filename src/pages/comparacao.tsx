@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import styled from 'styled-components';
+import { MdShare } from 'react-icons/md';
+
+import { FundsContext } from 'contexts/Funds';
 
 import TopBar from 'components/TopBar';
 import Screen from 'components/Screen';
-
-import { MdShare } from 'react-icons/md';
+import FundCard from 'components/FundCard';
 
 export const Container = styled.div`
   height: 100%;
@@ -18,13 +21,17 @@ export const Content = styled.div`
 `;
 
 export default function Comparacao() {
+  const { selectedFunds } = useContext(FundsContext);
+
   return (
     <Screen>
       <Container>
         <TopBar title="Comparação" rightIcon={<MdShare size={24} />} />
 
         <Content>
-          <p>Conteúdo</p>
+          {selectedFunds.map((fund) => (
+            <FundCard isComparison fund={fund} key={fund.denom_social} />
+          ))}
         </Content>
       </Container>
     </Screen>

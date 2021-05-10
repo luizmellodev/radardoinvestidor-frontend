@@ -71,12 +71,14 @@ export const FundsContext = createContext({} as FundsContextValues);
 
 export const FundsProvider: React.FC = ({ children }) => {
   const [funds, setFunds] = useState([] as any[]);
+  const [selectedNames, setSelectedNames] = useState([] as string[]);
+  const [hiddenNames, setHiddenNames] = useState([] as string[]);
 
   const updateFundsList = (fundsList: IFund[]) => {
     const fundsListWithState = fundsList.map((fund) => ({
       ...fund,
-      selected: false,
-      hidden: false,
+      selected: selectedNames.includes(fund.denom_social),
+      hidden: hiddenNames.includes(fund.denon_social),
     }));
 
     setFunds(fundsListWithState);
@@ -94,7 +96,13 @@ export const FundsProvider: React.FC = ({ children }) => {
     const newFunds = [...funds];
     newFunds[fundIndex] = fundToUpdate;
 
+    const filterSelectedFunds = newFunds.filter((fund) => fund.selected);
+    const selectedFundNames = filterSelectedFunds.map(
+      (fund) => fund.denom_social
+    );
+
     setFunds(newFunds);
+    setSelectedNames(selectedFundNames);
   };
 
   const updateHiddenFund = (name: string) => {
@@ -106,7 +114,13 @@ export const FundsProvider: React.FC = ({ children }) => {
     const newFunds = [...funds];
     newFunds[fundIndex] = fundToUpdate;
 
+    const filterHiddenFunds = newFunds.filter((fund) => fund.hidden);
+    const hiddenFundNames = filterHiddenFunds.map((fund) => fund.denom_social);
+
+    console.log(hiddenFundNames);
+
     setFunds(newFunds);
+    setHiddenNames(hiddenFundNames);
   };
 
   return (

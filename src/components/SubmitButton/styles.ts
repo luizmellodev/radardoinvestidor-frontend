@@ -16,6 +16,7 @@ export const Container = styled.button`
   justify-content: center;
   text-transform: uppercase;
   color: #fff;
+
   :disabled {
     background: ${(props) => props.theme.colors.disabled};
     color: ${(props) => props.theme.colors.textDisabled};
