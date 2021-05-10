@@ -77,11 +77,12 @@ export default function Comparacao() {
   const { selectedFunds } = useContext(FundsContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [detailedFund, setDetailedFund] = useState(null);
+  // const [detailedFund, setDetailedFund] = useState({});
 
-  const handleClickDetailButton = (fund: any) => {
+  // const handleClickDetailButton = (fund: any) => {
+  const handleClickDetailButton = () => {
     setIsModalOpen(true);
-    setDetailedFund(fund);
+    // setDetailedFund(fund);
   };
 
   const handleCloseModal = () => {
@@ -100,14 +101,14 @@ export default function Comparacao() {
                 isComparison
                 fund={fund}
                 key={fund.denom_social}
-                onClickDetails={() => handleClickDetailButton(fund)}
+                onClickDetails={() => handleClickDetailButton()}
               />
             ))}
           </Content>
         </Container>
       </Screen>
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <FundTitle>{detailedFund?.denom_social}</FundTitle>
+        <FundTitle>Warren Green</FundTitle>
         <Info>
           <p>CNPJ</p>
           <span>61.562.112/0001-20</span>
