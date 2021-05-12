@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import {
   MdVisibility,
   MdVisibilityOff,
-  MdAddCircle,
   MdAddCircleOutline,
   MdDelete,
 } from 'react-icons/md';
@@ -19,7 +18,6 @@ import {
   FundFooter,
 } from './styles';
 
-import IFund from 'interfaces/IFund';
 import { FundsContext } from 'contexts/Funds';
 import Button from 'components/Button';
 

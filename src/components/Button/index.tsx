@@ -5,7 +5,7 @@ import { Container } from './styles';
 interface ButtonProps {
   children: ReactNode;
   disabled?: boolean;
-  onClick: () => void | undefined;
+  onClick: any;
 }
 
 function Button({ children, disabled, onClick }: ButtonProps) {

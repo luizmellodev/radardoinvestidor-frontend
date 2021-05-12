@@ -1,11 +1,9 @@
 import { createContext, useState } from 'react';
 
-import IFund from 'interfaces/IFund';
-
 interface FundsContextValues {
-  selectedFunds: IFund[];
-  filteredFunds: IFund[];
-  updateFundsList: (fundsList: IFund[]) => void;
+  selectedFunds: any[];
+  filteredFunds: any[];
+  updateFundsList: (fundsList: any[]) => void;
   updateSelectedFund: (name: string) => void;
   updateHiddenFund: (name: string) => void;
 }
@@ -74,7 +72,7 @@ export const FundsProvider: React.FC = ({ children }) => {
   const [selectedNames, setSelectedNames] = useState([] as string[]);
   const [hiddenNames, setHiddenNames] = useState([] as string[]);
 
-  const updateFundsList = (fundsList: IFund[]) => {
+  const updateFundsList = (fundsList: any[]) => {
     const fundsListWithState = fundsList.map((fund) => ({
       ...fund,
       selected: selectedNames.includes(fund.denom_social),
