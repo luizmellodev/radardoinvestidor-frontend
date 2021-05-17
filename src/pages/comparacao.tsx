@@ -126,32 +126,11 @@ export default function Comparacao() {
           <span>+ R$ 100 MI</span>
         </Info>
 
-        <ModalSection>Informações cadastrais</ModalSection>
-
-        <Info>
-          <p>Situação</p>
-          <span>Em funcionamento normal</span>
-        </Info>
-
-        <Info>
-          <p>Data de registro</p>
-          <span>27/02/2007</span>
-        </Info>
-
-        <Info>
-          <p>Data de início de atividade</p>
-          <span>06/08/2003</span>
-        </Info>
-
         <ModalSection>Características do fundo</ModalSection>
 
         <CharacteristicRow>
           <p>Valor total da carteira do fundo</p>
           <p>R$ 1.127.645,45</p>
-        </CharacteristicRow>
-        <CharacteristicRow>
-          <p>Patrimônio líquido</p>
-          <p>R$ 1.542.688,25</p>
         </CharacteristicRow>
         <CharacteristicRow>
           <p>Valor da cota</p>
@@ -169,6 +148,23 @@ export default function Comparacao() {
           <p>Número de cotistas</p>
           <p>7695</p>
         </CharacteristicRow>
+
+        <ModalSection>Informações cadastrais</ModalSection>
+
+        <Info>
+          <p>Situação</p>
+          <span>Em funcionamento normal</span>
+        </Info>
+
+        <Info>
+          <p>Data de registro</p>
+          <span>27/02/2007</span>
+        </Info>
+
+        <Info>
+          <p>Data de início de atividade</p>
+          <span>06/08/2003</span>
+        </Info>
       </Modal>
     </>
   );
