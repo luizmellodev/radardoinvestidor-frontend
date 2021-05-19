@@ -25,6 +25,7 @@ export const List = styled.div`
   margin-top: 32px;
   padding-left: 24px;
   padding-right: 24px;
+  height: 100%;
 `;
 
 export const Footer = styled.footer`
@@ -105,7 +106,17 @@ export default function Home() {
               </List>
             ) : (
               <List>
-                <p>Nenhum Fundo Selecionado</p>
+                <p
+                  style={{
+                    flex: '1',
+                    display: 'flex',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  Nenhum fundo selecionado
+                </p>
               </List>
             )}
           </Tab>
