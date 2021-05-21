@@ -1,6 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
-import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import styled from 'styled-components';
+
+import { FundsContext } from 'contexts/Funds';
+import useDebounce from 'hooks/useDebounce';
+
 import SubmitButton from 'components/SubmitButton';
 import Screen from 'components/Screen';
 import HeaderHome from 'components/HeaderHome';
@@ -8,7 +12,6 @@ import FundCard from 'components/FundCard';
 import Loading from 'components/Loading';
 import Tabs from 'components/Tabs';
 import Tab from 'components/Tabs/Tab';
-import { FundsContext } from 'contexts/Funds';
 import api from 'api';
 
 export const Container = styled.div`
@@ -56,28 +59,35 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
 
+  const debouncedSearchText = useDebounce(searchText, 1000);
+
   useEffect(() => {
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    // }, 3000);
+    setIsLoading(true);
+  }, [searchText]);
 
+  useEffect(() => {
     const fetchFunds = async () => {
-      setIsLoading(true);
+      try {
+        setIsLoading(true);
 
-      const { data } = await api.get('/pesquisa', {
-        params: {
-          s: searchText,
-        },
-      });
+        const { data } = await api.get('/pesquisa', {
+          params: {
+            s: debouncedSearchText,
+          },
+        });
 
-      updateFundsList(data);
-      setIsLoading(false);
-
-      console.log(data);
+        console.log(debouncedSearchText, data);
+        updateFundsList(data);
+      } catch (e) {
+        console.error(e);
+        updateFundsList([]);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchFunds();
-  }, [searchText]);
+  }, [debouncedSearchText]);
 
   return (
     <Screen>
