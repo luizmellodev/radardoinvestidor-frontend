@@ -99,6 +99,7 @@ export default function Comparacao() {
             {selectedFunds.map((fund) => (
               <FundCard
                 isComparison
+                isSelected
                 fund={fund}
                 key={fund.denom_social}
                 onClickDetails={() => handleClickDetailButton()}

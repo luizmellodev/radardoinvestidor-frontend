@@ -24,14 +24,26 @@ import Button from 'components/Button';
 interface FundCardProps {
   fund: any;
   isComparison?: boolean;
+  isSelected?: boolean;
   onClickDetails?: () => void;
 }
 
-function FundCard({ fund, isComparison, onClickDetails }: FundCardProps) {
-  const { updateSelectedFund, updateHiddenFund } = useContext(FundsContext);
+function FundCard({
+  fund,
+  isComparison,
+  isSelected,
+  onClickDetails,
+}: FundCardProps) {
+  const { updateHiddenFund, selectFund, unselectFund } = useContext(
+    FundsContext
+  );
 
   function handleSelect(fund: any) {
-    updateSelectedFund(fund.denom_social);
+    if (isSelected) {
+      unselectFund(fund.denom_social);
+    } else {
+      selectFund(fund.denom_social);
+    }
   }
 
   function handleHidden(fund: any) {
@@ -54,7 +66,7 @@ function FundCard({ fund, isComparison, onClickDetails }: FundCardProps) {
               </IconButton>
             )}
             <IconButton onClick={() => handleSelect(fund)}>
-              {fund.selected ? (
+              {isSelected ? (
                 <MdDelete size={24}></MdDelete>
               ) : (
                 <MdAddCircleOutline size={24} />

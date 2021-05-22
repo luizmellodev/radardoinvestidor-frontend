@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
+import api from 'api';
 import { FundsContext } from 'contexts/Funds';
 import useDebounce from 'hooks/useDebounce';
 
@@ -12,7 +13,6 @@ import FundCard from 'components/FundCard';
 import Loading from 'components/Loading';
 import Tabs from 'components/Tabs';
 import Tab from 'components/Tabs/Tab';
-import api from 'api';
 
 export const Container = styled.div`
   height: 100%;
@@ -40,9 +40,12 @@ export const Footer = styled.footer`
 
 export default function Home() {
   const router = useRouter();
-  const { selectedFunds, filteredFunds, updateFundsList } = useContext(
-    FundsContext
-  );
+  const {
+    selectedFunds,
+    foundedFunds,
+    updateFetchedFunds,
+    resetHiddenState,
+  } = useContext(FundsContext);
 
   const handleCompareButtonClick = () => {
     router.push('/comparacao');
@@ -62,6 +65,10 @@ export default function Home() {
   const debouncedSearchText = useDebounce(searchText, 1000);
 
   useEffect(() => {
+    resetHiddenState();
+  }, []);
+
+  useEffect(() => {
     setIsLoading(true);
   }, [searchText]);
 
@@ -77,10 +84,10 @@ export default function Home() {
         });
 
         console.log(debouncedSearchText, data);
-        updateFundsList(data);
+        updateFetchedFunds(data);
       } catch (e) {
         console.error(e);
-        updateFundsList([]);
+        updateFetchedFunds([]);
       } finally {
         setIsLoading(false);
       }
@@ -101,7 +108,7 @@ export default function Home() {
               <Loading />
             ) : (
               <List>
-                {filteredFunds.map((fund) => (
+                {foundedFunds.map((fund) => (
                   <FundCard fund={fund} key={fund.denom_social} />
                 ))}
               </List>
@@ -111,7 +118,7 @@ export default function Home() {
             {selectedFunds.length ? (
               <List>
                 {selectedFunds.map((fund) => (
-                  <FundCard fund={fund} key={fund.denom_social} />
+                  <FundCard isSelected fund={fund} key={fund.denom_social} />
                 ))}
               </List>
             ) : (
