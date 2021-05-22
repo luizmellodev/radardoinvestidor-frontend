@@ -1,11 +1,13 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 interface FundsContextValues {
   selectedFunds: any[];
-  filteredFunds: any[];
-  updateFundsList: (fundsList: any[]) => void;
-  updateSelectedFund: (name: string) => void;
+  foundedFunds: any[];
+  selectFund: (name: string) => void;
+  unselectFund: (name: string) => void;
+  updateFetchedFunds: (fundsList: any[]) => void;
   updateHiddenFund: (name: string) => void;
+  resetHiddenState: () => void;
 }
 
 // const fundList = [
@@ -68,67 +70,93 @@ interface FundsContextValues {
 export const FundsContext = createContext({} as FundsContextValues);
 
 export const FundsProvider: React.FC = ({ children }) => {
-  const [funds, setFunds] = useState([] as any[]);
-  const [selectedNames, setSelectedNames] = useState([] as string[]);
-  const [hiddenNames, setHiddenNames] = useState([] as string[]);
+  const [fetchedFunds, setFetchedFunds] = useState([] as any[]);
+  const [selectedFunds, setSelectedFunds] = useState([] as any[]);
+  const [foundedFunds, setFoundedFunds] = useState([] as any[]);
 
-  const updateFundsList = (fundsList: any[]) => {
-    const fundsListWithState = fundsList.map((fund) => ({
-      ...fund,
-      selected: selectedNames.includes(fund.denom_social),
-      hidden: hiddenNames.includes(fund.denon_social),
-    }));
-
-    setFunds(fundsListWithState);
+  const updateFetchedFunds = (fundsList: any[]) => {
+    setFetchedFunds(fundsList);
   };
 
-  const selectedFunds = funds.filter((fund) => fund.selected);
-  const filteredFunds = funds.filter((fund) => !fund.selected);
-
-  const updateSelectedFund = (name: string) => {
-    const fundIndex = funds.findIndex((fund) => fund.denom_social === name);
-    const fundToUpdate = funds[fundIndex];
-
-    fundToUpdate.selected = !fundToUpdate.selected;
-
-    const newFunds = [...funds];
-    newFunds[fundIndex] = fundToUpdate;
-
-    const filterSelectedFunds = newFunds.filter((fund) => fund.selected);
-    const selectedFundNames = filterSelectedFunds.map(
-      (fund) => fund.denom_social
+  const selectFund = (name: string) => {
+    const fundsWithoutSelectedName = foundedFunds.filter(
+      (fund) => fund.denom_social !== name
     );
 
-    setFunds(newFunds);
-    setSelectedNames(selectedFundNames);
+    const fundWithSelectedName = foundedFunds.filter(
+      (fund) => fund.denom_social === name
+    );
+
+    const newSelectedFunds = [...selectedFunds, ...fundWithSelectedName];
+
+    setFoundedFunds(fundsWithoutSelectedName);
+    setSelectedFunds(newSelectedFunds);
+  };
+
+  const unselectFund = (name: string) => {
+    const fundsWithoutSelectedName = selectedFunds.filter(
+      (fund) => fund.denom_social !== name
+    );
+
+    const fundWithSelectedName = selectedFunds.filter(
+      (fund) => fund.denom_social === name
+    );
+
+    const newFoundedFunds = [...foundedFunds, ...fundWithSelectedName];
+
+    setSelectedFunds(fundsWithoutSelectedName);
+    setFoundedFunds(newFoundedFunds);
   };
 
   const updateHiddenFund = (name: string) => {
-    const fundIndex = funds.findIndex((fund) => fund.denom_social === name);
-    const fundToUpdate = funds[fundIndex];
+    const fundIndex = selectedFunds.findIndex(
+      (fund) => fund.denom_social === name
+    );
+
+    const fundToUpdate = selectedFunds[fundIndex];
 
     fundToUpdate.hidden = !fundToUpdate.hidden;
 
-    const newFunds = [...funds];
+    const newFunds = [...selectedFunds];
     newFunds[fundIndex] = fundToUpdate;
 
-    const filterHiddenFunds = newFunds.filter((fund) => fund.hidden);
-    const hiddenFundNames = filterHiddenFunds.map((fund) => fund.denom_social);
-
-    console.log(hiddenFundNames);
-
-    setFunds(newFunds);
-    setHiddenNames(hiddenFundNames);
+    setSelectedFunds(newFunds);
   };
+
+  const resetHiddenState = () => {
+    const newSelectedFunds = selectedFunds.map((fund) => ({
+      ...fund,
+      hidden: false,
+    }));
+
+    setSelectedFunds(newSelectedFunds);
+  };
+
+  useEffect(() => {
+    const selectedNames = selectedFunds.map((fund) => fund.denom_social);
+
+    const fundsListWithState = fetchedFunds.map((fund) => ({
+      ...fund,
+      hidden: false,
+    }));
+
+    const newFoundedFunds = fundsListWithState.filter(
+      (fund) => !selectedNames.includes(fund.denom_social)
+    );
+
+    setFoundedFunds(newFoundedFunds);
+  }, [fetchedFunds, selectedFunds]);
 
   return (
     <FundsContext.Provider
       value={{
         selectedFunds,
-        filteredFunds,
-        updateFundsList,
-        updateSelectedFund,
+        foundedFunds,
+        selectFund,
+        unselectFund,
+        updateFetchedFunds,
         updateHiddenFund,
+        resetHiddenState,
       }}
     >
       {children}
