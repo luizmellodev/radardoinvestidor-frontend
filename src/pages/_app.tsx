@@ -7,8 +7,10 @@ import SplashScreen from '../components/Splash';
 
 import { FundsProvider } from 'contexts/Funds';
 
-function MyApp({ Component, pageProps }: AppProps) {
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+function MyApp({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -17,15 +19,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     }, 1000);
   }, []);
 
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <FundsProvider>
-        {isLoading ? (
-            <SplashScreen/>
-          ) :
-        <Component {...pageProps} />}
+        <ToastContainer />
+        {isLoading ? <SplashScreen /> : <Component {...pageProps} />}
       </FundsProvider>
     </ThemeProvider>
   );
