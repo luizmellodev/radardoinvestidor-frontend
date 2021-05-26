@@ -38,6 +38,14 @@ export const Footer = styled.footer`
   padding-bottom: 32px;
 `;
 
+export const Center = styled.p`
+  flex: 1;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
 export default function Home() {
   const router = useRouter();
   const {
@@ -106,12 +114,14 @@ export default function Home() {
           <Tab title="Encontrados">
             {isLoading ? (
               <Loading />
-            ) : (
+            ) : foundedFunds.length ? (
               <List>
                 {foundedFunds.map((fund) => (
                   <FundCard fund={fund} key={fund.denom_social} />
                 ))}
               </List>
+            ) : (
+              <Center>Nenhum fundo encontrado</Center>
             )}
           </Tab>
           <Tab title={tabSelectedFunds}>
@@ -122,19 +132,7 @@ export default function Home() {
                 ))}
               </List>
             ) : (
-              <List>
-                <p
-                  style={{
-                    flex: '1',
-                    display: 'flex',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  Nenhum fundo selecionado
-                </p>
-              </List>
+              <Center>Nenhum fundo selecionado</Center>
             )}
           </Tab>
         </Tabs>
