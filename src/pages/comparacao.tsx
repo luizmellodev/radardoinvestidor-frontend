@@ -8,6 +8,7 @@ import TopBar from 'components/TopBar';
 import Screen from 'components/Screen';
 import FundCard from 'components/FundCard';
 import Modal from 'components/Modal';
+import { useRouter } from 'next/router';
 
 export const Container = styled.div`
   height: 100%;
@@ -75,6 +76,7 @@ export const CharacteristicRow = styled.div`
 
 export default function Comparacao() {
   const { selectedFunds } = useContext(FundsContext);
+  const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [detailedFund, setDetailedFund] = useState({});
@@ -89,6 +91,9 @@ export default function Comparacao() {
     setIsModalOpen(false);
   };
 
+  if(selectedFunds.length == 0){
+    router.push("/");
+  }
   return (
     <>
       <Screen>
