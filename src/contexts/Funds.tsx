@@ -9,64 +9,8 @@ interface FundsContextValues {
   updateFetchedFunds: (fundsList: any[]) => void;
   updateHiddenFund: (name: string) => void;
   resetHiddenState: () => void;
+  resetFoundedFunds: () => void;
 }
-
-// const fundList = [
-//   {
-//     denom_social: 'Warren games',
-//     cnpj: '29.577.652/0001-75',
-//     classe: 'Renda Variável',
-//     patrimonioLiquido: '+ R$ 100 mi',
-//     cotistas: '+ 50 mil',
-//     selected: false,
-//     hidden: false,
-//   },
-//   {
-//     denom_social: 'Warren games 3',
-//     cnpj: '29.577.652/0001-75',
-//     classe: 'Renda Variável',
-//     patrimonioLiquido: '+ R$ 100 mi',
-//     cotistas: '+ 50 mil',
-//     selected: false,
-//     hidden: false,
-//   },
-//   {
-//     razaoSocial: 'Warren tec 3',
-//     cnpj: '29.577.652/0001-75',
-//     classe: 'Renda Variável',
-//     patrimonioLiquido: '+ R$ 100 mi',
-//     cotistas: '+ 50 mil',
-//     selected: false,
-//     hidden: false,
-//   },
-//   {
-//     razaoSocial: 'Warren tec 4',
-//     cnpj: '29.577.652/0001-75',
-//     classe: 'Renda Variável',
-//     patrimonioLiquido: '+ R$ 100 mi',
-//     cotistas: '+ 50 mil',
-//     selected: false,
-//     hidden: false,
-//   },
-//   {
-//     razaoSocial: 'Warren tec 5',
-//     cnpj: '29.577.652/0001-75',
-//     classe: 'Renda Variável',
-//     patrimonioLiquido: '+ R$ 100 mi',
-//     cotistas: '+ 50 mil',
-//     selected: false,
-//     hidden: false,
-//   },
-//   {
-//     razaoSocial: 'Warren tec 6',
-//     cnpj: '29.577.652/0001-75',
-//     classe: 'Renda Variável',
-//     patrimonioLiquido: '+ R$ 100 mi',
-//     cotistas: '+ 50 mil',
-//     selected: false,
-//     hidden: false,
-//   },
-// ];
 
 export const FundsContext = createContext({} as FundsContextValues);
 
@@ -81,18 +25,22 @@ export const FundsProvider: React.FC = ({ children }) => {
     setFetchedFunds(fundsList);
   };
 
+  const resetFoundedFunds = () => {
+    setFoundedFunds([])
+  }
+
   const selectFund = (name: string) => {
     if (selectedFunds.length < 8) {
       const fundsWithoutSelectedName = foundedFunds.filter(
         (fund) => fund.denom_social !== name
         );
-        
+
         const fundWithSelectedName = foundedFunds.filter(
           (fund) => fund.denom_social === name
           );
-          
+
           const newSelectedFunds = [...selectedFunds, ...fundWithSelectedName];
-          
+
           setFoundedFunds(fundsWithoutSelectedName);
           setSelectedFunds(newSelectedFunds);
     } else {
@@ -151,7 +99,10 @@ export const FundsProvider: React.FC = ({ children }) => {
       (fund) => !selectedNames.includes(fund.denom_social)
     );
 
-    setFoundedFunds(newFoundedFunds);
+    setFoundedFunds(prevFoundedFunds => [
+      ...prevFoundedFunds,
+      ...newFoundedFunds
+    ]);
   }, [fetchedFunds, selectedFunds]);
 
   return (
@@ -164,6 +115,7 @@ export const FundsProvider: React.FC = ({ children }) => {
         updateFetchedFunds,
         updateHiddenFund,
         resetHiddenState,
+        resetFoundedFunds
       }}
     >
       {children}
