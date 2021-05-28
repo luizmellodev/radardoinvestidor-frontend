@@ -120,6 +120,10 @@ export default function Comparacao() {
           <span>61.562.112/0001-20</span>
         </Info>
         <Info>
+          <p>Administrador</p>
+          <span>BTG Serviços Financeiros</span>
+        </Info>
+        <Info>
           <p>Tipo de fundo</p>
           <span>FACFIF</span>
         </Info>
@@ -135,12 +139,12 @@ export default function Comparacao() {
         <ModalSection>Características do fundo</ModalSection>
 
         <CharacteristicRow>
-          <p>Valor total da carteira do fundo</p>
-          <p>R$ 1.127.645,45</p>
-        </CharacteristicRow>
-        <CharacteristicRow>
           <p>Valor da cota</p>
           <p>R$ 27,31</p>
+        </CharacteristicRow>
+        <CharacteristicRow>
+          <p>Rentabilidade do fundo</p>
+          <p>R$ 270,310</p>
         </CharacteristicRow>
         <CharacteristicRow>
           <p>Captações realizadas no dia</p>
@@ -151,20 +155,19 @@ export default function Comparacao() {
           <p>R$ 2.212.958,96</p>
         </CharacteristicRow>
         <CharacteristicRow>
-          <p>Número de cotistas</p>
-          <p>7695</p>
+          <p>Taxa de administração</p>
+          <p>12%</p>
         </CharacteristicRow>
-
+        <CharacteristicRow>
+          <p>Numero de cotistas</p>
+          <p>1200</p>
+        </CharacteristicRow>
+        
         <ModalSection>Informações cadastrais</ModalSection>
 
         <Info>
           <p>Situação</p>
           <span>Em funcionamento normal</span>
-        </Info>
-
-        <Info>
-          <p>Data de registro</p>
-          <span>27/02/2007</span>
         </Info>
 
         <Info>
