@@ -23,7 +23,7 @@ Build image:
 Configure credentials:
     $ aws configure
 
-Register the image in ECR:
+Register the image in ECR (trocar <account-id> pelo id da conta AWS):
     $ aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-1.amazonaws.com
     $ docker tag warren-frontend:latest <account-id>.dkr.ecr.us-east-1.amazonaws.com/rdi-frontend-ecs:latest
     $ docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/rdi-frontend-ecs:latest
