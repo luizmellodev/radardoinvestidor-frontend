@@ -92,7 +92,7 @@ const FundCard = forwardRef<HTMLDivElement, FundCardProps>(({
           </Info>
           <Info alignRight>
             <p>Cotistas</p>
-            <span>{fund.nr_cotst}</span>
+            <span>{fund?.nr_cotst ? fund.nr_cotst : "Não informado"}</span>
           </Info>
         </Row>
         {isComparison && (
