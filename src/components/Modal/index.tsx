@@ -1,17 +1,16 @@
-import { ReactNode } from 'react';
 import { MdClose } from 'react-icons/md';
+import {formatCurrency, formatDate} from 'utils/stringHelper';
 
-import { Container, Header, Body, Footer } from './styles';
+import { Container, Header, Body, Footer, FundTitle, Info, ModalSection, CharacteristicRow } from './styles';
 
 interface ModalProps {
-  children: ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  details: any;
 }
 
-function Modal({ children, isOpen, onClose }: ModalProps) {
+function Modal({isOpen, onClose, details }: ModalProps) {
   if (!isOpen) return null;
-
   return (
     <Container>
       <Header>
@@ -20,7 +19,68 @@ function Modal({ children, isOpen, onClose }: ModalProps) {
           <MdClose size={24} />
         </button>
       </Header>
-      <Body>{children}</Body>
+      <Body>
+      <FundTitle>{details.denom_social}</FundTitle>
+        <Info>
+          <p>CNPJ</p>
+          <span>{details.cnpj_fundo}</span>
+        </Info>
+        <Info>
+          <p>Administrador</p>
+          <span>{details.admin}</span>
+        </Info>
+        <Info>
+          <p>Tipo de fundo</p>
+          <span>{details.tp_fundo}</span>
+        </Info>
+        <Info>
+          <p>Classe</p>
+          <span>{details.classe}</span>
+        </Info>
+        <Info>
+          <p>Patrimônio Líquido</p>
+          <span>{formatCurrency(details.vl_patrim_liq)}</span>
+        </Info>
+
+        <ModalSection>Características do fundo</ModalSection>
+
+        <CharacteristicRow>
+          <p>Valor da cota</p>
+          <p>{formatCurrency(details.vlt_quota)}</p>
+        </CharacteristicRow>
+        {/* <CharacteristicRow>
+          <p>Rentabilidade do fundo</p>
+          <p>{details.rentab_fundo}</p>
+        </CharacteristicRow> */}
+        <CharacteristicRow>
+          <p>Captações realizadas no dia</p>
+          <p>{details?.captc_dia}</p>
+        </CharacteristicRow>
+        <CharacteristicRow>
+          <p>Resgates pagos no dia</p>
+          <p>{details.resg_dia}</p>
+        </CharacteristicRow>
+        <CharacteristicRow>
+          <p>Taxa de administração</p>
+          <p>{details.taxa_adm + "%"}</p>
+        </CharacteristicRow>
+        <CharacteristicRow>
+          <p>Número de cotistas</p>
+          <p>{details.nr_cotst}</p>
+        </CharacteristicRow>
+        
+        <ModalSection>Informações cadastrais</ModalSection>
+
+        <Info>
+          <p>Situação</p>
+          <span style={{textTransform:'capitalize'}}>{details.sit?.toLowerCase()}</span>
+        </Info>
+
+        <Info>
+          <p>Data de início de atividade</p>
+          <span>{formatDate(details.dt_ini_ativ)}</span>
+        </Info>
+      </Body>
       <Footer>
         <button onClick={onClose}>Fechar</button>
       </Footer>

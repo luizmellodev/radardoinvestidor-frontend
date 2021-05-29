@@ -9,7 +9,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   html, body, #__next {
-    height: 100vh;
+    height: calc(100vh - calc(100vh - 100%));
   }
 
   body {
