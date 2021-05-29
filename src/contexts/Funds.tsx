@@ -31,8 +31,8 @@ export const FundsProvider: React.FC = ({ children }) => {
 
   const selectFund = (name: string) => {
     if (selectedFunds.length < 8) {
-      const fundsWithoutSelectedName = foundedFunds.filter(
-        (fund) => fund.denom_social !== name
+        const fundsWithoutSelectedName = foundedFunds.filter(
+          (fund) => fund.denom_social !== name
         );
 
         const fundWithSelectedName = foundedFunds.filter(
@@ -88,6 +88,8 @@ export const FundsProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
+    if (foundedFunds.length) return;
+
     const selectedNames = selectedFunds.map((fund) => fund.denom_social);
 
     const fundsListWithState = fetchedFunds.map((fund) => ({
