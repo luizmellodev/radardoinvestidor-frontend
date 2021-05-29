@@ -11,6 +11,7 @@ interface InfoProps {
 
 interface FundTitleProps {
   isHidden: boolean;
+  index?: number;
 }
 
 interface RowProps {
@@ -38,8 +39,9 @@ export const Row = styled.div<RowProps>`
 export const FundTitle = styled.strong<FundTitleProps>`
   margin-right: 24px;
   font-family: Montserrat;
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 17px;
+  line-height: 24px;
+  color: ${({theme, index}) => typeof index !== 'undefined' ? theme.colors.graph[index] : theme.colors.text};
   ${(props) => props.isHidden && isHiddenStyle};
 `;
 

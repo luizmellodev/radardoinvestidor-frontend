@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface FundsContextValues {
@@ -15,14 +15,27 @@ interface FundsContextValues {
 export const FundsContext = createContext({} as FundsContextValues);
 
 export const FundsProvider: React.FC = ({ children }) => {
-  const [fetchedFunds, setFetchedFunds] = useState([] as any[]);
   const [selectedFunds, setSelectedFunds] = useState([] as any[]);
   const [foundedFunds, setFoundedFunds] = useState([] as any[]);
 
   const errorToast = () => toast.error('O máximo de fundos já foi selecionado!');
 
   const updateFetchedFunds = (fundsList: any[]) => {
-    setFetchedFunds(fundsList);
+    const selectedNames = selectedFunds.map((fund) => fund.denom_social);
+
+    const fundsListWithState = fundsList.map((fund) => ({
+      ...fund,
+      hidden: false,
+    }));
+
+    const newFoundedFunds = fundsListWithState.filter(
+      (fund) => !selectedNames.includes(fund.denom_social)
+    );
+
+    setFoundedFunds(prevFoundedFunds => [
+      ...prevFoundedFunds,
+      ...newFoundedFunds
+    ]);
   };
 
   const resetFoundedFunds = () => {
@@ -86,26 +99,6 @@ export const FundsProvider: React.FC = ({ children }) => {
 
     setSelectedFunds(newSelectedFunds);
   };
-
-  useEffect(() => {
-    if (foundedFunds.length) return;
-
-    const selectedNames = selectedFunds.map((fund) => fund.denom_social);
-
-    const fundsListWithState = fetchedFunds.map((fund) => ({
-      ...fund,
-      hidden: false,
-    }));
-
-    const newFoundedFunds = fundsListWithState.filter(
-      (fund) => !selectedNames.includes(fund.denom_social)
-    );
-
-    setFoundedFunds(prevFoundedFunds => [
-      ...prevFoundedFunds,
-      ...newFoundedFunds
-    ]);
-  }, [fetchedFunds, selectedFunds]);
 
   return (
     <FundsContext.Provider

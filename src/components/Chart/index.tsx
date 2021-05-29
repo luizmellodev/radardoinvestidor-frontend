@@ -1,13 +1,21 @@
 import { createRef, useEffect } from 'react'
 import Chart from 'chart.js/auto';
 
+interface IDatasets {
+  label: string;
+  data: number[];
+  borderColor: string;
+  backgroundColor: string;
+}
+
 interface ComparisonChartProps {
-  test: number[]
+  labels: string[]
+  datasets: IDatasets[]
 }
 
 let myLineChart: any;
 
-function ComparisonChart({ test }: ComparisonChartProps) {
+function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
   const chartRef = createRef<HTMLCanvasElement>();
 
   useEffect(() => {
@@ -20,21 +28,8 @@ function ComparisonChart({ test }: ComparisonChartProps) {
     myLineChart = new Chart(myChartRef, {
       type: 'line',
       data: {
-        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai'],
-        datasets: [
-          {
-            label: "WARREN GREEN",
-            data: [86, 67, 91, 12, 70],
-            borderColor: '#E02B57',
-            backgroundColor: '#E02B57',
-          },
-          {
-            label: "WARREN GAMES",
-            data: test,
-            borderColor: '#05F277',
-            backgroundColor: '#05F277',
-          },
-        ]
+        labels: labels,
+        datasets: datasets,
       },
       options: {
         responsive: true,
@@ -60,15 +55,14 @@ function ComparisonChart({ test }: ComparisonChartProps) {
             type: 'linear',
             display: true,
             position: 'left',
-            // display: false,
           },
         }
       },
     })
-  }, [test])
+  }, [labels, datasets])
 
   return (
-    <div>
+    <div style={{ position: 'relative', width: '100wv', height: '40vh' }}>
       <canvas id="myChart" ref={chartRef}></canvas>
     </div>
   );
