@@ -77,7 +77,7 @@ function FundCard({
         <Row marginBottom="4px">
           <Info>
             <p>CNPJ</p>
-            <span>{fund.cnpj_auditor}</span>
+            <span>{fund.cnpj_fundo}</span>
           </Info>
           <Info alignRight>
             <p>Classe</p>
