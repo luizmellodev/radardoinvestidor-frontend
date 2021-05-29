@@ -1,4 +1,5 @@
 import { forwardRef, useContext } from 'react';
+import {formatCurrency} from 'utils/stringHelper';
 
 import {
   MdVisibility,
@@ -81,17 +82,17 @@ const FundCard = forwardRef<HTMLDivElement, FundCardProps>(({
           </Info>
           <Info alignRight>
             <p>Classe</p>
-            <span>{fund.classe}</span>
+            <span>{fund?.classe ? fund.classe : "Não informado"}</span>
           </Info>
         </Row>
         <Row>
           <Info>
             <p>Patrimônio Líquido</p>
-            <span>{fund.vl_patrim_liq}</span>
+            <span>{formatCurrency(fund.vl_patrim_liq)}</span>
           </Info>
           <Info alignRight>
             <p>Cotistas</p>
-            <span>{fund.tp_fundo}</span>
+            <span>{fund.nr_cotst}</span>
           </Info>
         </Row>
         {isComparison && (
