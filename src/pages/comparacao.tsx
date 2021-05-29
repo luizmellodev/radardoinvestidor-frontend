@@ -9,7 +9,7 @@ import Screen from 'components/Screen';
 import FundCard from 'components/FundCard';
 import Modal from 'components/Modal';
 
-import MultiAxisLine from 'components/Chart';
+import Chart from 'components/Chart';
 
 export const Container = styled.div`
   height: 100%;
@@ -96,7 +96,7 @@ export default function Comparacao() {
       <Screen>
         <Container>
           <TopBar title="Comparação" rightIcon={<MdShare size={24} />} />
-          <MultiAxisLine/>
+          <Chart test={[52, 66, 78, 96, 41]} />
           <Content>
             {selectedFunds.map((fund) => (
               <FundCard
