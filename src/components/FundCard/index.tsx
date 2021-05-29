@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { forwardRef, useContext } from 'react';
 
 import {
   MdVisibility,
@@ -28,12 +28,12 @@ interface FundCardProps {
   onClickDetails?: () => void;
 }
 
-function FundCard({
+const FundCard = forwardRef<HTMLDivElement, FundCardProps>(({
   fund,
   isComparison,
   isSelected,
   onClickDetails,
-}: FundCardProps) {
+}, ref) => {
   const { updateHiddenFund, selectFund, unselectFund } = useContext(
     FundsContext
   );
@@ -51,7 +51,7 @@ function FundCard({
   }
 
   return (
-    <Container>
+    <Container ref={ref}>
       <Content>
         <Row marginBottom="12px">
           <FundTitle isHidden={fund.hidden}>{fund.denom_social}</FundTitle>
@@ -104,6 +104,6 @@ function FundCard({
       </Content>
     </Container>
   );
-}
+})
 
 export default FundCard;

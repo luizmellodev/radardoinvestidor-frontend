@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -14,31 +14,35 @@ import Loading from 'components/Loading';
 import Tabs from 'components/Tabs';
 import Tab from 'components/Tabs/Tab';
 
-export const Container = styled.div`
+const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
 `;
 
-export const Header = styled.header`
+const Header = styled.header`
   padding-bottom: 40px;
 `;
 
-export const List = styled.div`
+const List = styled.div`
   margin-top: 32px;
   padding-left: 24px;
   padding-right: 24px;
   height: 100%;
 `;
 
-export const Footer = styled.footer`
+const BottomLoading = styled.div`
+  padding-top: 24px;
+`
+
+const Footer = styled.footer`
   padding-top: 24px;
   padding-left: 24px;
   padding-right: 24px;
   padding-bottom: 32px;
 `;
 
-export const Center = styled.p`
+const Center = styled.p`
   flex: 1;
   display: flex;
   height: 100%;
@@ -47,13 +51,42 @@ export const Center = styled.p`
 `;
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchText, setSearchText] = useState('');
+  const [skip, setSkip] = useState(0);
+  const [hasMore, setHasMore] = useState(true)
+
   const router = useRouter();
+  const debouncedSearchText = useDebounce(searchText, 1000);
   const {
     selectedFunds,
     foundedFunds,
     updateFetchedFunds,
     resetHiddenState,
+    resetFoundedFunds
   } = useContext(FundsContext);
+
+  const observerLastItem = useRef<any>()
+
+  const lastFundElementRef = useCallback(node => {
+    if (isLoading) {
+      return
+    }
+
+    if (observerLastItem?.current) {
+      observerLastItem.current.disconnect()
+    }
+
+    observerLastItem.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setSkip(foundedFunds.length)
+      }
+    })
+
+    if (node) {
+      observerLastItem.current.observe(node)
+    }
+  }, [isLoading, hasMore, foundedFunds])
 
   const handleCompareButtonClick = () => {
     router.push('/comparacao');
@@ -61,16 +94,12 @@ export default function Home() {
 
   const handleOnChangeText = async (searchText: string) => {
     setSearchText(searchText);
+    setSkip(0)
   };
 
   const tabSelectedFunds = `Selecionados ${
     selectedFunds.length ? `(${selectedFunds.length}) ` : ''
   }`;
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchText, setSearchText] = useState('');
-
-  const debouncedSearchText = useDebounce(searchText, 1000);
 
   useEffect(() => {
     resetHiddenState();
@@ -81,6 +110,15 @@ export default function Home() {
   }, [searchText]);
 
   useEffect(() => {
+    updateFetchedFunds([]);
+    resetFoundedFunds()
+  }, [debouncedSearchText]);
+
+  useEffect(() => {
+    console.log('FOUNDED FUNDS', foundedFunds)
+  }, [foundedFunds])
+
+  useEffect(() => {
     const fetchFunds = async () => {
       try {
         setIsLoading(true);
@@ -88,11 +126,13 @@ export default function Home() {
         const { data } = await api.get('/pesquisa', {
           params: {
             s: debouncedSearchText,
+            skip,
           },
         });
 
-        console.log(debouncedSearchText, data);
+        console.log('FETCHED FUNDS', debouncedSearchText, data);
         updateFetchedFunds(data);
+        setHasMore(data.length > 0)
       } catch (e) {
         console.error(e);
         updateFetchedFunds([]);
@@ -102,7 +142,7 @@ export default function Home() {
     };
 
     fetchFunds();
-  }, [debouncedSearchText]);
+  }, [debouncedSearchText, skip]);
 
   return (
     <Screen>
@@ -112,16 +152,23 @@ export default function Home() {
         </Header>
         <Tabs>
           <Tab title="Encontrados">
-            {isLoading ? (
+            {isLoading && skip === 0 ? (
               <Loading />
-            ) : foundedFunds.length ? (
-              <List>
-                {foundedFunds.map((fund) => (
-                  <FundCard fund={fund} key={fund.denom_social} />
-                ))}
-              </List>
             ) : (
-              <Center>Nenhum fundo encontrado</Center>
+              foundedFunds.length ? (
+                <List>
+                  {foundedFunds.map((fund, index, list) =>
+                    <FundCard ref={list.length === index + 1 ? lastFundElementRef : undefined} fund={fund} key={fund.denom_social} />
+                  )}
+                  {isLoading && hasMore && (
+                    <BottomLoading>
+                      <Loading />
+                    </BottomLoading>
+                  )}
+                </List>
+              ) : (
+                <Center>Nenhum fundo encontrado</Center>
+              )
             )}
           </Tab>
           <Tab title={tabSelectedFunds}>
