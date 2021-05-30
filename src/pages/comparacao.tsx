@@ -14,6 +14,7 @@ import FundCard from 'components/FundCard';
 import Modal from 'components/Modal';
 import Chart from 'components/Chart';
 import Loading from 'components/Loading';
+import Button from 'components/Button';
 
 
 export const Container = styled.div`
@@ -23,11 +24,36 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  padding: 32px 24px;
+  padding: 15px 24px;
   overflow-y: auto;
   flex: 1;
 `;
+export const ChartContainer = styled.div<IChartContainer>`
+  margin: ${(props) => (props.isLoading ? "15px" : "auto 15px")};
+`;
 
+
+export const TitleChart = styled.strong<any>`
+  font-family: Montserrat;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: bold;
+  border-bottom: 1px solid #e3e4eb;
+  margin: 15px 24px 12px;
+`;
+
+export const TitleFundos = styled.strong<any>`
+  font-family: Montserrat;
+  font-size: 20px;
+  line-height: 28px;
+  border-bottom: 1px solid #e3e4eb;
+  font-weight: bold;
+  margin: 15px auto;
+  display:flex;
+`;
+interface IChartContainer{
+  isLoading: boolean;
+}
 interface IDatasets {
   label: string;
   data: number[];
@@ -72,6 +98,8 @@ export default function Comparacao() {
   }, [])
 
   useEffect(() => {
+    if(!selectedFunds.length)
+      router.push("/");
     if (!rentabFunds.length) return;
 
     const firstFund = rentabFunds[0];
@@ -80,7 +108,13 @@ export default function Comparacao() {
     setLabels(labels)
 
     const diffs = rentabFunds.map((fund: any) => (
-      fund.rentab.map((rentab: any) => rentab.diff)
+      
+      fund.rentab.map((rentab: any) => {
+        // if(!rentab.diff) return;
+        // console.log(typeof(new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)));
+        // return new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)
+        return rentab.diff;
+      })
     ))
 
     const datasets = selectedFunds.map((fund, index) => ({
@@ -104,20 +138,22 @@ export default function Comparacao() {
     setIsModalOpen(false);
   };
 
-  if(selectedFunds.length == 0){
-    router.push("/");
-  }
   return (
     <>
       <Screen>
         <Container>
           <TopBar title="Comparação" rightIcon={<MdShare size={24} />} />
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <Chart labels={labels} datasets={datasets} />
-          )}
+          <TitleChart>Histórico de Rendimentos</TitleChart>
+          <ChartContainer isLoading={isLoading}>
+            {isLoading ? (
+              <Loading/>
+            ) : (
+              <Chart labels={labels} datasets={datasets} />
+            )}
+          </ChartContainer>
           <Content>
+          <Button onClick={() => router.push("/")}>Adicionar</Button>
+          <TitleFundos>Fundos</TitleFundos>
             {selectedFunds.map((fund, index) => (
               <FundCard
                 index={index}

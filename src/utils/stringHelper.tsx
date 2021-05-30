@@ -8,5 +8,5 @@ export function formatDate(value:string|Date, options?: any){
 }
 
 export function formatCnpj (cnpj:string) {
-    return !cnpj ? " ": cnpj.replace('.', '%2E').replace('/', '%2F').replace('-', '%2D');
+    return !cnpj ? " ": cnpj.replace('/', '%2F');
 }
