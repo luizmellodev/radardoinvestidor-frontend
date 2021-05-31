@@ -72,6 +72,7 @@ export default function Comparacao() {
   const [rentabFunds, setRentabFunds] = useState<any[]>([])
   const [labels, setLabels] = useState<string[]>([]);
   const [datasets, setDatasets] = useState<IDatasets[]>([]);
+  
 
   useEffect(() => {
     const fetchProfitability = async () => {
@@ -83,9 +84,11 @@ export default function Comparacao() {
         const { data } = await api.get('/rentabilidade', {
           params: {
             fundos: selectedsCnpj,
+            from: new Date(2021,4,1).toISOString().split("T")[0],
+            to: new Date().toISOString().split("T")[0]
           }
         });
-
+        console.log(data);
         setRentabFunds(data)
       } catch (error) {
         console.error(error);
@@ -123,8 +126,19 @@ export default function Comparacao() {
       borderColor: theme.colors.graph[index],
       data: fund.hidden ? [] : diffs[index]
     }))
-
-    setDatasets(datasets);
+    const cdiRentab:any = rentabFunds.find( fund =>
+        fund.name === "CDI"
+      )
+      console.log(cdiRentab);
+    const CDI = {
+      label: "CDI",
+      backgroundColor: theme.colors.text,
+      borderColor: theme.colors.text,
+      data: cdiRentab.rentab.map((rentab: any) =>{
+        return rentab.diff;
+      })
+    }
+    setDatasets([...datasets, CDI]);
   }, [rentabFunds, selectedFunds])
 
   const handleClickDetailButton = async (cnpj:any) => {

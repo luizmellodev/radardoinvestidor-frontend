@@ -55,8 +55,13 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
             type: 'linear',
             display: true,
             position: 'left',
+            ticks: {
+              callback: function(value:number) {
+                  return  value.toFixed(2) + "%";
+              },
+            },
           },
-        }
+        },
       },
     })
   }, [labels, datasets])
