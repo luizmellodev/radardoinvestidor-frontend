@@ -79,7 +79,7 @@ export default function Home() {
 
     observerLastItem.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
-        setSkip(foundedFunds.length)
+        setSkip(prevState => prevState + 50)
       }
     })
 
@@ -110,7 +110,6 @@ export default function Home() {
   }, [searchText]);
 
   useEffect(() => {
-    updateFetchedFunds([]);
     resetFoundedFunds()
   }, [debouncedSearchText]);
 

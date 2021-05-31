@@ -1,16 +1,21 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { MdShare } from 'react-icons/md';
 
 import { FundsContext } from 'contexts/Funds';
-import {formatCnpj} from 'utils/stringHelper';
+import {formatCnpj, formatDate} from 'utils/stringHelper';
+import api from 'api';
+import theme from 'styles/theme';
 
 import TopBar from 'components/TopBar';
 import Screen from 'components/Screen';
 import FundCard from 'components/FundCard';
 import Modal from 'components/Modal';
-import { useRouter } from 'next/router';
-import api from 'api';
+import Chart from 'components/Chart';
+import Loading from 'components/Loading';
+import Button from 'components/Button';
+
 
 export const Container = styled.div`
   height: 100%;
@@ -19,18 +24,108 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  padding: 32px 24px;
+  padding: 15px 24px;
   overflow-y: auto;
   flex: 1;
 `;
+export const ChartContainer = styled.div<IChartContainer>`
+  margin: ${(props) => (props.isLoading ? "15px" : "auto 15px")};
+`;
+
+
+export const TitleChart = styled.strong<any>`
+  font-family: Montserrat;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: bold;
+  border-bottom: 1px solid #e3e4eb;
+  margin: 15px 24px 12px;
+`;
+
+export const TitleFundos = styled.strong<any>`
+  font-family: Montserrat;
+  font-size: 20px;
+  line-height: 28px;
+  border-bottom: 1px solid #e3e4eb;
+  font-weight: bold;
+  margin: 15px auto;
+  display:flex;
+`;
+interface IChartContainer{
+  isLoading: boolean;
+}
+interface IDatasets {
+  label: string;
+  data: number[];
+  borderColor: string;
+  backgroundColor: string;
+}
 
 
 export default function Comparacao() {
   const { selectedFunds } = useContext(FundsContext);
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [detailedFund, setDetailedFund] = useState({});
+  const [rentabFunds, setRentabFunds] = useState<any[]>([])
+  const [labels, setLabels] = useState<string[]>([]);
+  const [datasets, setDatasets] = useState<IDatasets[]>([]);
+
+  useEffect(() => {
+    const fetchProfitability = async () => {
+      try {
+        setIsLoading(true)
+
+        const selectedsCnpj = selectedFunds.map((fund) => fund.cnpj_fundo)
+
+        const { data } = await api.get('/rentabilidade', {
+          params: {
+            fundos: selectedsCnpj,
+          }
+        });
+
+        setRentabFunds(data)
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchProfitability();
+  }, [])
+
+  useEffect(() => {
+    if(!selectedFunds.length)
+      router.push("/");
+    if (!rentabFunds.length) return;
+
+    const firstFund = rentabFunds[0];
+    const labels = firstFund.rentab.map((rentab: any) => formatDate(rentab.date, { month: "numeric", day: "numeric" }))
+
+    setLabels(labels)
+
+    const diffs = rentabFunds.map((fund: any) => (
+      
+      fund.rentab.map((rentab: any) => {
+        // if(!rentab.diff) return;
+        // console.log(typeof(new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)));
+        // return new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)
+        return rentab.diff;
+      })
+    ))
+
+    const datasets = selectedFunds.map((fund, index) => ({
+      label: fund.denom_social.length > 20 ? fund.denom_social.substr(0, 20) : fund.denom_social,
+      backgroundColor: theme.colors.graph[index],
+      borderColor: theme.colors.graph[index],
+      data: fund.hidden ? [] : diffs[index]
+    }))
+
+    setDatasets(datasets);
+  }, [rentabFunds, selectedFunds])
 
   const handleClickDetailButton = async (cnpj:any) => {
     const formatedCnpj = formatCnpj(cnpj);
@@ -43,18 +138,25 @@ export default function Comparacao() {
     setIsModalOpen(false);
   };
 
-  if(selectedFunds.length == 0){
-    router.push("/");
-  }
   return (
     <>
       <Screen>
         <Container>
           <TopBar title="Comparação" rightIcon={<MdShare size={24} />} />
-
+          <TitleChart>Histórico de Rendimentos</TitleChart>
+          <ChartContainer isLoading={isLoading}>
+            {isLoading ? (
+              <Loading/>
+            ) : (
+              <Chart labels={labels} datasets={datasets} />
+            )}
+          </ChartContainer>
           <Content>
-            {selectedFunds.map((fund) => (
+          <Button onClick={() => router.push("/")}>Adicionar</Button>
+          <TitleFundos>Fundos</TitleFundos>
+            {selectedFunds.map((fund, index) => (
               <FundCard
+                index={index}
                 isComparison
                 isSelected
                 fund={fund}
@@ -65,7 +167,7 @@ export default function Comparacao() {
           </Content>
         </Container>
       </Screen>
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} details={detailedFund}/>  
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal} details={detailedFund}/>
     </>
   );
 }

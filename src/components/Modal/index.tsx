@@ -27,26 +27,26 @@ function Modal({isOpen, onClose, details }: ModalProps) {
         </Info>
         <Info>
           <p>Administrador</p>
-          <span>{details.admin}</span>
+          <span>{details?.admin ? `${details.admin}` : "Não Informado"}</span>
         </Info>
         <Info>
           <p>Tipo de fundo</p>
-          <span>{details.tp_fundo}</span>
+          <span>{details?.tp_fundo ? `${details?.tp_fundo}` : "Não Informado"}</span>
         </Info>
         <Info>
           <p>Classe</p>
-          <span>{details.classe}</span>
+          <span>{details?.classe ? `${details.classe}` : "Não Informado"}</span>
         </Info>
         <Info>
           <p>Patrimônio Líquido</p>
-          <span>{formatCurrency(details.vl_patrim_liq)}</span>
+          <span>{details?.vl_patrim_liq ? formatCurrency(details.vl_patrim_liq) : "Não Informado"}</span>
         </Info>
 
         <ModalSection>Características do fundo</ModalSection>
 
         <CharacteristicRow>
           <p>Valor da cota</p>
-          <p>{formatCurrency(details.vlt_quota)}</p>
+          <p>{details?.vlt_quota ? formatCurrency(details.vlt_quota) : "Não Informado"}</p>
         </CharacteristicRow>
         {/* <CharacteristicRow>
           <p>Rentabilidade do fundo</p>
@@ -54,15 +54,15 @@ function Modal({isOpen, onClose, details }: ModalProps) {
         </CharacteristicRow> */}
         <CharacteristicRow>
           <p>Captações realizadas no dia</p>
-          <p>{details?.captc_dia}</p>
+          <p>{details.captc_dia}</p>
         </CharacteristicRow>
         <CharacteristicRow>
           <p>Resgates pagos no dia</p>
-          <p>{details.resg_dia}</p>
+          <p>{details?.resg_dia ? formatCurrency(details.resg_dia) : "Não Informado"}</p>
         </CharacteristicRow>
         <CharacteristicRow>
           <p>Taxa de administração</p>
-          <p>{details.taxa_adm + "%"}</p>
+          <p>{details?.taxa_adm ? `${details.taxa_adm}%` : "Não Informado"}</p>
         </CharacteristicRow>
         <CharacteristicRow>
           <p>Número de cotistas</p>

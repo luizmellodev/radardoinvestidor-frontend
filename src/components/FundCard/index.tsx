@@ -26,6 +26,7 @@ interface FundCardProps {
   fund: any;
   isComparison?: boolean;
   isSelected?: boolean;
+  index?: number;
   onClickDetails?: () => void;
 }
 
@@ -34,6 +35,7 @@ const FundCard = forwardRef<HTMLDivElement, FundCardProps>(({
   isComparison,
   isSelected,
   onClickDetails,
+  index,
 }, ref) => {
   const { updateHiddenFund, selectFund, unselectFund } = useContext(
     FundsContext
@@ -55,7 +57,9 @@ const FundCard = forwardRef<HTMLDivElement, FundCardProps>(({
     <Container ref={ref}>
       <Content>
         <Row marginBottom="12px">
-          <FundTitle isHidden={fund.hidden}>{fund.denom_social}</FundTitle>
+          <FundTitle index={index} isHidden={fund.hidden}>
+            {fund.denom_social}
+          </FundTitle>
           <Actions>
             {isComparison && (
               <IconButton onClick={() => handleHidden(fund)}>
