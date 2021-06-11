@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import api from 'api';
 import { FundsContext } from 'contexts/Funds';
+import { FilterContext } from 'contexts/Filters';
 import useDebounce from 'hooks/useDebounce';
 
 import SubmitButton from 'components/SubmitButton';
@@ -66,6 +67,12 @@ export default function Home() {
     resetFoundedFunds
   } = useContext(FundsContext);
 
+  // const {
+  //   selectedFilters,
+  //   clearFilter,
+  //   updateFilter
+  // } = useContext(FilterContext);
+
   const observerLastItem = useRef<any>()
 
   const lastFundElementRef = useCallback(node => {
@@ -88,8 +95,8 @@ export default function Home() {
     }
   }, [isLoading, hasMore, foundedFunds])
 
-  const handleCompareButtonClick = () => {
-    router.push('/comparacao');
+  const handleRouteButtonClick = (route: string) => {
+    router.push(route);
   };
 
   const handleOnChangeText = async (searchText: string) => {
@@ -147,7 +154,7 @@ export default function Home() {
     <Screen>
       <Container>
         <Header>
-          <HeaderHome onChangeHandler={handleOnChangeText} />
+          <HeaderHome onChangeHandler={handleOnChangeText} router={handleRouteButtonClick} />
         </Header>
         <Tabs>
           <Tab title="Encontrados">
@@ -185,7 +192,7 @@ export default function Home() {
         <Footer>
           <SubmitButton
             isDisable={!selectedFunds.length}
-            onClick={handleCompareButtonClick}
+            onClick={() => handleRouteButtonClick('/comparacao')}
           >
             Comparar Fundos
           </SubmitButton>
