@@ -7,9 +7,9 @@ interface FilterContextValues {
     updateFilter: (fieldSelected: string, value: string|number) => void;
   }
 
-interface IFilter {
+export interface IFilter {
     classe: string,
-    patrimonio: number,
+    patrimonio: Number,
     cotistas: number
 }
 export const FilterContext = createContext({} as FilterContextValues);
