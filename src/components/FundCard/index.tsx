@@ -1,5 +1,5 @@
 import { forwardRef, useContext } from 'react';
-import {formatCurrency} from 'utils/stringHelper';
+import {formatCnpj, formatCurrency} from 'utils/stringHelper';
 
 import {
   MdVisibility,
@@ -37,7 +37,7 @@ const FundCard = forwardRef<HTMLDivElement, FundCardProps>(({
   onClickDetails,
   index,
 }, ref) => {
-  const { updateHiddenFund, selectFund, unselectFund } = useContext(
+  const { updateHiddenFund, selectFund, unselectFund, selectedFunds } = useContext(
     FundsContext
   );
 
