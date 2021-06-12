@@ -7,7 +7,6 @@ export const Container = styled.div`
   padding-top: 8px;
   display: flex;
   overflow-x: auto;
-  scrollbar-width: none;
 
 
 button{

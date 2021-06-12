@@ -1,13 +1,16 @@
 import { Container } from './styles';
+import {formatCotistas, formatPatrimonio} from 'utils/stringHelper';
 
 interface FilterChipProps {
-  labels: string[];
+  router: (value: string) => any;
 }
 
-function FilterChip({labels}: FilterChipProps) {
+function FilterChip({ router}: FilterChipProps) {
   return (
-    <Container>
-      {labels.map(l => <button>{l}</button>)}
+    <Container>  
+     <button onClick={() => router('/filtro')}>Renda Fixa</button>
+     <button onClick={() => router('/filtro')}>{formatCotistas(-50000)}</button>
+     <button onClick={() => router('/filtro')}>{formatPatrimonio(1000000)}</button>
     </Container>
   );
 };

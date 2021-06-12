@@ -72,7 +72,6 @@ export default function Home() {
   //   clearFilter,
   //   updateFilter
   // } = useContext(FilterContext);
-
   const observerLastItem = useRef<any>()
 
   const lastFundElementRef = useCallback(node => {

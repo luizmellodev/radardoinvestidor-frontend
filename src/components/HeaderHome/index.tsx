@@ -6,12 +6,12 @@ interface HeaderHomeProps {
   onChangeHandler: (value: string) => any;
   router: (value: string) => any;
 }
-
 function HeaderHome({ onChangeHandler, router }: HeaderHomeProps) {
   return (
     <Container>
       <img src="/logo-home.png" style={{ paddingBottom: '20px' }} />
       <SearchBar onChange={onChangeHandler} router={router}/>
+      <FilterChip router={router} ></FilterChip>
     </Container>
   );
 }
