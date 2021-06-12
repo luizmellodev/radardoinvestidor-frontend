@@ -11,7 +11,6 @@ interface FundsContextValues {
   resetHiddenState: () => void;
   resetFoundedFunds: () => void;
 }
-
 export const FundsContext = createContext({} as FundsContextValues);
 
 export const FundsProvider: React.FC = ({ children }) => {
