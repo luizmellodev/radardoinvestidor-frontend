@@ -3,19 +3,20 @@ import { createContext, useState} from 'react';
 
 interface FilterContextValues {
     selectedFilters: IFilter;
+    hasStartedByHome: boolean;
     clearFilter: () => void;
+    updateHasStartedByHome: () => void;
     updateFilter: (fieldSelected: string, value: string|number) => void;
   }
 
-interface IFilter {
-    classe: string,
+export interface IFilter {
+    classe: string, 
     patrimonio: number,
     cotistas: number
 }
 export const FilterContext = createContext({} as FilterContextValues);
 
 // export const NavegatingToFilter = () => useRouter().push('src/pages/filtro');
-
 export const FilterProvider: React.FC = ({children}) =>{
     const FilterEmpty: IFilter = {
       classe: "",
@@ -23,9 +24,14 @@ export const FilterProvider: React.FC = ({children}) =>{
       cotistas: 0
     };
     const [selectedFilters, setSelectedFilters] = useState(FilterEmpty as IFilter);
+    const [hasStartedByHome,setHasStartedByHome] = useState(false);
 
     const clearFilter = () => setSelectedFilters(FilterEmpty);
-    
+    const updateHasStartedByHome = () => {
+      console.log(hasStartedByHome)
+      setHasStartedByHome(!hasStartedByHome)
+    };
+
     const updateFilter = (fieldSelected: string, value: string|number) => {
         var newFilter = Object.assign(selectedFilters);
         newFilter[fieldSelected] = value;
@@ -36,8 +42,10 @@ export const FilterProvider: React.FC = ({children}) =>{
         <FilterContext.Provider
           value={{
             selectedFilters,
+            hasStartedByHome,
             clearFilter,
-            updateFilter
+            updateFilter,
+            updateHasStartedByHome
           }}
         >
           {children}

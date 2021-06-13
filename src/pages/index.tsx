@@ -94,8 +94,8 @@ export default function Home() {
     }
   }, [isLoading, hasMore, foundedFunds])
 
-  const handleRouteButtonClick = (route: string) => {
-    router.push(route);
+  const handleCompareButtonClick = () => {
+    router.push("/comparacao");
   };
 
   const handleOnChangeText = async (searchText: string) => {
@@ -153,7 +153,7 @@ export default function Home() {
     <Screen>
       <Container>
         <Header>
-          <HeaderHome onChangeHandler={handleOnChangeText} router={handleRouteButtonClick} />
+          <HeaderHome onChangeHandler={handleOnChangeText}/>
         </Header>
         <Tabs>
           <Tab title="Encontrados">
@@ -191,7 +191,7 @@ export default function Home() {
         <Footer>
           <SubmitButton
             isDisable={!selectedFunds.length}
-            onClick={() => handleRouteButtonClick('/comparacao')}
+            onClick={() => handleCompareButtonClick()}
           >
             Comparar Fundos
           </SubmitButton>
