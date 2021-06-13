@@ -10,9 +10,21 @@ import SubmitButton from 'components/SubmitButton';
 
 const Container = styled.div`
   height: 100%;
-  & SubmitButton{
-    vertical-align: bottom;
-  }
+`;
+const Footer = styled.div`
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  align-items: center;
+  padding: 0px 24px 32px;
+
+  /* position: static;
+  width: 414px;
+  height: 88px;
+  left: 0px;
+  top: 822px; */
+
 `;
 export default function Filtro() {
   const {hasStartedByHome} = useContext(FilterContext);
@@ -20,7 +32,7 @@ export default function Filtro() {
   const classesOptions = [  "Fundo de Ações", "Renda Variável", "Fundo Cambial","Renda Fixa"];
   const cotistasOptions = [-50000, 50000, 100000, 250000, 500000];
   const patrimônioOptions = [-1000000, 1000000, 100000000, 500000000, 1000000000];
-  const router = useRouter();
+  
   // useEffect(() =>{
   //   if(!hasStartedByHome)
   //     useRouter().push('/');
@@ -28,15 +40,21 @@ export default function Filtro() {
 
   return (
     <Screen>
-      <Container>
         <FilterProvider>
           <TopBar title="Filtros" />
-          <FilterSection title={"Classe do patrimônio"} type={"classe"} options={classesOptions}/>
-          <FilterSection title={"Nímero de cotistas"} type={"cotistas"} options={cotistasOptions}/>
-          <FilterSection title={"Patrimônio Liquido"} type={"patrimonio"} options={patrimônioOptions}/>
+          <Container>
+              <FilterSection title={"Classe do patrimônio"} type={"classe"} options={classesOptions}/>
+              <FilterSection title={"Número de cotistas"} type={"cotistas"} options={cotistasOptions}/>
+              <FilterSection title={"Patrimônio Liquido"} type={"patrimonio"} options={patrimônioOptions}/>
+          </Container>
         </FilterProvider>
-        <SubmitButton onClick={() => router.push("/")}>Filtrar</SubmitButton>
-      </Container>
+        <Footer>
+          <SubmitButton onClick={() => useRouter().push("/")}>Filtrar</SubmitButton>
+        </Footer>
     </Screen>
   );
 }
+export const NavegatingToFilter = () => {
+  const router = useRouter()
+  router.push("/filtro" )
+};

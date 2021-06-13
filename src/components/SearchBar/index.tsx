@@ -1,7 +1,7 @@
 import { Container, Input, Row } from './styles';
 import { MdSearch, MdFilterList } from 'react-icons/md';
 import theme from 'styles/theme';
-import {useRouter} from 'next/router'
+import { NavegatingToFilter } from 'pages/filtro';
 interface SearchBarProps {
   onChange: (value: string) => any;
 }
@@ -14,7 +14,7 @@ function SearchBar({ onChange }: SearchBarProps) {
         <Input
           placeholder={'Buscar'}
           onChange={(inputText) => onChange(inputText.target.value)}/>
-        <MdFilterList size={24} color={theme.colors.text} onClick={() => useRouter().push({pathname:'filtro'})}/>
+        <MdFilterList size={24} color={theme.colors.text} onClick={() => NavegatingToFilter()}/>
       </Row>
     </Container>
   );
