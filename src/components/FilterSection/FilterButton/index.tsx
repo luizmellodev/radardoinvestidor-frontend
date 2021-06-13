@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ReactNode } from 'react';
+import { FilterContext } from 'contexts/Filters';
+import { useState, useEffect, useContext } from 'react';
 import { Button, Text } from './styles';
 
 interface FilterButtonProps {
@@ -9,11 +9,25 @@ interface FilterButtonProps {
 }
 
 export default function FilterButton({ label, type, value}: FilterButtonProps) {
-  const [isClicked,setIsClicked] = useState(false);
+  const {selectedFilters, updateFilter} = useContext(FilterContext);
+
+  const [isClicked,setIsClicked] = useState(selectedFilters[type] === value);
+
+  useEffect(() =>{
+    setIsClicked(selectedFilters[type] === value);
+    console.log(`filterButton ${selectedFilters[type]}`)
+  },[selectedFilters]);
 
   const handleClick = () =>{
-    console.log("clicked")
+    console.log("handleClick clicked")
+    if(isClicked){
+      const newValue = typeof value === "string" ? "" : 0;
+      updateFilter(type, newValue); 
+    } 
+    else 
+      updateFilter(type, value);
     setIsClicked(!isClicked);
+    console.log(selectedFilters)
   };
 
   return (

@@ -1,33 +1,28 @@
 import { FilterContext, FilterProvider } from 'contexts/Filters';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Screen from 'components/Screen';
 import TopBar from 'components/TopBar';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import FilterSection from 'components/FilterSection';
 import SubmitButton from 'components/SubmitButton';
 
 const Container = styled.div`
-  height: 100%;
+  /* height: 100%; */
+  overflow-y: scroll;
+  margin-top: 56px;
 `;
 const Footer = styled.div`
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  align-items: center;
   padding: 0px 24px 32px;
 
-  /* position: static;
-  width: 414px;
-  height: 88px;
-  left: 0px;
-  top: 822px; */
-
+`;
+const Header = styled.div`
+  position: fixed;
+  width: 100%;
+  top: 0;
 `;
 export default function Filtro() {
-  const {hasStartedByHome} = useContext(FilterContext);
+  const {selectedFilters,updateFilter} = useContext(FilterContext);
 
   const classesOptions = [  "Fundo de Ações", "Renda Variável", "Fundo Cambial","Renda Fixa"];
   const cotistasOptions = [-50000, 50000, 100000, 250000, 500000];
@@ -41,7 +36,9 @@ export default function Filtro() {
   return (
     <Screen>
         <FilterProvider>
-          <TopBar title="Filtros" />
+          <Header>
+            <TopBar title="Filtros" />
+          </Header>
           <Container>
               <FilterSection title={"Classe do patrimônio"} type={"classe"} options={classesOptions}/>
               <FilterSection title={"Número de cotistas"} type={"cotistas"} options={cotistasOptions}/>

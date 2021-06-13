@@ -16,7 +16,7 @@ export interface IFilter {
 }
 export const FilterContext = createContext({} as FilterContextValues);
 
-// export const NavegatingToFilter = () => useRouter().push('src/pages/filtro');
+
 export const FilterProvider: React.FC = ({children}) =>{
     const FilterEmpty: IFilter = {
       classe: "",

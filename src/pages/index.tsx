@@ -14,6 +14,7 @@ import FundCard from 'components/FundCard';
 import Loading from 'components/Loading';
 import Tabs from 'components/Tabs';
 import Tab from 'components/Tabs/Tab';
+import { formatCnpj } from 'utils/stringHelper';
 
 const Container = styled.div`
   height: 100%;
@@ -95,7 +96,8 @@ export default function Home() {
   }, [isLoading, hasMore, foundedFunds])
 
   const handleCompareButtonClick = () => {
-    router.push("/comparacao");
+    const fundsCnpj: string[] = selectedFunds.map(fund => formatCnpj(fund.cnpj_fundo));
+    router.push({pathname: 'comparacao', query: {fundos: fundsCnpj.join(',')}});
   };
 
   const handleOnChangeText = async (searchText: string) => {

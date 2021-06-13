@@ -8,19 +8,20 @@ interface FilterSectionProps {
   type: string;
   title: string;
   options:string[] | number[];
-}
+}  
+const FilterTitle = styled.strong<any>`
+font-family: Montserrat;
+font-size: 17px;
+line-height: 24px;
+`;
 
 export default function FilterSection({title, type, options }: FilterSectionProps) {
-  const FilterTitle = styled.strong<any>`
-    font-family: Montserrat;
-    font-size: 17px;
-    line-height: 24px;
-  `;
-  const formatOptions = (option:string | number) =>{
-    if(typeof option === "string") 
-      return option;  
-    return type === "cotistas" ? formatCotistas(option) : formatPatrimonio(option);
-  }
+
+const formatOptions = (option:string | number) =>{
+if(typeof option === "string") 
+  return option;  
+return type === "cotistas" ? formatCotistas(option) : formatPatrimonio(option);
+} 
 
   return (
     <Container>
