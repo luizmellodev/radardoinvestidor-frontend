@@ -7,9 +7,10 @@ import { Container } from './styles';
 interface TopBarProps {
   title: string;
   rightIcon?: ReactElement;
+  onClickRight?: () => void;
 }
 
-function TopBar({ title, rightIcon }: TopBarProps) {
+function TopBar({ title, rightIcon, onClickRight }: TopBarProps) {
   const router = useRouter();
 
   return (
@@ -18,7 +19,12 @@ function TopBar({ title, rightIcon }: TopBarProps) {
         <MdArrowBack size={24} />
       </button>
       <p>{title}</p>
-      {rightIcon}
+      {rightIcon && (
+        <button 
+        onClick={onClickRight}>
+        {rightIcon}
+        </button>
+      )}
     </Container>
   );
 }
