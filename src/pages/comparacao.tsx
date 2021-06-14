@@ -15,6 +15,7 @@ import Modal from 'components/Modal';
 import Chart from 'components/Chart';
 import Loading from 'components/Loading';
 import Button from 'components/Button';
+import Toggle from 'components/Toggle';
 
 
 export const Container = styled.div`
@@ -31,7 +32,6 @@ export const Content = styled.div`
 export const ChartContainer = styled.div<IChartContainer>`
   margin: ${(props) => (props.isLoading ? "15px" : "auto 15px")};
 `;
-
 
 export const TitleChart = styled.strong<any>`
   font-family: Montserrat;
@@ -51,6 +51,28 @@ export const TitleFundos = styled.strong<any>`
   margin: 15px auto;
   display:flex;
 `;
+export const CDIToggle = styled.div<ICDI>`
+  padding-right:  ${props => (props.switch ? "0 " : "2px")};
+  padding-top:  2px;
+  font-weight: bold; 
+  text-align: center;
+  float: right;
+  font-size: medium;
+  & p{
+     color: #FFF; 
+     opacity: ${props => (props.switch ?  0 : 1)}; 
+   }
+`;
+export const FooterChart = styled.div`
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+`;
+interface ICDI{
+  switch: boolean
+}
 interface IChartContainer{
   isLoading: boolean;
 }
@@ -72,8 +94,8 @@ export default function Comparacao() {
   const [rentabFunds, setRentabFunds] = useState<any[]>([])
   const [labels, setLabels] = useState<string[]>([]);
   const [datasets, setDatasets] = useState<IDatasets[]>([]);
+  const [isToHiddenCDI,setisToHiddenCDI] = useState(false);
   
-
   useEffect(() => {
     const fetchProfitability = async () => {
       try {
@@ -116,14 +138,7 @@ export default function Comparacao() {
     setLabels(labels)
 
     const diffs = rentabFunds.map((fund: any) => (
-      
-      fund.rentab.map((rentab: any) => {
-        // if(!rentab.diff) return;
-        // console.log(typeof(new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)));
-        // return new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)
-        return rentab.diff;
-      })
-    ))
+        fund.rentab.map((rentab: any) => rentab.diff)));
 
     const datasets = selectedFunds.map((fund, index) => ({
       label: fund.denom_social.length > 20 ? fund.denom_social.substr(0, 20) : fund.denom_social,
@@ -141,10 +156,12 @@ export default function Comparacao() {
       borderColor: theme.colors.text,
       data: cdiRentab.rentab.map((rentab: any) =>{
         return rentab.diff;
-      })
+      }),
+      hidden:isToHiddenCDI
     }
+    console.log([...datasets, CDI])
     setDatasets([...datasets, CDI]);
-  }, [rentabFunds, selectedFunds])
+  }, [rentabFunds, selectedFunds, isToHiddenCDI])
 
   const handleClickDetailButton = async (cnpj:any) => {
     const formatedCnpj = formatCnpj(cnpj);
@@ -157,6 +174,10 @@ export default function Comparacao() {
     setIsModalOpen(false);
   };
 
+ const handleToggle = () => {
+    setisToHiddenCDI(!isToHiddenCDI);
+ }
+ const labelCDIToggle = <CDIToggle switch={isToHiddenCDI}><p>CDI</p></CDIToggle>
   return (
     <>
       <Screen>
@@ -167,11 +188,14 @@ export default function Comparacao() {
             {isLoading ? (
               <Loading/>
             ) : (
-              <Chart labels={labels} datasets={datasets} />
+              <Chart labels={labels} datasets={datasets}/>
             )}
           </ChartContainer>
           <Content>
-          <Button onClick={() => router.push("/")}>Adicionar</Button>
+          <FooterChart>
+            <Button onClick={() => router.push("/")}>Adicionar</Button>
+            <Toggle valueDefault={isToHiddenCDI} handleValue={handleToggle} labelON={labelCDIToggle}/>
+          </FooterChart>
           <TitleFundos>Fundos</TitleFundos>
             {selectedFunds.map((fund, index) => (
               <FundCard
