@@ -33,7 +33,14 @@ const List = styled.div`
 `;
 
 const BottomLoading = styled.div`
-  padding-top: 24px;
+  padding-top: 24px; 
+;
+`
+const BottomLoadingSearch = styled.div`
+    position: relative;
+    width: 100wv;
+    height: 40vh;
+;
 `
 
 const Footer = styled.footer`
@@ -154,7 +161,9 @@ export default function Home() {
         <Tabs>
           <Tab title="Encontrados">
             {isLoading && skip === 0 ? (
-              <Loading />
+              <BottomLoadingSearch>
+                 <Loading />
+              </BottomLoadingSearch>
             ) : (
               foundedFunds.length ? (
                 <List>

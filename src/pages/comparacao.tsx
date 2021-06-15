@@ -165,7 +165,9 @@ export default function Comparacao() {
           <TitleChart>Histórico de Rendimentos</TitleChart>
           <ChartContainer isLoading={isLoading}>
             {isLoading ? (
-              <Loading/>
+              <div style={{ position: 'relative', width: '100wv', height: '40vh' }}>
+                <Loading/>
+              </div>
             ) : (
               <Chart labels={labels} datasets={datasets} />
             )}
