@@ -1,5 +1,5 @@
 import { MdClose } from 'react-icons/md';
-import SearchBar from 'components/SearchBar';
+import UrlBar from 'components/UrlBar';
 
 import { Container, Header, Body, Footer} from './styles';
 
@@ -19,7 +19,8 @@ function ShareModal({isOpen, onClose}: ModalProps) {
         </button>
       </Header>
       <Body>
-      <SearchBar
+        <p>Com o link abaixo você pode compartilhar o <strong>Histórico de Rendimentos</strong> de seus fundos selecionados!</p>
+      <UrlBar
         onChange={() => {}} 
       />
       </Body>
