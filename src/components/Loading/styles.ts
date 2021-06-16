@@ -8,6 +8,8 @@ export const Container = styled.div`
   align-items: center;
   animation: blink 0.75s linear infinite;
 
+
+
   @keyframes blink {
     0% {
       opacity: 0;
