@@ -15,6 +15,7 @@ import Modal from 'components/Modal';
 import Chart from 'components/Chart';
 import Loading from 'components/Loading';
 import Button from 'components/Button';
+import DataFilter from 'components/DataFilter';
 
 
 export const Container = styled.div`
@@ -28,6 +29,11 @@ export const Content = styled.div`
   overflow-y: auto;
   flex: 1;
 `;
+
+export const FilterContent = styled.div`
+  padding: 15px 24px;
+`;
+
 export const ChartContainer = styled.div<IChartContainer>`
   margin: ${(props) => (props.isLoading ? "15px" : "auto 15px")};
 `;
@@ -157,6 +163,10 @@ export default function Comparacao() {
     setIsModalOpen(false);
   };
 
+  const onChangeFilter = (value: string) => {
+    console.log(value);
+  }
+
   return (
     <>
       <Screen>
@@ -172,6 +182,9 @@ export default function Comparacao() {
               <Chart labels={labels} datasets={datasets} />
             )}
           </ChartContainer>
+          <FilterContent>
+            <DataFilter onChange={onChangeFilter} />
+          </FilterContent>
           <Content>
           <Button onClick={() => router.push("/")}>Adicionar</Button>
           <TitleFundos>Fundos</TitleFundos>
