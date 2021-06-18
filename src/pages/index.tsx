@@ -33,7 +33,7 @@ const List = styled.div`
 `;
 
 const BottomLoading = styled.div`
-  padding-top: 24px; 
+  padding-top: 24px;
 ;
 `
 const BottomLoadingSearch = styled.div`
@@ -115,7 +115,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(!!searchText);
   }, [searchText]);
 
   useEffect(() => {
