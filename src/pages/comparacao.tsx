@@ -12,6 +12,7 @@ import TopBar from 'components/TopBar';
 import Screen from 'components/Screen';
 import FundCard from 'components/FundCard';
 import Modal from 'components/Modal';
+import ShareModal from 'components/ShareModal';
 import Chart from 'components/Chart';
 import Loading from 'components/Loading';
 import Button from 'components/Button';
@@ -73,7 +74,8 @@ export default function Comparacao() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [detailedFund, setDetailedFund] = useState({});
   const [rentabFunds, setRentabFunds] = useState<any[]>([])
   const [labels, setLabels] = useState<string[]>([]);
@@ -155,12 +157,20 @@ export default function Comparacao() {
   const handleClickDetailButton = async (cnpj:any) => {
     const formatedCnpj = formatCnpj(cnpj);
     const { data } = await api.get(`/fundo/${formatedCnpj}`);
-    setIsModalOpen(true);
+    setIsDetailModalOpen(true);
     setDetailedFund(data);
   };
 
+  const handleClickShareButton = () => {
+    setIsShareModalOpen(true);
+  };
+
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setIsDetailModalOpen(false);
+  };
+
+  const handleCloseShareModal = () => {
+    setIsShareModalOpen(false);
   };
 
   const onChangeFilter = (value: string) => {
@@ -171,7 +181,7 @@ export default function Comparacao() {
     <>
       <Screen>
         <Container>
-          <TopBar title="Comparação" rightIcon={<MdShare size={24} />} />
+          <TopBar title="Comparação" rightIcon={<MdShare size={24} />} onClickRight={handleClickShareButton}/>
           <TitleChart>Histórico de Rendimentos</TitleChart>
           <ChartContainer isLoading={isLoading}>
             {isLoading ? (
@@ -201,7 +211,8 @@ export default function Comparacao() {
           </Content>
         </Container>
       </Screen>
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} details={detailedFund}/>
+      <Modal isOpen={isDetailModalOpen} onClose={handleCloseModal} details={detailedFund}/>
+      <ShareModal isOpen={isShareModalOpen} onClose={handleCloseShareModal}/>
     </>
   );
 }
