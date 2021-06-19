@@ -16,7 +16,6 @@ export default function FilterButton({ label, type, value, status}: FilterButton
   const { updateCacheFilter, selectedFilters} = useContext(FilterContext);
   
   useEffect(() =>{
-    console.log("passei aqui ", selectedFilters);
     if(type === 'classes' && typeof value === 'string')
       setIsClicked(selectedFilters.classes.includes(value))
     else

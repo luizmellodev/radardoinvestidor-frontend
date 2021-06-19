@@ -12,7 +12,7 @@ export interface IFilter {
     patrimonio: number,
     cotistas: number
 }
-const FilterEmpty: IFilter = {
+export const FilterEmpty: IFilter = {
   classes: [],
   patrimonio: 0,
   cotistas: 0
@@ -20,11 +20,7 @@ const FilterEmpty: IFilter = {
 export const FilterContext = createContext({} as FilterContextValues);
 export const FilterProvider: React.FC = ({children}) =>{
 
-    const [selectedFilters, setSelectedFilters] = useState({
-      classes: [],
-      patrimonio: 0,
-      cotistas: 0
-    } as IFilter);
+    const [selectedFilters, setSelectedFilters] = useState(FilterEmpty as IFilter);
     const clearFilter = () => setSelectedFilters(FilterEmpty);
 
     const updateCacheFilter = (fieldSelected: "classes" | "patrimonio" | "cotistas", value: string | number) => {
@@ -43,7 +39,8 @@ export const FilterProvider: React.FC = ({children}) =>{
       setSelectedFilters(cache);
     };
     useEffect(() =>{
-      console.log(selectedFilters);
+      console.log("Equality ",JSON.stringify(selectedFilters) === JSON.stringify(FilterEmpty));
+      // console.log("Diferences ",selectedFilters.filter(FilterEmpty));
     },[selectedFilters])
     return (
         <FilterContext.Provider

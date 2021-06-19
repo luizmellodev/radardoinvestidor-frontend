@@ -15,11 +15,11 @@ function FilterChip() {
       }
      { 
        selectedFilters.patrimonio !== 0 &&
-        <button onClick={() => router.push('/filtro')}>{formatPatrimonio(selectedFilters.patrimonio)}</button>
+        <button onClick={() => router.push('/filtro')}>{formatPatrimonio(selectedFilters.patrimonio)} de Patrimônio</button>
     }
     {
       selectedFilters.cotistas !== 0 && 
-        <button onClick={() => router.push('/filtro')}>{formatCotistas(selectedFilters.cotistas)}</button>
+        <button onClick={() => router.push('/filtro')}>{formatCotistas(selectedFilters.cotistas)} de Cotistas</button>
     }
     </Container>
   );

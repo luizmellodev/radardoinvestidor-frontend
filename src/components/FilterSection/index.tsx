@@ -32,8 +32,7 @@ const checkOption = (value: string | number) =>{
     status = selectedFilters.classes.includes(value);
   else
     status = selectedFilters[type] === value;
-  console.log(status);
-
+    
   return status;
 };
 
