@@ -8,8 +8,9 @@ export const ButtonSection = styled.div<any>`
   flex-wrap: wrap;
   flex-direction: line;
   margin: 8px 0;
-  justify-content: space-safe;
+  align-content: space-around;
   & button{
-      margin: 5px;
+      margin: 5px 5px 5px;
+      min-width: 90px;
   }
 `;

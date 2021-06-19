@@ -1,6 +1,6 @@
 import { FilterContext } from 'contexts/Filters';
 import styled from 'styled-components';
-import { formatPatrimonio, formatCotistas } from 'utils/stringHelper';
+import {formatFilterLabel } from 'utils/stringHelper';
 import FilterButton from './FilterButton';
 import { ButtonSection, Container } from './styles';
 import {useContext} from 'react';
@@ -20,11 +20,6 @@ export default function FilterSection({title, type, options }: FilterSectionProp
 
 const {selectedFilters} = useContext(FilterContext);
 
-const formatOption = (option: string | number) =>{
-  if(typeof option === "string") 
-    return option;  
-  return type === "cotistas" ? formatCotistas(option) : formatPatrimonio(option);
-} 
 
 const checkOption = (value: string | number) =>{
   let status = false;
@@ -41,7 +36,7 @@ const checkOption = (value: string | number) =>{
       <FilterTitle>{title}</FilterTitle>
       <ButtonSection>
         {options.map((option, index) => 
-           <FilterButton type={type} key={index} value={option} label={formatOption(option)} status={checkOption(option)}/>
+           <FilterButton type={type} key={index} value={option} label={formatFilterLabel(option, type)} status={checkOption(option)}/>
         )}
       </ButtonSection>
     </Container>
