@@ -110,7 +110,7 @@ export default function Comparacao() {
 
   useEffect(() => {
     const fundsCnpj: string[] = selectedFunds.map(fund => formatCnpj(fund.cnpj_fundo));
-    router.push({pathname: 'comparacao', query: {fundos: fundsCnpj.join(',')}});
+    history.replaceState(null, "", window.location.origin.concat(`?fundos=${fundsCnpj.join(',')}`))
   }, [selectedFunds])
 
   useEffect(() => {
