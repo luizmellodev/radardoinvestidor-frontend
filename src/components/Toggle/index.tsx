@@ -1,16 +1,16 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import Switch from "react-switch";
 import theme from 'styles/theme';
 import { Container } from './styles';
 
 interface ToggleProps {
-  labelON: Element;
-  labelOFF?:Element;
+  labelON: JSX.Element;
+  labelOFF?:JSX.Element;
   valueDefault: boolean
   handleValue: () => void;
 }
 
-function Toggle({valueDefault,labelOFF,labelON,handleValue }: ToggleProps) {
+function Toggle({valueDefault,labelON,handleValue }: ToggleProps) {
   const [isChecked,setIsChecked] = useState(!valueDefault);
 
   const handleChange = () =>{

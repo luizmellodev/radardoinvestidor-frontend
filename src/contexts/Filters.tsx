@@ -20,11 +20,7 @@ const FilterEmpty: IFilter = {
 export const FilterContext = createContext({} as FilterContextValues);
 export const FilterProvider: React.FC = ({children}) =>{
 
-    const [selectedFilters, setSelectedFilters] = useState({
-      classes: [],
-      patrimonio: 0,
-      cotistas: 0
-    } as IFilter);
+    const [selectedFilters, setSelectedFilters] = useState(FilterEmpty as IFilter);
     const clearFilter = () => setSelectedFilters(FilterEmpty);
 
     const updateCacheFilter = (fieldSelected: "classes" | "patrimonio" | "cotistas", value: string | number) => {

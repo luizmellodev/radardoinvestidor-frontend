@@ -17,5 +17,10 @@ export const Filter = styled.button<FilterProps>`
   line-height: 18px;
   text-transform: uppercase;
   flex-direction: row;
-  
-`
+`;
+
+export const CDIContainer = styled.div`
+display: inline;
+float:right;
+justify-content: space-between;
+`;

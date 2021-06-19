@@ -1,16 +1,21 @@
 import { useState } from 'react';
 
-import { Filter } from './styles';
+import { Filter, CDIContainer } from './styles';
 
 interface DataFilterProps {
   onChange: any;
+  isToHiddenCDI: boolean;
+  handleOnClick: () => void;
 }
 
 
-const DataFilter = ({onChange}: DataFilterProps) => {
+const DataFilter = ({onChange, isToHiddenCDI, handleOnClick}: DataFilterProps) => {
   const [selectedFilter, setSelectedFilter] = useState("30D");
-
-  return (
+  const CDIStyle = {
+    marginRight:'20px'
+  };
+  
+    return (
     <>
     <Filter isSelected={selectedFilter === "30D"} onClick={() => handleSelect("30D")}>
       30D
@@ -27,6 +32,11 @@ const DataFilter = ({onChange}: DataFilterProps) => {
     <Filter isSelected={selectedFilter === "TUDO"} onClick={() => handleSelect("TUDO")}>
       TUDO
     </Filter>
+    <CDIContainer>
+      <Filter style={CDIStyle} isSelected={isToHiddenCDI} onClick={() => handleOnClick()}>
+        CDI
+      </Filter>
+    </CDIContainer>
     </>
   );
 
