@@ -29,7 +29,6 @@ export const FilterProvider: React.FC = ({children}) =>{
 
     const updateCacheFilter = (fieldSelected: "classes" | "patrimonio" | "cotistas", value: string | number) => {
       const cache: IFilter  = {...selectedFilters};  
-      console.log("exibe");
       if(fieldSelected === "classes" && typeof value === "string"){
         if(selectedFilters.classes.includes(value)){
           cache.classes = selectedFilters.classes.filter((classe) => classe !== value);
