@@ -12,10 +12,11 @@ import TopBar from 'components/TopBar';
 import Screen from 'components/Screen';
 import FundCard from 'components/FundCard';
 import Modal from 'components/Modal';
+import ShareModal from 'components/ShareModal';
 import Chart from 'components/Chart';
 import Loading from 'components/Loading';
 import Button from 'components/Button';
-import Toggle from 'components/Toggle';
+import DataFilter from 'components/DataFilter';
 
 
 export const Container = styled.div`
@@ -29,6 +30,11 @@ export const Content = styled.div`
   overflow-y: auto;
   flex: 1;
 `;
+
+export const FilterContent = styled.div`
+  padding: 15px 24px;
+`;
+
 export const ChartContainer = styled.div<IChartContainer>`
   margin: ${(props) => (props.isLoading ? "15px" : "auto 15px")};
 `;
@@ -89,7 +95,8 @@ export default function Comparacao() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [detailedFund, setDetailedFund] = useState({});
   const [rentabFunds, setRentabFunds] = useState<any[]>([])
   const [labels, setLabels] = useState<string[]>([]);
@@ -110,7 +117,7 @@ export default function Comparacao() {
             to: new Date().toISOString().split("T")[0]
           }
         });
-        console.log(data);
+
         setRentabFunds(data)
       } catch (error) {
         console.error(error);
@@ -128,8 +135,10 @@ export default function Comparacao() {
   }, [selectedFunds])
 
   useEffect(() => {
-    if(!selectedFunds.length)
+    if(!selectedFunds.length) {
       router.push("/");
+    }
+
     if (!rentabFunds.length) return;
 
     const firstFund = rentabFunds[0];
@@ -137,19 +146,22 @@ export default function Comparacao() {
 
     setLabels(labels)
 
-    const diffs = rentabFunds.map((fund: any) => (
-        fund.rentab.map((rentab: any) => rentab.diff)));
+    const diffs = rentabFunds.map((fund: any) => ({
+      name: fund.name,
+      rentab: fund.rentab.map((rentab: any) => rentab.diff)
+    }))
 
     const datasets = selectedFunds.map((fund, index) => ({
       label: fund.denom_social.length > 20 ? fund.denom_social.substr(0, 20) : fund.denom_social,
       backgroundColor: theme.colors.graph[index],
       borderColor: theme.colors.graph[index],
-      data: fund.hidden ? [] : diffs[index]
+      data: fund.hidden ? [] : diffs.find(diff => diff.name === fund.denom_social)?.rentab
     }))
+
     const cdiRentab:any = rentabFunds.find( fund =>
-        fund.name === "CDI"
-      )
-      console.log(cdiRentab);
+      fund.name === "CDI"
+    )
+
     const CDI = {
       label: "CDI",
       backgroundColor: theme.colors.text,
@@ -166,36 +178,49 @@ export default function Comparacao() {
   const handleClickDetailButton = async (cnpj:any) => {
     const formatedCnpj = formatCnpj(cnpj);
     const { data } = await api.get(`/fundo/${formatedCnpj}`);
-    setIsModalOpen(true);
+    setIsDetailModalOpen(true);
     setDetailedFund(data);
   };
 
+  const handleClickShareButton = () => {
+    setIsShareModalOpen(true);
+  };
+
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setIsDetailModalOpen(false);
+  };
+
+  const handleCloseShareModal = () => {
+    setIsShareModalOpen(false);
   };
 
  const handleToggle = () => {
     setisToHiddenCDI(!isToHiddenCDI);
  }
- const labelCDIToggle = <CDIToggle switch={isToHiddenCDI}><p>CDI</p></CDIToggle>
+  const onChangeFilter = (value: string) => {
+    console.log(value);
+  }
+
   return (
     <>
       <Screen>
         <Container>
-          <TopBar title="Comparação" rightIcon={<MdShare size={24} />} />
+          <TopBar title="Comparação" rightIcon={<MdShare size={24} />} onClickRight={handleClickShareButton}/>
           <TitleChart>Histórico de Rendimentos</TitleChart>
           <ChartContainer isLoading={isLoading}>
             {isLoading ? (
-              <Loading/>
+              <div style={{ position: 'relative', width: '100wv', height: '40vh' }}>
+                <Loading/>
+              </div>
             ) : (
               <Chart labels={labels} datasets={datasets}/>
             )}
           </ChartContainer>
+          <FilterContent>
+            <DataFilter onChange={onChangeFilter} isToHiddenCDI={!isToHiddenCDI} handleOnClick={handleToggle} />
+          </FilterContent>
           <Content>
-          <FooterChart>
             <Button onClick={() => router.push("/")}>Adicionar</Button>
-            <Toggle valueDefault={isToHiddenCDI} handleValue={handleToggle} labelON={labelCDIToggle}/>
-          </FooterChart>
           <TitleFundos>Fundos</TitleFundos>
             {selectedFunds.map((fund, index) => (
               <FundCard
@@ -210,7 +235,8 @@ export default function Comparacao() {
           </Content>
         </Container>
       </Screen>
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} details={detailedFund}/>
+      <Modal isOpen={isDetailModalOpen} onClose={handleCloseModal} details={detailedFund}/>
+      <ShareModal isOpen={isShareModalOpen} onClose={handleCloseShareModal}/>
     </>
   );
 }

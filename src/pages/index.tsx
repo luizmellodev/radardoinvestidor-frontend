@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import api from 'api';
 import { FundsContext } from 'contexts/Funds';
+import {FilterProvider } from 'contexts/Filters';
 import useDebounce from 'hooks/useDebounce';
 
 import SubmitButton from 'components/SubmitButton';
@@ -33,7 +34,14 @@ const List = styled.div`
 `;
 
 const BottomLoading = styled.div`
-  padding-top: 24px;
+  padding-top: 24px; 
+;
+`
+const BottomLoadingSearch = styled.div`
+    position: relative;
+    width: 100wv;
+    height: 40vh;
+;
 `
 
 const Footer = styled.footer`
@@ -66,8 +74,7 @@ export default function Home() {
     resetHiddenState,
     resetFoundedFunds
   } = useContext(FundsContext);
-
-  const observerLastItem = useRef<any>()
+  const observerLastItem = useRef<any>();
 
   const lastFundElementRef = useCallback(node => {
     if (isLoading) {
@@ -148,13 +155,15 @@ export default function Home() {
   return (
     <Screen>
       <Container>
-        <Header>
-          <HeaderHome onChangeHandler={handleOnChangeText} />
-        </Header>
+          <Header>
+            <HeaderHome onChangeHandler={handleOnChangeText}/>
+          </Header>
         <Tabs>
           <Tab title="Encontrados">
             {isLoading && skip === 0 ? (
-              <Loading />
+              <BottomLoadingSearch>
+                 <Loading />
+              </BottomLoadingSearch>
             ) : (
               foundedFunds.length ? (
                 <List>
@@ -187,7 +196,7 @@ export default function Home() {
         <Footer>
           <SubmitButton
             isDisable={!selectedFunds.length}
-            onClick={handleCompareButtonClick}
+            onClick={() => handleCompareButtonClick()}
           >
             Comparar Fundos
           </SubmitButton>
