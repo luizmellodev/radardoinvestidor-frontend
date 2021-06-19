@@ -70,7 +70,7 @@ interface IDatasets {
 
 
 export default function Comparacao() {
-  const { selectedFunds } = useContext(FundsContext);
+  const { selectedFunds, updateSelectedFunds, foundedFunds } = useContext(FundsContext);
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -81,8 +81,53 @@ export default function Comparacao() {
   const [labels, setLabels] = useState<string[]>([]);
   const [datasets, setDatasets] = useState<IDatasets[]>([]);
 
+  useEffect(() => {
+    if (!!selectedFunds.length) {
+      return;
+    }
+
+    const fetchComparisonFunds = async () => {
+      try {
+        const selectedsCnpj = window.location.search.replace('?fundos=', '').replace(/%2F/g, '/').split(',')
+
+        const { data } = await api.get('/fundosComparacao', {
+          params: {
+            fundos: selectedsCnpj,
+            to: new Date().toISOString().split("T")[0]
+          }
+        });
+
+        updateSelectedFunds(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (!foundedFunds.length) {
+      console.log('PASSOU AQUI')
+      fetchComparisonFunds()
+    }
+  }, [foundedFunds, selectedFunds, window.location.search])
 
   useEffect(() => {
+    if (window.location.search === '?fundos=') {
+      router.push("/");
+    }
+  }, [window.location.search])
+
+  useEffect(() => {
+    if (!selectedFunds.length) {
+      return;
+    }
+
+    const fundsCnpj: string[] = selectedFunds.map(fund => formatCnpj(fund.cnpj_fundo));
+
+    history.replaceState(null, "", window.location.origin.concat(`/comparacao?fundos=${fundsCnpj.join(',')}`));
+
+    if (!!rentabFunds.length) {
+      return;
+    }
+
     const fetchProfitability = async () => {
       try {
         setIsLoading(true)
@@ -106,18 +151,9 @@ export default function Comparacao() {
     }
 
     fetchProfitability();
-  }, [])
+  }, [selectedFunds, rentabFunds])
 
   useEffect(() => {
-    const fundsCnpj: string[] = selectedFunds.map(fund => formatCnpj(fund.cnpj_fundo));
-    router.push({pathname: 'comparacao', query: {fundos: fundsCnpj.join(',')}});
-  }, [selectedFunds])
-
-  useEffect(() => {
-    if(!selectedFunds.length) {
-      router.push("/");
-    }
-
     if (!rentabFunds.length) return;
 
     const firstFund = rentabFunds[0];

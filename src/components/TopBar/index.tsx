@@ -15,12 +15,12 @@ function TopBar({ title, rightIcon, onClickRight }: TopBarProps) {
 
   return (
     <Container rightIcon={!!rightIcon}>
-      <button onClick={() => router.back()}>
+      <button onClick={() => router.push('/')}>
         <MdArrowBack size={24} />
       </button>
       <p>{title}</p>
       {rightIcon && (
-        <button 
+        <button
         onClick={onClickRight}>
         {rightIcon}
         </button>
