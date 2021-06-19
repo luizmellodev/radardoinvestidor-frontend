@@ -1,13 +1,18 @@
 import styled from 'styled-components';
+import theme from 'styles/theme';
 
 interface FilterProps {
   isSelected: boolean;
 }
 
-export const Filter = styled.button<FilterProps>`
-  background: ${(props) => (props.isSelected ? "#757680":"none")};
-  color: ${(props) => (props.isSelected ? "#2E2D33":"#757680")};
+export const Container = styled.div`
+  display: flex;
 
+`;
+
+export const Filter = styled.button<FilterProps>`
+  background: ${(props) => (props.isSelected ? theme.colors.filterClicked : "transparent")};
+  color: ${(props) => (props.isSelected ? theme.colors.text : theme.colors.textDescription)};
   border: 0px;
   border-radius: 4px;
   padding: 2px 6px;
@@ -20,7 +25,7 @@ export const Filter = styled.button<FilterProps>`
 `;
 
 export const CDIContainer = styled.div`
-display: inline;
-float:right;
-justify-content: space-between;
+  flex: 1;
+  text-align: right;
+  display: inline-block;
 `;
