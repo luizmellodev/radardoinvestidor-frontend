@@ -1,51 +1,57 @@
+import { useEffect } from 'react';
 import { createContext, useState} from 'react';
-// import { useRouter } from 'next/router';
 
 interface FilterContextValues {
     selectedFilters: IFilter;
-    hasStartedByHome: boolean;
     clearFilter: () => void;
-    updateHasStartedByHome: () => void;
-    updateFilter: (fieldSelected: string, value: string|number) => void;
+    updateCacheFilter: (fieldSelected: "classes" | "patrimonio" | "cotistas", value: string | number) => void;
   }
 
 export interface IFilter {
-    classe: string, 
+    classes: string[], 
     patrimonio: number,
     cotistas: number
 }
+const FilterEmpty: IFilter = {
+  classes: [],
+  patrimonio: 0,
+  cotistas: 0
+};
 export const FilterContext = createContext({} as FilterContextValues);
-
-
 export const FilterProvider: React.FC = ({children}) =>{
-    const FilterEmpty: IFilter = {
-      classe: "",
+
+    const [selectedFilters, setSelectedFilters] = useState({
+      classes: [],
       patrimonio: 0,
       cotistas: 0
-    };
-    const [selectedFilters, setSelectedFilters] = useState(FilterEmpty as IFilter);
-    const [hasStartedByHome,setHasStartedByHome] = useState(false);
-
+    } as IFilter);
     const clearFilter = () => setSelectedFilters(FilterEmpty);
-    const updateHasStartedByHome = () => {
-      console.log(hasStartedByHome)
-      setHasStartedByHome(!hasStartedByHome)
-    };
 
-    const updateFilter = (fieldSelected: string, value: string|number) => {
-        var newFilter = Object.assign(selectedFilters);
-        newFilter[fieldSelected] = value;
-        setSelectedFilters(newFilter);
+    const updateCacheFilter = (fieldSelected: "classes" | "patrimonio" | "cotistas", value: string | number) => {
+      const cache: IFilter  = {...selectedFilters};  
+      console.log("exibe");
+      if(fieldSelected === "classes" && typeof value === "string"){
+        if(selectedFilters.classes.includes(value)){
+          cache.classes = selectedFilters.classes.filter((classe) => classe !== value);
+        }
+        else {
+          cache.classes.push(value);
+        }
+      }
+      else if(fieldSelected !== "classes" && typeof value !== "string"){
+        cache[fieldSelected] === value ? cache[fieldSelected] = 0 : cache[fieldSelected] = value;
+      }
+      setSelectedFilters(cache);
     };
-
+    useEffect(() =>{
+      console.log(selectedFilters);
+    },[selectedFilters])
     return (
         <FilterContext.Provider
           value={{
             selectedFilters,
-            hasStartedByHome,
             clearFilter,
-            updateFilter,
-            updateHasStartedByHome
+            updateCacheFilter
           }}
         >
           {children}

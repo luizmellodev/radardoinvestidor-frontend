@@ -1,11 +1,12 @@
+import { FilterContext } from 'contexts/Filters';
 import styled from 'styled-components';
 import { formatPatrimonio, formatCotistas } from 'utils/stringHelper';
 import FilterButton from './FilterButton';
 import { ButtonSection, Container } from './styles';
-
+import {useContext} from 'react';
 
 interface FilterSectionProps {
-  type: string;
+  type: "classes" | "patrimonio" | "cotistas";
   title: string;
   options:string[] | number[];
 }  
@@ -17,17 +18,32 @@ line-height: 24px;
 
 export default function FilterSection({title, type, options }: FilterSectionProps) {
 
-const formatOptions = (option:string | number) =>{
-if(typeof option === "string") 
-  return option;  
-return type === "cotistas" ? formatCotistas(option) : formatPatrimonio(option);
+const {selectedFilters} = useContext(FilterContext);
+
+const formatOption = (option: string | number) =>{
+  if(typeof option === "string") 
+    return option;  
+  return type === "cotistas" ? formatCotistas(option) : formatPatrimonio(option);
 } 
+
+const checkOption = (value: string | number) =>{
+  let status = false;
+  if(type === "classes" && typeof value === "string")
+    status = selectedFilters.classes.includes(value);
+  else
+    status = selectedFilters[type] === value;
+  console.log(status);
+
+  return status;
+};
 
   return (
     <Container>
       <FilterTitle>{title}</FilterTitle>
       <ButtonSection>
-        {options.map((option, index) => <FilterButton type={type} key={index} value={option} label={formatOptions(option)}/>)}
+        {options.map((option, index) => 
+           <FilterButton type={type} key={index} value={option} label={formatOption(option)} status={checkOption(option)}/>
+        )}
       </ButtonSection>
     </Container>
   );

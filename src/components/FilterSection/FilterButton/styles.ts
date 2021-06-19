@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+interface IButton{
+    isClicked :  boolean
+};
 export const Text = styled.p`
     font-family: Source Sans Pro;
     font-weight: bold;
@@ -8,7 +11,7 @@ export const Text = styled.p`
     margin: 0px 8px;
     text-transform: uppercase;
 `;
-export const Button = styled.button<any>`
+export const Button = styled.button<IButton>`
     background-color: ${(props) => (props.isClicked ? props.theme.colors.primary : props.theme.colors.background)};
     border: 3px solid ${(props) => props.theme.colors.primary};
     border-radius: 100px;

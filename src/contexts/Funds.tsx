@@ -16,7 +16,6 @@ export const FundsContext = createContext({} as FundsContextValues);
 export const FundsProvider: React.FC = ({ children }) => {
   const [selectedFunds, setSelectedFunds] = useState([] as any[]);
   const [foundedFunds, setFoundedFunds] = useState([] as any[]);
-
   const errorToast = () => toast.error('O máximo de fundos já foi selecionado!');
 
   const updateFetchedFunds = (fundsList: any[]) => {

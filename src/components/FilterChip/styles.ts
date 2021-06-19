@@ -4,25 +4,20 @@ export const Container = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding-top: 8px;
+  padding: 8px;
+  padding-bottom: 12px;
   display: flex;
   overflow-x: auto;
+  /* background-color: brown; */
 
-
-button{
-  flex-direction: row; 
+button{ 
   flex: 0 0 auto;
-  justify-content: flex-start; 
   background: ${(props) => props.theme.colors.text};
   color: #fff;
   border-radius: 24px;
   border: 0;
-  align-self: auto;
   align-items: center;
-  justify-content: center;
   font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: normal;
   font-size: 14px;
   line-height: 18px;
   margin: 0 4px;

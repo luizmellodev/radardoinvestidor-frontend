@@ -111,14 +111,8 @@ export default function Comparacao() {
     setLabels(labels)
 
     const diffs = rentabFunds.map((fund: any) => (
-      
-      fund.rentab.map((rentab: any) => {
-        // if(!rentab.diff) return;
-        // console.log(typeof(new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)));
-        // return new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)
-        return rentab.diff;
-      })
-    ))
+      fund.rentab.map((rentab: any) => {rentab.diff})
+      ));
 
     const datasets = selectedFunds.map((fund, index) => ({
       label: fund.denom_social.length > 20 ? fund.denom_social.substr(0, 20) : fund.denom_social,

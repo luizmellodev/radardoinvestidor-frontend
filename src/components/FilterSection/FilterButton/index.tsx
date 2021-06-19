@@ -1,37 +1,31 @@
 import { FilterContext } from 'contexts/Filters';
-import { useState, useEffect, useContext } from 'react';
+import { useEffect } from 'react';
+import { useContext, useState } from 'react';
 import { Button, Text } from './styles';
 
 interface FilterButtonProps {
-  type:string;
+  type:"classes" | "patrimonio" | "cotistas";
   value:string|number;
-  label:string
+  label:string,
+  status:boolean
 }
 
-export default function FilterButton({ label, type, value}: FilterButtonProps) {
-  const {selectedFilters, updateFilter} = useContext(FilterContext);
-
-  const [isClicked,setIsClicked] = useState(selectedFilters[type] === value);
-
+export default function FilterButton({ label, type, value, status}: FilterButtonProps) {
+  
+  const [isClicked, setIsClicked] = useState(status);
+  const { updateCacheFilter, selectedFilters} = useContext(FilterContext);
+  
   useEffect(() =>{
-    setIsClicked(selectedFilters[type] === value);
-    console.log(`filterButton ${selectedFilters[type]}`)
+    console.log("passei aqui ", selectedFilters);
+    if(type === 'classes' && typeof value === 'string')
+      setIsClicked(selectedFilters.classes.includes(value))
+    else
+      setIsClicked(selectedFilters[type] === value);
   },[selectedFilters]);
 
-  const handleClick = () =>{
-    console.log("handleClick clicked")
-    if(isClicked){
-      const newValue = typeof value === "string" ? "" : 0;
-      updateFilter(type, newValue); 
-    } 
-    else 
-      updateFilter(type, value);
-    setIsClicked(!isClicked);
-    console.log(selectedFilters)
-  };
 
   return (
-    <Button isClicked={isClicked} onClick={() => handleClick()}>
+    <Button isClicked={isClicked} onClick={() => updateCacheFilter(type, value)}>
       <Text>
         {label}
       </Text>
