@@ -80,7 +80,7 @@ export default function Comparacao() {
   const [rentabFunds, setRentabFunds] = useState<any[]>([])
   const [labels, setLabels] = useState<string[]>([]);
   const [datasets, setDatasets] = useState<IDatasets[]>([]);
-  
+
 
   useEffect(() => {
     const fetchProfitability = async () => {
@@ -96,7 +96,7 @@ export default function Comparacao() {
             to: new Date().toISOString().split("T")[0]
           }
         });
-        console.log(data);
+
         setRentabFunds(data)
       } catch (error) {
         console.error(error);
@@ -114,8 +114,10 @@ export default function Comparacao() {
   }, [selectedFunds])
 
   useEffect(() => {
-    if(!selectedFunds.length)
+    if(!selectedFunds.length) {
       router.push("/");
+    }
+
     if (!rentabFunds.length) return;
 
     const firstFund = rentabFunds[0];
@@ -123,26 +125,22 @@ export default function Comparacao() {
 
     setLabels(labels)
 
-    const diffs = rentabFunds.map((fund: any) => (
-      
-      fund.rentab.map((rentab: any) => {
-        // if(!rentab.diff) return;
-        // console.log(typeof(new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)));
-        // return new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)
-        return rentab.diff;
-      })
-    ))
+    const diffs = rentabFunds.map((fund: any) => ({
+      name: fund.name,
+      rentab: fund.rentab.map((rentab: any) => rentab.diff)
+    }))
 
     const datasets = selectedFunds.map((fund, index) => ({
       label: fund.denom_social.length > 20 ? fund.denom_social.substr(0, 20) : fund.denom_social,
       backgroundColor: theme.colors.graph[index],
       borderColor: theme.colors.graph[index],
-      data: fund.hidden ? [] : diffs[index]
+      data: fund.hidden ? [] : diffs.find(diff => diff.name === fund.denom_social)?.rentab
     }))
+
     const cdiRentab:any = rentabFunds.find( fund =>
-        fund.name === "CDI"
-      )
-      console.log(cdiRentab);
+      fund.name === "CDI"
+    )
+
     const CDI = {
       label: "CDI",
       backgroundColor: theme.colors.text,
