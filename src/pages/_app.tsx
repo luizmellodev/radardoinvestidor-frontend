@@ -6,6 +6,7 @@ import theme from 'styles/theme';
 import SplashScreen from '../components/Splash';
 
 import { FundsProvider } from 'contexts/Funds';
+import { FilterProvider } from 'contexts/Filters';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,8 +24,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <FundsProvider>
-        <ToastContainer />
-        {isLoading ? <SplashScreen /> : <Component {...pageProps} />}
+        <FilterProvider>
+          <ToastContainer />
+          {isLoading ? <SplashScreen /> : <Component {...pageProps} />}
+        </FilterProvider>
       </FundsProvider>
     </ThemeProvider>
   );
