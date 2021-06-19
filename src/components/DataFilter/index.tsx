@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Filter, CDIContainer } from './styles';
 
 interface DataFilterProps {

@@ -57,18 +57,7 @@ export const TitleFundos = styled.strong<any>`
   margin: 15px auto;
   display:flex;
 `;
-export const CDIToggle = styled.div<ICDI>`
-  padding-right:  ${props => (props.switch ? "0 " : "2px")};
-  padding-top:  2px;
-  font-weight: bold; 
-  text-align: center;
-  float: right;
-  font-size: medium;
-  & p{
-     color: #FFF; 
-     opacity: ${props => (props.switch ?  0 : 1)}; 
-   }
-`;
+
 export const FooterChart = styled.div`
   margin: 0;
   padding: 0;
@@ -76,9 +65,7 @@ export const FooterChart = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-interface ICDI{
-  switch: boolean
-}
+
 interface IChartContainer{
   isLoading: boolean;
 }
