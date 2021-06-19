@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface FundsContextValues {
@@ -7,6 +7,7 @@ interface FundsContextValues {
   selectFund: (name: string) => void;
   unselectFund: (name: string) => void;
   updateFetchedFunds: (fundsList: any[]) => void;
+  updateSelectedFunds: (fundsList: any[]) => void;
   updateHiddenFund: (name: string) => void;
   resetHiddenState: () => void;
   resetFoundedFunds: () => void;
@@ -17,6 +18,10 @@ export const FundsProvider: React.FC = ({ children }) => {
   const [selectedFunds, setSelectedFunds] = useState([] as any[]);
   const [foundedFunds, setFoundedFunds] = useState([] as any[]);
   const errorToast = () => toast.error('O máximo de fundos já foi selecionado!');
+
+  const updateSelectedFunds = useCallback((fundsList: any[]) => {
+    setSelectedFunds(fundsList)
+  }, [])
 
   const updateFetchedFunds = (fundsList: any[]) => {
     const selectedNames = selectedFunds.map((fund) => fund.denom_social);
@@ -106,6 +111,7 @@ export const FundsProvider: React.FC = ({ children }) => {
         selectFund,
         unselectFund,
         updateFetchedFunds,
+        updateSelectedFunds,
         updateHiddenFund,
         resetHiddenState,
         resetFoundedFunds

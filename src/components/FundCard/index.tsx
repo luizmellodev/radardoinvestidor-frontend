@@ -1,5 +1,5 @@
 import { forwardRef, useContext } from 'react';
-import {formatCnpj, formatCurrency} from 'utils/stringHelper';
+import { formatCurrency } from 'utils/stringHelper';
 
 import {
   MdVisibility,
@@ -21,6 +21,7 @@ import {
 
 import { FundsContext } from 'contexts/Funds';
 import Button from 'components/Button';
+import router from 'next/router';
 
 interface FundCardProps {
   fund: any;
@@ -43,6 +44,10 @@ const FundCard = forwardRef<HTMLDivElement, FundCardProps>(({
 
   function handleSelect(fund: any) {
     if (isSelected) {
+      if (selectedFunds.length === 1 && isComparison) {
+        router.push('/');
+      }
+
       unselectFund(fund.denom_social);
     } else {
       selectFund(fund.denom_social);
