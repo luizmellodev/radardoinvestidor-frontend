@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import api from 'api';
 import { FundsContext } from 'contexts/Funds';
-import {FilterProvider } from 'contexts/Filters';
+import {FilterContext, FilterEmpty } from 'contexts/Filters';
 import useDebounce from 'hooks/useDebounce';
 
 import SubmitButton from 'components/SubmitButton';
@@ -58,13 +58,21 @@ const Center = styled.p`
   justify-content: center;
   align-items: center;
 `;
-
+interface IParameters{
+  params: {
+    s:string,
+    skip:number,
+    classes?: string[],
+    cotistas?:number,
+    pl?:number
+  }
+};
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(true)
-
+  const {selectedFilters} = useContext(FilterContext);
   const router = useRouter();
   const debouncedSearchText = useDebounce(searchText, 1000);
   const {
@@ -130,13 +138,26 @@ export default function Home() {
     const fetchFunds = async () => {
       try {
         setIsLoading(true);
-
-        const { data } = await api.get('/pesquisa', {
+        let parameters: IParameters = {
           params: {
             s: debouncedSearchText,
             skip,
+            classes: selectedFilters.classes,
+            pl: selectedFilters.patrimonio,
+            cotistas: selectedFilters.cotistas
           },
-        });
+        };
+        if(!parameters.params.classes?.length){
+          delete parameters.params.classes;
+        }
+        if(!parameters.params.pl){
+          delete parameters.params.pl;
+        }
+        if(!parameters.params.cotistas){
+          delete parameters.params.cotistas;
+        }
+
+        const { data } = await api.get('/pesquisa', parameters);
 
         console.log('FETCHED FUNDS', debouncedSearchText, data);
         updateFetchedFunds(data);
