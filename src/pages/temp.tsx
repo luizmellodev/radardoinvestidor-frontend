@@ -12,7 +12,6 @@ import TopBar from 'components/TopBar';
 import Screen from 'components/Screen';
 import FundCard from 'components/FundCard';
 import Modal from 'components/Modal';
-import ShareModal from 'components/ShareModal';
 import Chart from 'components/Chart';
 import Loading from 'components/Loading';
 import Button from 'components/Button';
@@ -70,77 +69,31 @@ interface IDatasets {
 
 interface IParams {
   fundos: any[],
-  from?: string,
-  to: string
+  from: string | undefined,
+  to: string,
 }
 
 
 export default function Comparacao() {
-  const { selectedFunds, updateSelectedFunds, foundedFunds } = useContext(FundsContext);
+  const { selectedFunds } = useContext(FundsContext);
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [detailedFund, setDetailedFund] = useState({});
   const [rentabFunds, setRentabFunds] = useState<any[]>([])
   const [labels, setLabels] = useState<string[]>([]);
   const [datasets, setDatasets] = useState<IDatasets[]>([]);
   const [dataFilter, setDataFilter] = useState(new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split("T")[0]);
+  
 
   useEffect(() => {
-    if (!!selectedFunds.length) {
-      return;
-    }
-
-    const fetchComparisonFunds = async () => {
-      try {
-        const selectedsCnpj = window.location.search.replace('?fundos=', '').replace(/%2F/g, '/').split(',')
-
-        const { data } = await api.get('/fundosComparacao', {
-          params: {
-            fundos: selectedsCnpj,
-            to: new Date().toISOString().split("T")[0]
-          }
-        });
-
-        updateSelectedFunds(data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    if (!foundedFunds.length) {
-      console.log('PASSOU AQUI')
-      fetchComparisonFunds()
-    }
-  }, [foundedFunds, selectedFunds, window.location.search])
-
-  useEffect(() => {
-    if (window.location.search === '?fundos=') {
-      router.push("/");
-    }
-  }, [window.location.search])
-
-  useEffect(() => {
-    if (!selectedFunds.length) {
-      return;
-    }
-
-    const fundsCnpj: string[] = selectedFunds.map(fund => formatCnpj(fund.cnpj_fundo));
-
-    history.replaceState(null, "", window.location.origin.concat(`/comparacao?fundos=${fundsCnpj.join(',')}`));
-
-    if (!!rentabFunds.length) {
-      return;
-    }
-
     const fetchProfitability = async () => {
       try {
-        setIsLoading(true)
+        setIsLoading(true);
 
-        const selectedsCnpj = selectedFunds.map((fund) => fund.cnpj_fundo)
-        
+        const selectedsCnpj = selectedFunds.map((fund) => fund.cnpj_fundo);
+
         const params: IParams = {
           fundos: selectedsCnpj,
           from: dataFilter,
@@ -148,22 +101,30 @@ export default function Comparacao() {
         };
 
         !dataFilter && delete params.from;
+
         const { data } = await api.get('/rentabilidade', {
           params: params,
         });
-
-        setRentabFunds(data)
+        console.log(data);
+        setRentabFunds(data);
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
     fetchProfitability();
-  }, [dataFilter, selectedFunds, rentabFunds])
+  }, [dataFilter]);
 
   useEffect(() => {
+    const fundsCnpj: string[] = selectedFunds.map(fund => formatCnpj(fund.cnpj_fundo));
+    router.push({pathname: 'comparacao', query: {fundos: fundsCnpj.join(',')}});
+  }, [selectedFunds])
+
+  useEffect(() => {
+    if(!selectedFunds.length)
+      router.push("/");
     if (!rentabFunds.length) return;
 
     const firstFund = rentabFunds[0];
@@ -171,22 +132,26 @@ export default function Comparacao() {
 
     setLabels(labels)
 
-    const diffs = rentabFunds.map((fund: any) => ({
-      name: fund.name,
-      rentab: fund.rentab.map((rentab: any) => rentab.diff)
-    }))
+    const diffs = rentabFunds.map((fund: any) => (
+      
+      fund.rentab.map((rentab: any) => {
+        // if(!rentab.diff) return;
+        // console.log(typeof(new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)));
+        // return new Intl.NumberFormat('en-US',{style:'percent', maximumFractionDigits: 2}).format(rentab?.diff)
+        return rentab.diff;
+      })
+    ))
 
     const datasets = selectedFunds.map((fund, index) => ({
       label: fund.denom_social.length > 20 ? fund.denom_social.substr(0, 20) : fund.denom_social,
       backgroundColor: theme.colors.graph[index],
       borderColor: theme.colors.graph[index],
-      data: fund.hidden ? [] : diffs.find(diff => diff.name === fund.denom_social)?.rentab
+      data: fund.hidden ? [] : diffs[index]
     }))
-
     const cdiRentab:any = rentabFunds.find( fund =>
-      fund.name === "CDI"
-    )
-
+        fund.name === "CDI"
+      )
+      console.log(cdiRentab);
     const CDI = {
       label: "CDI",
       backgroundColor: theme.colors.text,
@@ -201,20 +166,12 @@ export default function Comparacao() {
   const handleClickDetailButton = async (cnpj:any) => {
     const formatedCnpj = formatCnpj(cnpj);
     const { data } = await api.get(`/fundo/${formatedCnpj}`);
-    setIsDetailModalOpen(true);
+    setIsModalOpen(true);
     setDetailedFund(data);
   };
 
-  const handleClickShareButton = () => {
-    setIsShareModalOpen(true);
-  };
-
   const handleCloseModal = () => {
-    setIsDetailModalOpen(false);
-  };
-
-  const handleCloseShareModal = () => {
-    setIsShareModalOpen(false);
+    setIsModalOpen(false);
   };
 
   const onChangeFilter = (value: string) => {
@@ -240,7 +197,7 @@ export default function Comparacao() {
     <>
       <Screen>
         <Container>
-          <TopBar title="Comparação" rightIcon={<MdShare size={24} />} onClickRight={handleClickShareButton}/>
+          <TopBar title="Comparação" rightIcon={<MdShare size={24} />} />
           <TitleChart>Histórico de Rendimentos</TitleChart>
           <ChartContainer isLoading={isLoading}>
             {isLoading ? (
@@ -270,8 +227,7 @@ export default function Comparacao() {
           </Content>
         </Container>
       </Screen>
-      <Modal isOpen={isDetailModalOpen} onClose={handleCloseModal} details={detailedFund}/>
-      <ShareModal isOpen={isShareModalOpen} onClose={handleCloseShareModal}/>
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal} details={detailedFund}/>
     </>
   );
 }
