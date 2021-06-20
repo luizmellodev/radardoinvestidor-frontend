@@ -111,7 +111,6 @@ export default function Comparacao() {
     }
 
     if (!foundedFunds.length) {
-      console.log('PASSOU AQUI')
       fetchComparisonFunds()
     }
   }, [foundedFunds, selectedFunds, window.location.search])
