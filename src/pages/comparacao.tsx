@@ -39,7 +39,6 @@ export const ChartContainer = styled.div<IChartContainer>`
   margin: ${(props) => (props.isLoading ? "15px" : "auto 15px")};
 `;
 
-
 export const TitleChart = styled.strong<any>`
   font-family: Montserrat;
   font-size: 20px;
@@ -58,6 +57,15 @@ export const TitleFundos = styled.strong<any>`
   margin: 15px auto;
   display:flex;
 `;
+
+export const FooterChart = styled.div`
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+`;
+
 interface IChartContainer{
   isLoading: boolean;
 }
@@ -87,6 +95,7 @@ export default function Comparacao() {
   const [labels, setLabels] = useState<string[]>([]);
   const [datasets, setDatasets] = useState<IDatasets[]>([]);
   const [dataFilter, setDataFilter] = useState(new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split("T")[0]);
+  const [isToHiddenCDI,setisToHiddenCDI] = useState(false);
 
   useEffect(() => {
     if (!!selectedFunds.length) {
@@ -192,10 +201,12 @@ export default function Comparacao() {
       borderColor: theme.colors.text,
       data: cdiRentab.rentab.map((rentab: any) =>{
         return rentab.diff;
-      })
+      }),
+      hidden:isToHiddenCDI
     }
+    console.log([...datasets, CDI])
     setDatasets([...datasets, CDI]);
-  }, [rentabFunds, selectedFunds])
+  }, [rentabFunds, selectedFunds, isToHiddenCDI])
 
   const handleClickDetailButton = async (cnpj:any) => {
     const formatedCnpj = formatCnpj(cnpj);
@@ -216,6 +227,9 @@ export default function Comparacao() {
     setIsShareModalOpen(false);
   };
 
+ const handleToggle = () => {
+    setisToHiddenCDI(!isToHiddenCDI);
+ }
   const onChangeFilter = (value: string) => {
     var todaysDate = new Date();
     var data = "";
@@ -247,14 +261,14 @@ export default function Comparacao() {
                 <Loading/>
               </div>
             ) : (
-              <Chart labels={labels} datasets={datasets} />
+              <Chart labels={labels} datasets={datasets}/>
             )}
           </ChartContainer>
           <FilterContent>
-            <DataFilter onChange={onChangeFilter} />
+            <DataFilter onChange={onChangeFilter} isToHiddenCDI={!isToHiddenCDI} handleOnClick={handleToggle} />
           </FilterContent>
           <Content>
-          <Button onClick={() => router.push("/")}>Adicionar</Button>
+            <Button onClick={() => router.push("/")}>Adicionar</Button>
           <TitleFundos>Fundos</TitleFundos>
             {selectedFunds.map((fund, index) => (
               <FundCard

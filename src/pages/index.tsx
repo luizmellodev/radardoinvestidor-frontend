@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import api from 'api';
 import { FundsContext } from 'contexts/Funds';
-import {FilterContext, FilterEmpty } from 'contexts/Filters';
+import { FilterContext } from 'contexts/Filters';
 import useDebounce from 'hooks/useDebounce';
 
 import SubmitButton from 'components/SubmitButton';

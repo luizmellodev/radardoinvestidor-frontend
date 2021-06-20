@@ -1,11 +1,13 @@
 import { createRef, useEffect } from 'react'
 import Chart from 'chart.js/auto';
+import { useState } from 'react';
 
 interface IDatasets {
   label: string;
   data: number[];
   borderColor: string;
   backgroundColor: string;
+  hidden?: boolean;
 }
 
 interface ComparisonChartProps {
@@ -24,6 +26,8 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
     const myChartRef = chartRef.current.getContext('2d');
 
     if (typeof myLineChart !== "undefined") myLineChart.destroy();
+
+
 
     myLineChart = new Chart(myChartRef, {
       type: 'line',
