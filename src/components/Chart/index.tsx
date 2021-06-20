@@ -49,13 +49,16 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
         },
         scales: {
           x: {
-            // display: false,
+            ticks:{
+              autoSkip: false,
+            },
           },
           y: {
             type: 'linear',
             display: true,
             position: 'left',
             ticks: {
+              beginAtZero: true,
               callback: function(value:number) {
                   return  value.toFixed(2) + "%";
               },

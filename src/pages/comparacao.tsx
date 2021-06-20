@@ -131,16 +131,16 @@ export default function Comparacao() {
 
     history.replaceState(null, "", window.location.origin.concat(`/comparacao?fundos=${fundsCnpj.join(',')}`));
 
-    if (!!rentabFunds.length) {
-      return;
-    }
+    // if (!!rentabFunds.length) {
+    //   return;
+    // }
 
     const fetchProfitability = async () => {
       try {
         setIsLoading(true)
 
         const selectedsCnpj = selectedFunds.map((fund) => fund.cnpj_fundo)
-        
+
         const params: IParams = {
           fundos: selectedsCnpj,
           from: dataFilter,
@@ -161,7 +161,7 @@ export default function Comparacao() {
     }
 
     fetchProfitability();
-  }, [dataFilter, selectedFunds, rentabFunds])
+  }, [dataFilter, selectedFunds])
 
   useEffect(() => {
     if (!rentabFunds.length) return;
@@ -220,7 +220,7 @@ export default function Comparacao() {
   const onChangeFilter = (value: string) => {
     var todaysDate = new Date();
     var data = "";
-    
+
     if (value === "30D") {
       data = new Date(todaysDate.setDate(todaysDate.getDate() - 30)).toISOString().split("T")[0];
     } else if (value === "3M") {
