@@ -19,12 +19,7 @@ function TopBar({ title, rightIcon, onClickRight }: TopBarProps) {
         <MdArrowBack size={24} />
       </button>
       <p>{title}</p>
-      {rightIcon && (
-        <button
-        onClick={onClickRight}>
-        {rightIcon}
-        </button>
-      )}
+      {rightIcon && <button onClick={onClickRight}>{rightIcon}</button>}
     </Container>
   );
 }

@@ -41,7 +41,10 @@ export const FundTitle = styled.strong<FundTitleProps>`
   font-family: Montserrat;
   font-size: 17px;
   line-height: 24px;
-  color: ${({theme, index}) => typeof index !== 'undefined' ? theme.colors.graph[index] : theme.colors.text};
+  color: ${({ theme, index }) =>
+    typeof index !== 'undefined'
+      ? theme.colors.graph[index]
+      : theme.colors.text};
   ${(props) => props.isHidden && isHiddenStyle};
 `;
 

@@ -1,7 +1,16 @@
 import { MdClose } from 'react-icons/md';
-import {formatCurrency, formatDate} from 'utils/stringHelper';
+import { formatCurrency, formatDate } from 'utils/stringHelper';
 
-import { Container, Header, Body, Footer, FundTitle, Info, ModalSection, CharacteristicRow } from './styles';
+import {
+  Container,
+  Header,
+  Body,
+  Footer,
+  FundTitle,
+  Info,
+  ModalSection,
+  CharacteristicRow,
+} from './styles';
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,7 +18,7 @@ interface ModalProps {
   details: any;
 }
 
-function Modal({isOpen, onClose, details }: ModalProps) {
+function Modal({ isOpen, onClose, details }: ModalProps) {
   if (!isOpen) return null;
   return (
     <Container>
@@ -20,33 +29,43 @@ function Modal({isOpen, onClose, details }: ModalProps) {
         </button>
       </Header>
       <Body>
-      <FundTitle>{details.denom_social}</FundTitle>
+        <FundTitle>{details.denom_social}</FundTitle>
         <Info>
           <p>CNPJ</p>
           <span>{details.cnpj_fundo}</span>
         </Info>
         <Info>
           <p>Administrador</p>
-          <span>{details?.admin ? `${details.admin}` : "Não Informado"}</span>
+          <span>{details?.admin ? `${details.admin}` : 'Não Informado'}</span>
         </Info>
         <Info>
           <p>Tipo de fundo</p>
-          <span>{details?.tp_fundo ? `${details?.tp_fundo}` : "Não Informado"}</span>
+          <span>
+            {details?.tp_fundo ? `${details?.tp_fundo}` : 'Não Informado'}
+          </span>
         </Info>
         <Info>
           <p>Classe</p>
-          <span>{details?.classe ? `${details.classe}` : "Não Informado"}</span>
+          <span>{details?.classe ? `${details.classe}` : 'Não Informado'}</span>
         </Info>
         <Info>
           <p>Patrimônio Líquido</p>
-          <span>{details?.vl_patrim_liq ? formatCurrency(details.vl_patrim_liq) : "Não Informado"}</span>
+          <span>
+            {details?.vl_patrim_liq
+              ? formatCurrency(details.vl_patrim_liq)
+              : 'Não Informado'}
+          </span>
         </Info>
 
         <ModalSection>Características do fundo</ModalSection>
 
         <CharacteristicRow>
           <p>Valor da cota</p>
-          <p>{details?.vlt_quota ? formatCurrency(details.vlt_quota) : "Não Informado"}</p>
+          <p>
+            {details?.vlt_quota
+              ? formatCurrency(details.vlt_quota)
+              : 'Não Informado'}
+          </p>
         </CharacteristicRow>
         {/* <CharacteristicRow>
           <p>Rentabilidade do fundo</p>
@@ -58,22 +77,28 @@ function Modal({isOpen, onClose, details }: ModalProps) {
         </CharacteristicRow>
         <CharacteristicRow>
           <p>Resgates pagos no dia</p>
-          <p>{details?.resg_dia ? formatCurrency(details.resg_dia) : "Não Informado"}</p>
+          <p>
+            {details?.resg_dia
+              ? formatCurrency(details.resg_dia)
+              : 'Não Informado'}
+          </p>
         </CharacteristicRow>
         <CharacteristicRow>
           <p>Taxa de administração</p>
-          <p>{details?.taxa_adm ? `${details.taxa_adm}%` : "Não Informado"}</p>
+          <p>{details?.taxa_adm ? `${details.taxa_adm}%` : 'Não Informado'}</p>
         </CharacteristicRow>
         <CharacteristicRow>
           <p>Número de cotistas</p>
           <p>{details.nr_cotst}</p>
         </CharacteristicRow>
-        
+
         <ModalSection>Informações cadastrais</ModalSection>
 
         <Info>
           <p>Situação</p>
-          <span style={{textTransform:'capitalize'}}>{details.sit?.toLowerCase()}</span>
+          <span style={{ textTransform: 'capitalize' }}>
+            {details.sit?.toLowerCase()}
+          </span>
         </Info>
 
         <Info>

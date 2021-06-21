@@ -17,11 +17,12 @@ export const FundsContext = createContext({} as FundsContextValues);
 export const FundsProvider: React.FC = ({ children }) => {
   const [selectedFunds, setSelectedFunds] = useState([] as any[]);
   const [foundedFunds, setFoundedFunds] = useState([] as any[]);
-  const errorToast = () => toast.error('O máximo de fundos já foi selecionado!');
+  const errorToast = () =>
+    toast.error('O máximo de fundos já foi selecionado!');
 
   const updateSelectedFunds = useCallback((fundsList: any[]) => {
-    setSelectedFunds(fundsList)
-  }, [])
+    setSelectedFunds(fundsList);
+  }, []);
 
   const updateFetchedFunds = (fundsList: any[]) => {
     const selectedNames = selectedFunds.map((fund) => fund.denom_social);
@@ -35,32 +36,32 @@ export const FundsProvider: React.FC = ({ children }) => {
       (fund) => !selectedNames.includes(fund.denom_social)
     );
 
-    setFoundedFunds(prevFoundedFunds => [
+    setFoundedFunds((prevFoundedFunds) => [
       ...prevFoundedFunds,
-      ...newFoundedFunds
+      ...newFoundedFunds,
     ]);
   };
 
   const resetFoundedFunds = () => {
-    setFoundedFunds([])
-  }
+    setFoundedFunds([]);
+  };
 
   const selectFund = (name: string) => {
     if (selectedFunds.length < 8) {
-        const fundsWithoutSelectedName = foundedFunds.filter(
-          (fund) => fund.denom_social !== name
-        );
+      const fundsWithoutSelectedName = foundedFunds.filter(
+        (fund) => fund.denom_social !== name
+      );
 
-        const fundWithSelectedName = foundedFunds.filter(
-          (fund) => fund.denom_social === name
-          );
+      const fundWithSelectedName = foundedFunds.filter(
+        (fund) => fund.denom_social === name
+      );
 
-          const newSelectedFunds = [...selectedFunds, ...fundWithSelectedName];
+      const newSelectedFunds = [...selectedFunds, ...fundWithSelectedName];
 
-          setFoundedFunds(fundsWithoutSelectedName);
-          setSelectedFunds(newSelectedFunds);
+      setFoundedFunds(fundsWithoutSelectedName);
+      setSelectedFunds(newSelectedFunds);
     } else {
-      errorToast()
+      errorToast();
     }
   };
 
@@ -114,7 +115,7 @@ export const FundsProvider: React.FC = ({ children }) => {
         updateSelectedFunds,
         updateHiddenFund,
         resetHiddenState,
-        resetFoundedFunds
+        resetFoundedFunds,
       }}
     >
       {children}

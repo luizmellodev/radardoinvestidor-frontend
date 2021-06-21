@@ -7,12 +7,11 @@ interface HeaderHomeProps {
 }
 
 function HeaderHome({ onChangeHandler }: HeaderHomeProps) {
-
   return (
     <Container>
       <img src="/logo-home.svg" style={{ paddingBottom: '20px' }} />
-      <SearchBar onChange={onChangeHandler}/>
-      <FilterChip/>
+      <SearchBar onChange={onChangeHandler} />
+      <FilterChip />
     </Container>
   );
 }

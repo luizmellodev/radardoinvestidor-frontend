@@ -7,12 +7,13 @@ interface FilterProps {
 
 export const Container = styled.div`
   display: flex;
-
 `;
 
 export const Filter = styled.button<FilterProps>`
-  background: ${(props) => (props.isSelected ? theme.colors.filterClicked : "transparent")};
-  color: ${(props) => (props.isSelected ? theme.colors.text : theme.colors.textDescription)};
+  background: ${(props) =>
+    props.isSelected ? theme.colors.filterClicked : 'transparent'};
+  color: ${(props) =>
+    props.isSelected ? theme.colors.text : theme.colors.textDescription};
   border: 0px;
   border-radius: 4px;
   padding: 2px 6px;

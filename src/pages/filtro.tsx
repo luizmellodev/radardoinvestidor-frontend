@@ -12,7 +12,6 @@ const Container = styled.div`
 `;
 const Footer = styled.div`
   padding: 0px 24px 32px;
-
 `;
 const Body = styled.div`
   display: flex;
@@ -20,21 +19,44 @@ const Body = styled.div`
   flex-direction: column;
 `;
 export default function Filtro() {
-  const classesOptions = ["Fundo de Ações", "Fundo Cambial", "Fundo Multimercado","Fundo de Renda Fixa"];
+  const classesOptions = [
+    'Fundo de Ações',
+    'Fundo Cambial',
+    'Fundo Multimercado',
+    'Fundo de Renda Fixa',
+  ];
   const cotistasOptions = [50000, 100000, 250000, 500000, 1000000];
-  const patrimonioOptions = [1000000, 100000000, 2500000, 500000000, 1000000000];
+  const patrimonioOptions = [
+    1000000,
+    100000000,
+    2500000,
+    500000000,
+    1000000000,
+  ];
 
   return (
     <Screen>
       <Body>
         <TopBar title="Filtros" />
         <Container>
-            <FilterSection title={"Classe do patrimônio"} type={"classes"}    options={classesOptions}/>
-            <FilterSection title={"Número de cotistas"}   type={"cotistas"}   options={cotistasOptions}/>
-            <FilterSection title={"Patrimônio Liquido"}   type={"patrimonio"} options={patrimonioOptions}/>
+          <FilterSection
+            title={'Classe do patrimônio'}
+            type={'classes'}
+            options={classesOptions}
+          />
+          <FilterSection
+            title={'Número de cotistas'}
+            type={'cotistas'}
+            options={cotistasOptions}
+          />
+          <FilterSection
+            title={'Patrimônio Liquido'}
+            type={'patrimonio'}
+            options={patrimonioOptions}
+          />
         </Container>
         <Footer>
-          <SubmitButton onClick={() => router.push("/")}>Filtrar</SubmitButton>
+          <SubmitButton onClick={() => router.push('/')}>Filtrar</SubmitButton>
         </Footer>
       </Body>
     </Screen>

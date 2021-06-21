@@ -8,7 +8,7 @@ interface TabTitleProps {
   setSelectedTab: (index: number) => void;
 }
 
-function TabTitle({ index, title, setSelectedTab, isActive}: TabTitleProps) {
+function TabTitle({ index, title, setSelectedTab, isActive }: TabTitleProps) {
   const handleClickTab = useCallback(() => {
     setSelectedTab(index);
   }, [setSelectedTab, index]);

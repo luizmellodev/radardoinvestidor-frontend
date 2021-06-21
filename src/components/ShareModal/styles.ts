@@ -45,10 +45,10 @@ export const Body = styled.div`
   padding: 16px;
   min-height: 20px;
   overflow-y: auto;
-  p{
+  p {
     text-align: center;
     margin: 32px 0;
-    font-family: "Source Sans Pro";
+    font-family: 'Source Sans Pro';
     font-size: 20px;
     color: ${(props) => props.theme.colors.text};
   }

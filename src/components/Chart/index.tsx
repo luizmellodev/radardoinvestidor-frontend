@@ -1,4 +1,4 @@
-import { createRef, useEffect } from 'react'
+import { createRef, useEffect } from 'react';
 import Chart from 'chart.js/auto';
 
 interface IDatasets {
@@ -10,8 +10,8 @@ interface IDatasets {
 }
 
 interface ComparisonChartProps {
-  labels: string[]
-  datasets: IDatasets[]
+  labels: string[];
+  datasets: IDatasets[];
 }
 
 let myLineChart: any;
@@ -24,9 +24,7 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
 
     const myChartRef = chartRef.current.getContext('2d');
 
-    if (typeof myLineChart !== "undefined") myLineChart.destroy();
-
-
+    if (typeof myLineChart !== 'undefined') myLineChart.destroy();
 
     myLineChart = new Chart(myChartRef, {
       type: 'line',
@@ -37,8 +35,8 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
       options: {
         elements: {
           point: {
-              radius: 0
-          }
+            radius: 0,
+          },
         },
         responsive: true,
         maintainAspectRatio: false,
@@ -58,7 +56,7 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
         scales: {
           x: {
             display: false,
-            ticks:{
+            ticks: {
               autoSkip: false,
             },
           },
@@ -68,15 +66,15 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
             position: 'left',
             ticks: {
               beginAtZero: true,
-              callback: function(value:number) {
-                  return  value.toFixed(2) + "%";
+              callback: function (value: number) {
+                return value.toFixed(2) + '%';
               },
             },
           },
         },
       },
-    })
-  }, [labels, datasets])
+    });
+  }, [labels, datasets]);
 
   return (
     <div style={{ position: 'relative', width: '100wv', height: '40vh' }}>

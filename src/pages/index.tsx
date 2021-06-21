@@ -34,15 +34,13 @@ const List = styled.div`
 `;
 
 const BottomLoading = styled.div`
-  padding-top: 24px;
-;
-`
+  padding-top: 24px; ;
+`;
 const BottomLoadingSearch = styled.div`
-    position: relative;
-    width: 100wv;
-    height: 40vh;
-;
-`
+  position: relative;
+  width: 100wv;
+  height: 40vh; ;
+`;
 
 const Footer = styled.footer`
   padding-top: 24px;
@@ -58,21 +56,21 @@ const Center = styled.p`
   justify-content: center;
   align-items: center;
 `;
-interface IParameters{
+interface IParameters {
   params: {
-    s:string,
-    skip:number,
-    classes?: string[],
-    cotistas?:number,
-    pl?:number
-  }
-};
+    s: string;
+    skip: number;
+    classes?: string[];
+    cotistas?: number;
+    pl?: number;
+  };
+}
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [skip, setSkip] = useState(0);
-  const [hasMore, setHasMore] = useState(true)
-  const {selectedFilters} = useContext(FilterContext);
+  const [hasMore, setHasMore] = useState(true);
+  const { selectedFilters } = useContext(FilterContext);
   const router = useRouter();
   const debouncedSearchText = useDebounce(searchText, 1000);
   const {
@@ -80,38 +78,46 @@ export default function Home() {
     foundedFunds,
     updateFetchedFunds,
     resetHiddenState,
-    resetFoundedFunds
+    resetFoundedFunds,
   } = useContext(FundsContext);
   const observerLastItem = useRef<any>();
 
-  const lastFundElementRef = useCallback(node => {
-    if (isLoading) {
-      return
-    }
-
-    if (observerLastItem?.current) {
-      observerLastItem.current.disconnect()
-    }
-
-    observerLastItem.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setSkip(prevState => prevState + 50)
+  const lastFundElementRef = useCallback(
+    (node) => {
+      if (isLoading) {
+        return;
       }
-    })
 
-    if (node) {
-      observerLastItem.current.observe(node)
-    }
-  }, [isLoading, hasMore, foundedFunds])
+      if (observerLastItem?.current) {
+        observerLastItem.current.disconnect();
+      }
+
+      observerLastItem.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setSkip((prevState) => prevState + 50);
+        }
+      });
+
+      if (node) {
+        observerLastItem.current.observe(node);
+      }
+    },
+    [isLoading, hasMore, foundedFunds]
+  );
 
   const handleCompareButtonClick = () => {
-    const fundsCnpj: string[] = selectedFunds.map(fund => formatCnpj(fund.cnpj_fundo));
-    router.push({pathname: 'comparacao', query: {fundos: fundsCnpj.join(',')}});
+    const fundsCnpj: string[] = selectedFunds.map((fund) =>
+      formatCnpj(fund.cnpj_fundo)
+    );
+    router.push({
+      pathname: 'comparacao',
+      query: { fundos: fundsCnpj.join(',') },
+    });
   };
 
   const handleOnChangeText = async (searchText: string) => {
     setSearchText(searchText);
-    setSkip(0)
+    setSkip(0);
   };
 
   const tabSelectedFunds = `Selecionados ${
@@ -127,33 +133,33 @@ export default function Home() {
   }, [searchText]);
 
   useEffect(() => {
-    resetFoundedFunds()
+    resetFoundedFunds();
   }, [debouncedSearchText]);
 
   useEffect(() => {
-    console.log('FOUNDED FUNDS', foundedFunds)
-  }, [foundedFunds])
+    console.log('FOUNDED FUNDS', foundedFunds);
+  }, [foundedFunds]);
 
   useEffect(() => {
     const fetchFunds = async () => {
       try {
         setIsLoading(true);
-        let parameters: IParameters = {
+        const parameters: IParameters = {
           params: {
             s: debouncedSearchText,
             skip,
             classes: selectedFilters.classes,
             pl: selectedFilters.patrimonio,
-            cotistas: selectedFilters.cotistas
+            cotistas: selectedFilters.cotistas,
           },
         };
-        if(!parameters.params.classes?.length){
+        if (!parameters.params.classes?.length) {
           delete parameters.params.classes;
         }
-        if(!parameters.params.pl){
+        if (!parameters.params.pl) {
           delete parameters.params.pl;
         }
-        if(!parameters.params.cotistas){
+        if (!parameters.params.cotistas) {
           delete parameters.params.cotistas;
         }
 
@@ -161,7 +167,7 @@ export default function Home() {
 
         console.log('FETCHED FUNDS', debouncedSearchText, data);
         updateFetchedFunds(data);
-        setHasMore(data.length > 0)
+        setHasMore(data.length > 0);
       } catch (e) {
         console.error(e);
         updateFetchedFunds([]);
@@ -176,30 +182,34 @@ export default function Home() {
   return (
     <Screen>
       <Container>
-          <Header>
-            <HeaderHome onChangeHandler={handleOnChangeText}/>
-          </Header>
+        <Header>
+          <HeaderHome onChangeHandler={handleOnChangeText} />
+        </Header>
         <Tabs>
           <Tab title="Encontrados">
             {isLoading && skip === 0 ? (
               <BottomLoadingSearch>
-                 <Loading />
+                <Loading />
               </BottomLoadingSearch>
+            ) : foundedFunds.length ? (
+              <List>
+                {foundedFunds.map((fund, index, list) => (
+                  <FundCard
+                    ref={
+                      list.length === index + 1 ? lastFundElementRef : undefined
+                    }
+                    fund={fund}
+                    key={fund.denom_social}
+                  />
+                ))}
+                {isLoading && hasMore && (
+                  <BottomLoading>
+                    <Loading />
+                  </BottomLoading>
+                )}
+              </List>
             ) : (
-              foundedFunds.length ? (
-                <List>
-                  {foundedFunds.map((fund, index, list) =>
-                    <FundCard ref={list.length === index + 1 ? lastFundElementRef : undefined} fund={fund} key={fund.denom_social} />
-                  )}
-                  {isLoading && hasMore && (
-                    <BottomLoading>
-                      <Loading />
-                    </BottomLoading>
-                  )}
-                </List>
-              ) : (
-                <Center>Nenhum fundo encontrado</Center>
-              )
+              <Center>Nenhum fundo encontrado</Center>
             )}
           </Tab>
           <Tab title={tabSelectedFunds}>

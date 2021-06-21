@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { MdShare } from 'react-icons/md';
 
 import { FundsContext } from 'contexts/Funds';
-import {formatCnpj, formatDate} from 'utils/stringHelper';
+import { formatCnpj, formatDate } from 'utils/stringHelper';
 import api from 'api';
 import theme from 'styles/theme';
 
@@ -17,7 +17,6 @@ import Chart from 'components/Chart';
 import Loading from 'components/Loading';
 import Button from 'components/Button';
 import DataFilter from 'components/DataFilter';
-
 
 export const Container = styled.div`
   height: 100%;
@@ -36,7 +35,7 @@ export const FilterContent = styled.div`
 `;
 
 export const ChartContainer = styled.div<IChartContainer>`
-  margin: ${(props) => (props.isLoading ? "15px" : "auto 15px")};
+  margin: ${(props) => (props.isLoading ? '15px' : 'auto 15px')};
 `;
 
 export const TitleChart = styled.strong<any>`
@@ -55,7 +54,7 @@ export const TitleFundos = styled.strong<any>`
   border-bottom: 1px solid #e3e4eb;
   font-weight: bold;
   margin: 15px auto;
-  display:flex;
+  display: flex;
 `;
 
 export const FooterChart = styled.div`
@@ -66,7 +65,7 @@ export const FooterChart = styled.div`
   justify-content: space-between;
 `;
 
-interface IChartContainer{
+interface IChartContainer {
   isLoading: boolean;
 }
 interface IDatasets {
@@ -77,67 +76,81 @@ interface IDatasets {
 }
 
 interface IParams {
-  fundos: any[],
-  from?: string,
-  to: string
+  fundos: any[];
+  from?: string;
+  to: string;
 }
 
-
 export default function Comparacao() {
-  const { selectedFunds, updateSelectedFunds, foundedFunds } = useContext(FundsContext);
+  const { selectedFunds, updateSelectedFunds, foundedFunds } = useContext(
+    FundsContext
+  );
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [detailedFund, setDetailedFund] = useState({});
-  const [rentabFunds, setRentabFunds] = useState<any[]>([])
+  const [rentabFunds, setRentabFunds] = useState<any[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
   const [datasets, setDatasets] = useState<IDatasets[]>([]);
-  const [dataFilter, setDataFilter] = useState(new Date(new Date().setDate(new Date().getDate() - 30)).toISOString().split("T")[0]);
-  const [isToHiddenCDI,setisToHiddenCDI] = useState(false);
+  const [dataFilter, setDataFilter] = useState(
+    new Date(new Date().setDate(new Date().getDate() - 30))
+      .toISOString()
+      .split('T')[0]
+  );
+  const [isToHiddenCDI, setisToHiddenCDI] = useState(false);
 
   useEffect(() => {
-    if (!!selectedFunds.length) {
+    if (selectedFunds.length) {
       return;
     }
 
     const fetchComparisonFunds = async () => {
       try {
-        const selectedsCnpj = window.location.search.replace('?fundos=', '').replace(/%2F/g, '/').split(',')
+        const selectedsCnpj = window.location.search
+          .replace('?fundos=', '')
+          .replace(/%2F/g, '/')
+          .split(',');
 
         const { data } = await api.get('/fundosComparacao', {
           params: {
             fundos: selectedsCnpj,
-            to: new Date().toISOString().split("T")[0]
-          }
+            to: new Date().toISOString().split('T')[0],
+          },
         });
 
         updateSelectedFunds(data);
       } catch (error) {
         console.error(error);
       }
-    }
+    };
 
     if (!foundedFunds.length) {
-      fetchComparisonFunds()
+      fetchComparisonFunds();
     }
-  }, [foundedFunds, selectedFunds, window.location.search])
+  }, [foundedFunds, selectedFunds, window.location.search]);
 
   useEffect(() => {
     if (window.location.search === '?fundos=') {
-      router.push("/");
+      router.push('/');
     }
-  }, [window.location.search])
+  }, [window.location.search]);
 
   useEffect(() => {
     if (!selectedFunds.length) {
       return;
     }
 
-    const fundsCnpj: string[] = selectedFunds.map(fund => formatCnpj(fund.cnpj_fundo));
+    const fundsCnpj: string[] = selectedFunds.map((fund) =>
+      formatCnpj(fund.cnpj_fundo)
+    );
 
-    history.replaceState(null, "", window.location.origin.concat(`/comparacao?fundos=${fundsCnpj.join(',')}`));
+    history.replaceState(
+      null,
+      '',
+      window.location.origin.concat(`/comparacao?fundos=${fundsCnpj.join(',')}`)
+    );
 
     // if (!!rentabFunds.length) {
     //   return;
@@ -145,9 +158,9 @@ export default function Comparacao() {
 
     const fetchProfitability = async () => {
       try {
-        setIsLoading(true)
+        setIsLoading(true);
 
-        const selectedsCnpj = selectedFunds.map((fund) => fund.cnpj_fundo)
+        const selectedsCnpj = selectedFunds.map((fund) => fund.cnpj_fundo);
 
         const params: IParams = {
           fundos: selectedsCnpj,
@@ -160,66 +173,77 @@ export default function Comparacao() {
           params: params,
         });
 
-        setRentabFunds(data)
+        setRentabFunds(data);
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
     fetchProfitability();
-  }, [dataFilter, selectedFunds])
+  }, [dataFilter, selectedFunds]);
 
   useEffect(() => {
     if (!rentabFunds.length) return;
 
     const diffs = rentabFunds.map((fund: any) => ({
       name: fund.name,
-      rentab: fund.rentab.map((rentab: any) => rentab.diff)
-    }))
+      rentab: fund.rentab.map((rentab: any) => rentab.diff),
+    }));
 
     const datasets = selectedFunds.map((fund, index) => ({
-      label: fund.denom_social.length > 20 ? fund.denom_social.substr(0, 20) : fund.denom_social,
+      label:
+        fund.denom_social.length > 20
+          ? fund.denom_social.substr(0, 20)
+          : fund.denom_social,
       backgroundColor: theme.colors.graph[index],
       borderColor: theme.colors.graph[index],
-      data: fund.hidden ? [] : diffs.find(diff => diff.name === fund.denom_social)?.rentab
-    }))
+      data: fund.hidden
+        ? []
+        : diffs.find((diff) => diff.name === fund.denom_social)?.rentab,
+    }));
 
-    const cdiRentab:any = rentabFunds.find( fund =>
-      fund.name === "CDI"
-    )
+    const cdiRentab: any = rentabFunds.find((fund) => fund.name === 'CDI');
 
-    const labels = cdiRentab.rentab.map((rentab: any) => formatDate(rentab.date, { month: "numeric", day: "numeric" }))
+    const labels = cdiRentab.rentab.map((rentab: any) =>
+      formatDate(rentab.date, { month: 'numeric', day: 'numeric' })
+    );
 
-    setLabels(labels)
+    setLabels(labels);
 
     const CDI = {
-      label: "CDI",
+      label: 'CDI',
       backgroundColor: theme.colors.text,
       borderColor: theme.colors.text,
-      data: isToHiddenCDI ? [] : cdiRentab.rentab.map((rentab: any) =>{
-        return rentab.diff;
-      }),
-    }
+      data: isToHiddenCDI
+        ? []
+        : cdiRentab.rentab.map((rentab: any) => {
+            return rentab.diff;
+          }),
+    };
 
     if (isToHiddenCDI) {
-      const firstFund = rentabFunds[0]
-      const labels = firstFund.rentab.map((rentab: any) => formatDate(rentab.date, { month: "numeric", day: "numeric" }))
+      const firstFund = rentabFunds[0];
+      const labels = firstFund.rentab.map((rentab: any) =>
+        formatDate(rentab.date, { month: 'numeric', day: 'numeric' })
+      );
 
-      setLabels(labels)
+      setLabels(labels);
       setDatasets([...datasets]);
     } else {
-      const labels = cdiRentab.rentab.map((rentab: any) => formatDate(rentab.date, { month: "numeric", day: "numeric" }))
+      const labels = cdiRentab.rentab.map((rentab: any) =>
+        formatDate(rentab.date, { month: 'numeric', day: 'numeric' })
+      );
 
-      setLabels(labels)
+      setLabels(labels);
       setDatasets([...datasets, CDI]);
     }
 
-    console.log([...datasets, CDI])
-  }, [rentabFunds, selectedFunds, isToHiddenCDI])
+    console.log([...datasets, CDI]);
+  }, [rentabFunds, selectedFunds, isToHiddenCDI]);
 
-  const handleClickDetailButton = async (cnpj:any) => {
+  const handleClickDetailButton = async (cnpj: any) => {
     const formatedCnpj = formatCnpj(cnpj);
     const { data } = await api.get(`/fundo/${formatedCnpj}`);
     setIsDetailModalOpen(true);
@@ -238,49 +262,68 @@ export default function Comparacao() {
     setIsShareModalOpen(false);
   };
 
- const handleToggle = () => {
+  const handleToggle = () => {
     setisToHiddenCDI(!isToHiddenCDI);
- }
+  };
   const onChangeFilter = (value: string) => {
-    var todaysDate = new Date();
-    var data = "";
+    const todaysDate = new Date();
+    let data = '';
 
-    if (value === "30D") {
-      data = new Date(todaysDate.setDate(todaysDate.getDate() - 30)).toISOString().split("T")[0];
-    } else if (value === "3M") {
-      data = new Date(todaysDate.setDate(todaysDate.getDate() - 90)).toISOString().split("T")[0];
-    } else if (value === "6M") {
-      data = new Date(todaysDate.setDate(todaysDate.getDate() - 180)).toISOString().split("T")[0];
-    } else if (value === "12M") {
-      data = new Date(todaysDate.setDate(todaysDate.getDate() - 365)).toISOString().split("T")[0];
+    if (value === '30D') {
+      data = new Date(todaysDate.setDate(todaysDate.getDate() - 30))
+        .toISOString()
+        .split('T')[0];
+    } else if (value === '3M') {
+      data = new Date(todaysDate.setDate(todaysDate.getDate() - 90))
+        .toISOString()
+        .split('T')[0];
+    } else if (value === '6M') {
+      data = new Date(todaysDate.setDate(todaysDate.getDate() - 180))
+        .toISOString()
+        .split('T')[0];
+    } else if (value === '12M') {
+      data = new Date(todaysDate.setDate(todaysDate.getDate() - 365))
+        .toISOString()
+        .split('T')[0];
     } else {
-      data = new Date(todaysDate.setDate(todaysDate.getDate() - 720)).toISOString().split("T")[0];
+      data = new Date(todaysDate.setDate(todaysDate.getDate() - 720))
+        .toISOString()
+        .split('T')[0];
     }
     setDataFilter(data);
-
-  }
+  };
 
   return (
     <>
       <Screen>
         <Container>
-          <TopBar title="Comparação" rightIcon={<MdShare size={24} />} onClickRight={handleClickShareButton}/>
+          <TopBar
+            title="Comparação"
+            rightIcon={<MdShare size={24} />}
+            onClickRight={handleClickShareButton}
+          />
           <TitleChart>Histórico de Rendimentos</TitleChart>
           <ChartContainer isLoading={isLoading}>
             {isLoading ? (
-              <div style={{ position: 'relative', width: '100wv', height: '40vh' }}>
-                <Loading/>
+              <div
+                style={{ position: 'relative', width: '100wv', height: '40vh' }}
+              >
+                <Loading />
               </div>
             ) : (
-              <Chart labels={labels} datasets={datasets}/>
+              <Chart labels={labels} datasets={datasets} />
             )}
           </ChartContainer>
           <FilterContent>
-            <DataFilter onChange={onChangeFilter} isToHiddenCDI={!isToHiddenCDI} handleOnClick={handleToggle} />
+            <DataFilter
+              onChange={onChangeFilter}
+              isToHiddenCDI={!isToHiddenCDI}
+              handleOnClick={handleToggle}
+            />
           </FilterContent>
           <Content>
-            <Button onClick={() => router.push("/")}>Adicionar</Button>
-          <TitleFundos>Fundos</TitleFundos>
+            <Button onClick={() => router.push('/')}>Adicionar</Button>
+            <TitleFundos>Fundos</TitleFundos>
             {selectedFunds.map((fund, index) => (
               <FundCard
                 index={index}
@@ -294,8 +337,12 @@ export default function Comparacao() {
           </Content>
         </Container>
       </Screen>
-      <Modal isOpen={isDetailModalOpen} onClose={handleCloseModal} details={detailedFund}/>
-      <ShareModal isOpen={isShareModalOpen} onClose={handleCloseShareModal}/>
+      <Modal
+        isOpen={isDetailModalOpen}
+        onClose={handleCloseModal}
+        details={detailedFund}
+      />
+      <ShareModal isOpen={isShareModalOpen} onClose={handleCloseShareModal} />
     </>
   );
 }

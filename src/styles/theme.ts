@@ -8,7 +8,7 @@ const theme = {
     border: '#EBECF3',
     outline: '#FF9001',
     disabled: '#C9CAD4',
-    filterClicked:'#E3E4EB',
+    filterClicked: '#E3E4EB',
     textDisabled: '#9599A6',
     graph: [
       '#E02B57',
@@ -18,8 +18,8 @@ const theme = {
       '#784D0B',
       '#076E2F',
       '#C61FE0',
-      '#F5710C'
-    ]
+      '#F5710C',
+    ],
   },
 };
 

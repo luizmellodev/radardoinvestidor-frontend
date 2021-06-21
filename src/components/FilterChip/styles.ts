@@ -10,17 +10,17 @@ export const Container = styled.div`
   overflow-x: auto;
   /* background-color: brown; */
 
-button{ 
-  flex: 0 0 auto;
-  background: ${(props) => props.theme.colors.text};
-  color: #fff;
-  border-radius: 24px;
-  border: 0;
-  align-items: center;
-  font-family: Source Sans Pro;
-  font-size: 14px;
-  line-height: 18px;
-  margin: 0 4px;
-  padding: 2px 14px;
-}
+  button {
+    flex: 0 0 auto;
+    background: ${(props) => props.theme.colors.text};
+    color: #fff;
+    border-radius: 24px;
+    border: 0;
+    align-items: center;
+    font-family: Source Sans Pro;
+    font-size: 14px;
+    line-height: 18px;
+    margin: 0 4px;
+    padding: 2px 14px;
+  }
 `;
