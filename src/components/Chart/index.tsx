@@ -7,6 +7,7 @@ interface IDatasets {
   borderColor: string;
   backgroundColor: string;
   hidden?: boolean;
+  spanGaps?: boolean;
 }
 
 interface ComparisonChartProps {
@@ -18,7 +19,6 @@ let myLineChart: any;
 
 function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
   const chartRef = createRef<HTMLCanvasElement>();
-
   useEffect(() => {
     if (!chartRef.current) return;
 
@@ -29,10 +29,19 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
     myLineChart = new Chart(myChartRef, {
       type: 'line',
       data: {
-        labels: labels,
+        // labels: labels,
         datasets: datasets,
       },
       options: {
+        parsing: {
+          xAxisKey: 'x',
+          yAxisKey: 'y',
+        },
+        tooltip:{
+          options:{
+            spanGaps:true
+          }
+        },
         elements: {
           point: {
             radius: 0,
@@ -56,9 +65,15 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
         scales: {
           x: {
             display: false,
+            //  type: 'time',
+                // time: {
+                //     displayFormats: {
+                //         quarter: 'MMM YYYY'
+                //     }
+                // },
             ticks: {
               autoSkip: false,
-            },
+            },  
           },
           y: {
             type: 'linear',
@@ -75,7 +90,6 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
       },
     });
   }, [labels, datasets]);
-
   return (
     <div style={{ position: 'relative', width: '100wv', height: '40vh' }}>
       <canvas id="myChart" ref={chartRef}></canvas>
