@@ -3,7 +3,7 @@ import { Container } from './styles';
 function Loading() {
   return (
     <Container>
-      <img src="/loading.png" />
+      <img src="/loading.svg" />
     </Container>
   );
 }

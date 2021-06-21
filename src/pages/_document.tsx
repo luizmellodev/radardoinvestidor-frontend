@@ -36,8 +36,15 @@ export default class MyDocument extends Document {
 
   render(): JSX.Element {
     return (
-      <Html lang="pt-BR">
+      <Html lang="pt-br">
         <Head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta name="theme-color" content="#e02b57" />
+          <link rel="shortcut icon" type="image/png" href="/favicon.png" sizes="256x256" />
+
+          <title>Radar do Investidor</title>
+
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600;700&display=swap"
