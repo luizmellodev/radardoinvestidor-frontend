@@ -174,11 +174,6 @@ export default function Comparacao() {
   useEffect(() => {
     if (!rentabFunds.length) return;
 
-    const firstFund = rentabFunds[0];
-    const labels = firstFund.rentab.map((rentab: any) => formatDate(rentab.date, { month: "numeric", day: "numeric" }))
-
-    setLabels(labels)
-
     const diffs = rentabFunds.map((fund: any) => ({
       name: fund.name,
       rentab: fund.rentab.map((rentab: any) => rentab.diff)
@@ -195,17 +190,33 @@ export default function Comparacao() {
       fund.name === "CDI"
     )
 
+    const labels = cdiRentab.rentab.map((rentab: any) => formatDate(rentab.date, { month: "numeric", day: "numeric" }))
+
+    setLabels(labels)
+
     const CDI = {
       label: "CDI",
       backgroundColor: theme.colors.text,
       borderColor: theme.colors.text,
-      data: cdiRentab.rentab.map((rentab: any) =>{
+      data: isToHiddenCDI ? [] : cdiRentab.rentab.map((rentab: any) =>{
         return rentab.diff;
       }),
-      hidden:isToHiddenCDI
     }
+
+    if (isToHiddenCDI) {
+      const firstFund = rentabFunds[0]
+      const labels = firstFund.rentab.map((rentab: any) => formatDate(rentab.date, { month: "numeric", day: "numeric" }))
+
+      setLabels(labels)
+      setDatasets([...datasets]);
+    } else {
+      const labels = cdiRentab.rentab.map((rentab: any) => formatDate(rentab.date, { month: "numeric", day: "numeric" }))
+
+      setLabels(labels)
+      setDatasets([...datasets, CDI]);
+    }
+
     console.log([...datasets, CDI])
-    setDatasets([...datasets, CDI]);
   }, [rentabFunds, selectedFunds, isToHiddenCDI])
 
   const handleClickDetailButton = async (cnpj:any) => {

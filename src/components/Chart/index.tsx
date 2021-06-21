@@ -1,6 +1,5 @@
 import { createRef, useEffect } from 'react'
 import Chart from 'chart.js/auto';
-import { useState } from 'react';
 
 interface IDatasets {
   label: string;
@@ -36,6 +35,11 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
         datasets: datasets,
       },
       options: {
+        elements: {
+          point: {
+              radius: 0
+          }
+        },
         responsive: true,
         maintainAspectRatio: false,
         interaction: {
@@ -53,6 +57,7 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
         },
         scales: {
           x: {
+            display: false,
             ticks:{
               autoSkip: false,
             },
