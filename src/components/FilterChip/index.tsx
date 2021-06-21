@@ -1,5 +1,5 @@
 import { Container } from './styles';
-import {formatCotistas, formatPatrimonio} from 'utils/stringHelper';
+import {formatCotistas, formatPatrimonio, formatFilterLabel} from 'utils/stringHelper';
 import { useContext } from 'react';
 import { FilterContext } from 'contexts/Filters';
 import router from 'next/router';
@@ -9,8 +9,8 @@ function FilterChip() {
   return (
     <Container>  
       {
-        selectedFilters.classes.map((classe, index) =>{
-          return <button key={index} onClick={() => router.push('/filtro')}>{classe}</button>
+        selectedFilters.classes.map((classe: string, index) =>{
+          return <button key={index} onClick={() => router.push('/filtro')}>{formatFilterLabel(classe, 'classes')}</button>
         }) 
       }
      { 

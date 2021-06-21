@@ -20,7 +20,7 @@ const Body = styled.div`
   flex-direction: column;
 `;
 export default function Filtro() {
-  const classesOptions = ["Fundo de Ações", "Renda Variável", "Fundo Cambial","Renda Fixa"];
+  const classesOptions = ["Fundo de Ações", "Fundo Cambial", "Fundo Multimercado","Fundo de Renda Fixa"];
   const cotistasOptions = [50000, 100000, 250000, 500000, 1000000];
   const patrimonioOptions = [1000000, 100000000, 2500000, 500000000, 1000000000];
 

@@ -18,3 +18,18 @@ export function formatCotistas(cotistas:number){
     // erro aparece mas não causa problema na compilação nem na funcionalidade 
     return  "+ " + new Intl.NumberFormat('pt-BR', { notation: 'compact' }).format(cotistas). toUpperCase();
 }
+export function formatFilterLabel(filter:string | number, type: 'classes' | 'cotistas' | 'patrimonio') {
+    if(typeof filter === 'string' && type === 'classes'){
+        switch(filter){
+            case 'Fundo de Renda Fixa':
+                console.log('aqui')
+                return 'Renda Fixa';
+            default: 
+                return filter;
+        }
+    }
+    else if(typeof filter === 'number') 
+        return type  === 'cotistas' ? formatCotistas(filter) : formatPatrimonio(filter);
+    
+    return "";
+}
