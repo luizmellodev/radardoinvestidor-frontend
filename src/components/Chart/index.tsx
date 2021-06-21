@@ -6,6 +6,7 @@ interface IDatasets {
   data: number[];
   borderColor: string;
   backgroundColor: string;
+  hidden?: boolean;
 }
 
 interface ComparisonChartProps {
@@ -25,6 +26,8 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
 
     if (typeof myLineChart !== "undefined") myLineChart.destroy();
 
+
+
     myLineChart = new Chart(myChartRef, {
       type: 'line',
       data: {
@@ -32,6 +35,11 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
         datasets: datasets,
       },
       options: {
+        elements: {
+          point: {
+              radius: 0
+          }
+        },
         responsive: true,
         maintainAspectRatio: false,
         interaction: {
@@ -49,13 +57,17 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
         },
         scales: {
           x: {
-            // display: false,
+            display: false,
+            ticks:{
+              autoSkip: false,
+            },
           },
           y: {
             type: 'linear',
             display: true,
             position: 'left',
             ticks: {
+              beginAtZero: true,
               callback: function(value:number) {
                   return  value.toFixed(2) + "%";
               },
