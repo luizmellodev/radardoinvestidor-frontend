@@ -11,7 +11,7 @@ const Container = styled.div`
   overflow-y: scroll;
 `;
 const Footer = styled.div`
-  padding: 0px 24px 24px;
+  padding: 0px 24px 32px;
 `;
 const Body = styled.div`
   display: flex;
@@ -25,13 +25,14 @@ export default function Filtro() {
     'Fundo Multimercado',
     'Fundo de Renda Fixa',
   ];
-  const cotistasOptions = [50000, 100000, 250000, 500000, 1000000];
+  const cotistasOptions = [1000, 5000, 10000, 15000, 25000, 50000];
   const patrimonioOptions = [
     1000000,
+    10000000,
     100000000,
-    2500000,
-    500000000,
     1000000000,
+    10000000000,
+    100000000000,
   ];
 
   return (
