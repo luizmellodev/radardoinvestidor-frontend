@@ -11,7 +11,7 @@ const Container = styled.div`
   overflow-y: scroll;
 `;
 const Footer = styled.div`
-  padding: 0px 24px 32px;
+  padding: 0px 24px 24px;
 `;
 const Body = styled.div`
   display: flex;

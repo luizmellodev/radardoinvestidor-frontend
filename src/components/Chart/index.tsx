@@ -37,10 +37,10 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
           xAxisKey: 'x',
           yAxisKey: 'y',
         },
-        tooltip:{
-          options:{
-            spanGaps:true
-          }
+        tooltip: {
+          options: {
+            spanGaps: true,
+          },
         },
         elements: {
           point: {
@@ -66,14 +66,14 @@ function ComparisonChart({ labels, datasets }: ComparisonChartProps) {
           x: {
             display: false,
             //  type: 'time',
-                // time: {
-                //     displayFormats: {
-                //         quarter: 'MMM YYYY'
-                //     }
-                // },
+            // time: {
+            //     displayFormats: {
+            //         quarter: 'MMM YYYY'
+            //     }
+            // },
             ticks: {
               autoSkip: false,
-            },  
+            },
           },
           y: {
             type: 'linear',

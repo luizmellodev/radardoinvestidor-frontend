@@ -189,9 +189,9 @@ export default function Comparacao() {
 
     const diffs = rentabFunds.map((fund: any) => ({
       name: fund.name,
-      rentab: fund.rentab.map((rentab: any) =>  {
-        return {x: formatDate(rentab.date), y:rentab.diff}
-      })
+      rentab: fund.rentab.map((rentab: any) => {
+        return { x: formatDate(rentab.date), y: rentab.diff };
+      }),
     }));
 
     const datasets = selectedFunds.map((fund, index) => ({
@@ -201,7 +201,7 @@ export default function Comparacao() {
           : fund.denom_social,
       backgroundColor: theme.colors.graph[index],
       borderColor: theme.colors.graph[index],
-      spanGaps:true,
+      spanGaps: true,
       data: fund.hidden
         ? []
         : diffs.find((diff) => diff.name === fund.denom_social)?.rentab,
@@ -209,9 +209,7 @@ export default function Comparacao() {
 
     const cdiRentab: any = rentabFunds.find((fund) => fund.name === 'CDI');
 
-    const labels = cdiRentab.rentab.map((cdi: any) =>
-      formatDate(cdi.x)
-    );
+    const labels = cdiRentab.rentab.map((cdi: any) => formatDate(cdi.x));
 
     setLabels(labels);
 
@@ -219,26 +217,22 @@ export default function Comparacao() {
       label: 'CDI',
       backgroundColor: theme.colors.text,
       borderColor: theme.colors.text,
-      spanGaps:true,
+      spanGaps: true,
       data: isToHiddenCDI
         ? []
         : cdiRentab.rentab.map((rentab: any) => {
-            return {x: formatDate(rentab.date), y:rentab.diff};
+            return { x: formatDate(rentab.date), y: rentab.diff };
           }),
     };
 
     if (isToHiddenCDI) {
       const firstFund = rentabFunds[0];
-      const labels = firstFund.rentab.map((data: any) =>
-        formatDate(data.x)
-      );
+      const labels = firstFund.rentab.map((data: any) => formatDate(data.x));
 
       setLabels(labels);
       setDatasets([...datasets]);
     } else {
-      const labels = cdiRentab.rentab.map((data: any) =>
-        formatDate(data.x)
-      );
+      const labels = cdiRentab.rentab.map((data: any) => formatDate(data.x));
 
       setLabels(labels);
       setDatasets([...datasets, CDI]);
