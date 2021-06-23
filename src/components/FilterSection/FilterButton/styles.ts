@@ -9,6 +9,7 @@ export const Text = styled.p`
   font-size: 16px;
   line-height: 24px;
   margin: 0px 3px;
+  padding: 0 5px;
   text-transform: uppercase;
 `;
 export const Button = styled.button<IButton>`

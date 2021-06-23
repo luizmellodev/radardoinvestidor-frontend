@@ -22,9 +22,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Header = styled.header`
-  padding-bottom: 40px;
-`;
+const Header = styled.header``;
 
 const List = styled.div`
   margin-top: 32px;
@@ -43,10 +41,7 @@ const BottomLoadingSearch = styled.div`
 `;
 
 const Footer = styled.footer`
-  padding-top: 24px;
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-bottom: 32px;
+  padding: 20px 24px 24px 24px;
 `;
 
 const Center = styled.p`
