@@ -13,6 +13,13 @@ $ docker build -t warren-frontend .
 $ docker run --name warren-frontend -p 3000:3000 warren-frontend
 
 ```
+3. Arquivo .env.local:
+```
+Adicionar um arquivo na raiz do projeto com o nome ".env.local".
+O arquivo deve ter como conteúdo:
+$ NEXT_PUBLIC_API_URL=https://api.radar.warren.com.br/api
+
+```
 
 ## Deploy
 
